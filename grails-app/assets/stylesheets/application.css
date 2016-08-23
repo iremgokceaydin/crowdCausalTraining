@@ -1,0 +1,285 @@
+/*
+* This is a manifest file that'll be compiled into application.css, which will include all the files
+* listed below.
+*
+* Any CSS file within this directory can be referenced here using a relative path.
+*
+* You're free to add application-wide styles to this file and they'll appear at the top of the
+* compiled file, but it's generally better to create a new file per style scope.
+*
+*= require fonts/glyphicons-halflings-regular
+*= require bootstrap
+*= require jquery-ui
+*= require selectize
+*= require_self
+*/
+
+/* latin */
+@font-face {
+    font-family: 'Indie Flower';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Indie Flower'), local('IndieFlower'), url(https://fonts.gstatic.com/s/indieflower/v8/10JVD_humAd5zP2yrFqw6hampu5_7CjHW5spxoeN3Vs.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215, U+E0FF, U+EFFD, U+F000;
+}
+
+body{
+    font-family: 'Indie Flower', cursive;
+}
+
+.jumbotron p {
+    font-size: 18px;
+}
+
+.highlight {
+    background-color: #FFFF88;
+}
+
+.wizard {
+    margin: 20px auto;
+    background: #fff;
+}
+
+.wizard .nav-tabs {
+    position: relative;
+    margin: 40px auto;
+    margin-bottom: 0;
+    border-bottom-color: #e0e0e0;
+}
+
+.wizard > div.wizard-inner {
+    position: relative;
+}
+
+.connecting-line {
+    height: 2px;
+    background: #e0e0e0;
+    position: absolute;
+    width: 80%;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    top: 50%;
+    z-index: 1;
+}
+
+.wizard .nav-tabs > li.active > a, .wizard .nav-tabs > li.active > a:hover, .wizard .nav-tabs > li.active > a:focus {
+    color: #555555;
+    cursor: default;
+    border: 0;
+    border-bottom-color: transparent;
+}
+
+span.round-tab {
+    width: 50px;
+    height: 50px;
+    line-height: 56px;
+    display: inline-block;
+    border-radius: 100px;
+    background: #fff;
+    border: 2px solid #e0e0e0;
+    z-index: 2;
+    position: absolute;
+    left: 0;
+    text-align: center;
+    font-size: 25px;
+}
+span.round-tab i{
+    color:#555555;
+}
+.wizard li.active span.round-tab {
+    background: #fff;
+    border: 2px solid #5bc0de;
+
+}
+.wizard li.active span.round-tab i{
+    color: #5bc0de;
+}
+
+span.round-tab:hover {
+    color: #333;
+    border: 2px solid #333;
+}
+
+.wizard .nav-tabs > li {
+    width: 20%;
+}
+
+.wizard li:after {
+    content: " ";
+    position: absolute;
+    left: 46%;
+    opacity: 0;
+    margin: 0 auto;
+    bottom: 0px;
+    border: 5px solid transparent;
+    border-bottom-color: #5bc0de;
+    transition: 0.1s ease-in-out;
+}
+
+.wizard li.active:after {
+    content: " ";
+    position: absolute;
+    left: 46%;
+    opacity: 1;
+    margin: 0 auto;
+    bottom: 0px;
+    border: 10px solid transparent;
+    border-bottom-color: #5bc0de;
+}
+
+.wizard .nav-tabs > li a {
+    width: 50px;
+    height: 50px;
+    margin: 20px auto;
+    border-radius: 100%;
+    padding: 0;
+}
+
+.wizard .nav-tabs > li a:hover {
+    background: transparent;
+}
+
+.wizard .tab-pane {
+    position: relative;
+    padding-top: 20px;
+}
+
+.wizard h3 {
+    margin-top: 0;
+}
+
+@media( max-width : 585px ) {
+
+    .wizard {
+        width: 90%;
+        height: auto !important;
+    }
+
+    span.round-tab {
+        font-size: 16px;
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+    }
+
+    .wizard .nav-tabs > li a {
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+    }
+
+    .wizard li.active:after {
+        content: " ";
+        position: absolute;
+        left: 35%;
+    }
+}
+
+
+/*IREM*/
+.question{
+    font-weight: bold !important;
+    font-size: 22px !important;
+}
+
+.passage{
+    color: #438da2;
+}
+
+/* From ORIGINAL BEGIN */
+
+td {
+    font-size:1.0em;
+    padding: 5px 5px;
+}
+
+.highlight {
+    background-color: #FFFF88;
+}
+
+#posts{
+    background-color: #f7f7f9;
+    border: 1px solid #e1e1e8;
+    border-radius: 4px;
+    max-height: 400px;
+    margin: 5px;
+    overflow-y: auto;
+}
+
+.post{
+    background-color: #d9edf7;
+    border: 1px solid #e1e1e8;
+    border-radius: 4px;
+    margin: 5px;
+    padding: 3px;
+    opacity: 0.6;
+    filter: alpha(opacity=60); /* For IE8 and earlier */
+}
+
+#results{
+    margin: 5px;
+    background-color: rgba(86,61,124,.15);
+    border: 1px solid rgba(86,61,124,.2);
+    border-radius: 4px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.latestPost{
+    box-shadow: 3px 3px 3px #888888;
+    background-color: #BDE2F5;
+    opacity: 0.9;
+    filter: alpha(opacity=0.9);
+}
+
+.currentPost{
+    border: 4px solid #768a95;
+    opacity: 0.9;
+    filter: alpha(opacity=0.9);
+    box-shadow: 2px 2px 2px #888888;
+}
+
+.currentResult{
+    border: 4px solid rgb(31, 113, 167);
+    opacity: 0.9;
+    filter: alpha(opacity=0.9);
+    box-shadow: 3px 3px 3px #5aa3b5;
+    border-radius: 4px;
+}
+
+.result{
+    margin: 5px;
+    background-color: rgba(175, 180, 181, 0.54);
+    border-radius: 4px;
+}
+
+.result textarea{
+    resize: vertical;
+    background-color: white;
+}
+
+/* Icon when the collapsible content is shown */
+#collapseSelective:after {
+    font-family: "Glyphicons Halflings";
+    content: "\e114";
+    float: left;
+}
+/* Icon when the collapsible content is hidden */
+#collapseSelective.collapsed:after {
+    content: "\e080";
+}
+
+.alertMsg{
+    color: red;
+    display: none;
+    font-size: 14px !important;
+    margin-bottom: 5px !important;
+}
+
+.collapsing {
+    transition: height 0.5s;
+}
+
+/* From ORIGINAL END */
+
