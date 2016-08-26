@@ -22,16 +22,16 @@
                 <g:each var="testingQuestion" in="${testingQuestions}">
                     <tr>
                         <td>${testingQuestion.questionText}</td>
-                        <td>
+                        <td style="column-width: 300px">
                             <g:each var="answer" in="${testingQuestion.answers}">
-                                <g:if test="${answer.id == testingQuestion.correctAnswer.id}">
+                                <g:if test="${testingQuestion.correctAnswer != null && answer.id == testingQuestion.correctAnswer.id}">
                                     <input type="radio" name="correctAnswer" checked="checked" value="${answer.id}" disabled="true"/>
                                 </g:if>
                                 <g:else>
                                     <input type="radio" name="correctAnswer" value="${answer.id}" disabled="true"/>
                                 </g:else>
 
-                                <p>${answer.answerText}</p>
+                                ${answer.answerText}<br>
                             </g:each>
                         </td>
                         <td><g:form >

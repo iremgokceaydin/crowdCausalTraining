@@ -22,13 +22,27 @@
             Question:<br>
             <g:textArea name="questionText" value="${question.questionText}" rows="5" cols="60"/><br/>
             <button type="button" onclick="addAnswer()">Add Answer</button><br><br>
+            Answers:<br>
+            <div id="answersContainer">
+                <g:each var="answer" in="${question.answers}">
+                    <div>
+                        <g:if test="${question.correctAnswer != null && answer.id == question.correctAnswer.id}">
+                            <input type="radio" name="correctAnswer" checked="checked" value="${answer.id}"/>
+                        </g:if>
+                        <g:else>
+                            <input type="radio" name="correctAnswer" value="${answer.id}"/>
+                        </g:else>
+                        <g:textField name="answerText" value="${answer.answerText}" style="width:400px"/>
+                        <button type="button" onclick="removeAnswer(this)">
+                            <span><i class="glyphicon glyphicon-minus"></i> </span></button>
+                    </div>
+                    <br>
+                </g:each>
+            </div>
             <g:submitButton name="Submit"/>
         </g:form><br>
 
-        Answers:<br>
-        <g:each var="answer" in="${question.answers}">
-            <label class="checkbox-inline"><input name="q${question.id}a" id="q${question.id}a${answer.id}" type="radio" value="${answer.id}">&nbsp;</label><br>
-        </g:each>
+
 
     </div>
 </div>
@@ -43,7 +57,7 @@
             $.ajax({
                 url: "/admin/newTestingAnswer"
             }).done(function(data) {
-                $('form').append( data);
+                $('#answersContainer').append( data);
             });
         }
 

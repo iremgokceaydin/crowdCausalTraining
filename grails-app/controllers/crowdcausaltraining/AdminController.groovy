@@ -22,7 +22,7 @@ class AdminController {
         params.answerText.eachWithIndex  { a, index ->
             def tA = new TestingA()
             tA.answerText = a
-            if (params.correctAnswer.toInteger() == index) {
+            if (params.containsKey("correctAnswer") && params.correctAnswer.toInteger() == index) {
                 tQ.correctAnswer = tA
             }
             if(tQ.addToAnswers(tA).save()) {
@@ -49,6 +49,32 @@ class AdminController {
     def editTestingQuestion(){
         def testingQ = TestingQ.get(params.question_id)
         [question:testingQ]
+    }
+
+    def updateTestingQuestion(){
+        def testingQ = TestingQ.get(params.question_id)
+        testingQ.answers.clear()
+
+        def isThereError = false
+        testingQ.questionText = params.questionText
+        params.answerText.eachWithIndex  { a, index ->
+            def tA = new TestingA()
+            tA.answerText = a
+            if (params.containsKey("correctAnswer") && params.correctAnswer.toInteger() == index) {
+                testingQ.correctAnswer = tA
+            }
+            if(testingQ.addToAnswers(tA).save()) {
+                isThereError = false
+            }
+            else
+                isThereError = true
+        }
+
+        if(!isThereError) {
+            redirect(action: "testing")
+        }
+        else
+            render(view:"editTestingQuestion", model:[question:testingQ])
     }
 
     def deleteTestingQuestion(){
