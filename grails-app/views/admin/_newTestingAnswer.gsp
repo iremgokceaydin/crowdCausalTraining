@@ -1,5 +1,6 @@
-<li>
-    <g:textField name="questionText" placeholder="Write an answer"/>
+<div>
+    <input type="radio" name="correctAnswer"/>
+    <g:textField name="answerText" placeholder="Write an answer" style="width:400px"/>
     <button type="button" onclick="removeAnswer(this)">
     <span><i class="glyphicon glyphicon-minus"></i> </span></button>
-</li>
+</div> <br>

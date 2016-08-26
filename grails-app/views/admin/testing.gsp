@@ -13,16 +13,35 @@
             <p>There are no questions yet!</p>
         </g:if>
         <g:else>
-            <g:each var="testingQuestion" in="${testingQuestions}" status="i">
-                <div class="col-md-6">
-                    <p class="question">Q${i}: ${testingQuestion.questionText}?</p>
-                    <p>
-                        <g:each var="answer" in="${testingQuestion.answers}" status="j">
-                            <label class="checkbox-inline"><input name="q${i}a" id="q${i}a${j}" type="radio" value="j">&nbsp;</label><br>
-                        </g:each>
-                    </p>
-                </div>
-            </g:each>
+            <table border="3px">
+                <tr style="font-weight:bold">
+                    <td>Question</td>
+                    <td>Answers</td>
+                    <td>Actions</td>
+                </tr>
+                <g:each var="testingQuestion" in="${testingQuestions}">
+                    <tr>
+                        <td>${testingQuestion.questionText}</td>
+                        <td>
+                            <g:each var="answer" in="${testingQuestion.answers}">
+                                <g:if test="${answer.id == testingQuestion.correctAnswer.id}">
+                                    <input type="radio" name="correctAnswer" checked="checked" value="${answer.id}" disabled="true"/>
+                                </g:if>
+                                <g:else>
+                                    <input type="radio" name="correctAnswer" value="${answer.id}" disabled="true"/>
+                                </g:else>
+
+                                <p>${answer.answerText}</p>
+                            </g:each>
+                        </td>
+                        <td><g:form >
+                            <g:hiddenField name="question_id" value="${testingQuestion.id}" />
+                            <g:actionSubmit value="Edit" action="editTestingQuestion"/>
+                            <g:actionSubmit value="Delete" action="deleteTestingQuestion" onclick="return confirm('Are you sure you want to delete the question?')"/>
+                        </g:form></td>
+                    </tr>
+                </g:each>
+            </table>
         </g:else>
 
     </div>
