@@ -15,12 +15,15 @@
         <g:else>
             <table border="3px">
                 <tr style="font-weight:bold">
+                    <td>Type</td>
                     <td>Question</td>
                     <td>Answers</td>
+                    <td>Highlights</td>
                     <td>Actions</td>
                 </tr>
                 <g:each var="testingQuestion" in="${testingQuestions}">
                     <tr>
+                        <td>${testingQuestion.type.shortName}</td>
                         <td>${testingQuestion.questionText}</td>
                         <td style="column-width: 300px">
                             <g:each var="answer" in="${testingQuestion.answers}">
@@ -34,6 +37,7 @@
                                 ${answer.answerText}<br>
                             </g:each>
                         </td>
+                        <td><g:each var="highlight" in="${testingQuestion.highlights}"></g:each></td>
                         <td><g:form >
                             <g:hiddenField name="question_id" value="${testingQuestion.id}" />
                             <g:actionSubmit value="Edit" action="editTestingQuestion"/>

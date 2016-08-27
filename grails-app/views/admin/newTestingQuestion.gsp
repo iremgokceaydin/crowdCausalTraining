@@ -1,3 +1,4 @@
+<%@ page import="crowdcausaltraining.TestingType" %>
 <!doctype html>
 <html>
 <head>
@@ -27,26 +28,34 @@
             </ul>
         </g:eachError>
 
+
         <g:form action="createTestingQuestion">
-            Question:<br>
-            <g:textArea name="questionText" value="${newTestingQ.questionText}" rows="5" cols="60"/><br/><br>
-            <button type="button" onclick="addAnswer()">Add Answer</button><br><br>
-            Answers:<br>
-            <div id="answersContainer">
-                <g:each var="answer" in="${newTestingQ.answers}">
-                    <div>
-                        <g:if test="${answer.id == newTestingQ.correctAnswer.id}">
-                            <input type="radio" name="correctAnswer" checked="checked" value="${answer.id}"/>
-                        </g:if>
-                        <g:else>
-                            <input type="radio" name="correctAnswer" value="${answer.id}"/>
-                        </g:else>
-                        <g:textField name="answerText" value="${answer.answerText}" style="width:400px"/>
-                        <button type="button" onclick="removeAnswer(this)">
-                            <span><i class="glyphicon glyphicon-minus"></i> </span></button>
-                    </div>
-                    <br>
-                </g:each>
+            <div class="col-md-6">
+                Question:<br>
+                <g:textArea name="questionText" value="${newTestingQ.questionText}" rows="5" cols="60"/><br/><br>
+                <button type="button" onclick="addAnswer()">Add Answer</button><br><br>
+                Answers:<br>
+                <div id="answersContainer">
+                    <g:each var="answer" in="${newTestingQ.answers}">
+                        <div>
+                            <g:if test="${answer.id == newTestingQ.correctAnswer.id}">
+                                <input type="radio" name="correctAnswer" checked="checked" value="${answer.id}"/>
+                            </g:if>
+                            <g:else>
+                                <input type="radio" name="correctAnswer" value="${answer.id}"/>
+                            </g:else>
+                            <g:textField name="answerText" value="${answer.answerText}" style="width:400px"/>
+                            <button type="button" onclick="removeAnswer(this)">
+                                <span><i class="glyphicon glyphicon-minus"></i> </span></button>
+                        </div>
+                        <br>
+                    </g:each>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <g:select name='type' value="${newTestingQ?.type?.id}"
+                          from='${TestingType.list()}'
+                          optionKey="id" optionValue="shortName"></g:select>
             </div>
             <g:submitButton name="Submit" onclick="return setCorrectAnswerIndex();"/>
         </g:form><br>

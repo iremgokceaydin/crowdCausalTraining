@@ -6,6 +6,8 @@ class TestingQ {
         questionText nullable: false
         questionText blank: false
         correctAnswer nullable: true
+        type nullable: false
+        highlights nullable: true
     }
     static mapping = {
         answers sort:'id', order:'asc'
@@ -15,4 +17,6 @@ class TestingQ {
     String questionText
     static hasMany = [answers: TestingA]
     TestingA correctAnswer
+    TestingType type
+    List<String> highlights
 }

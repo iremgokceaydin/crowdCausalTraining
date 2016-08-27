@@ -18,6 +18,7 @@ class AdminController {
         print params
         def tQ = new TestingQ()
         tQ.questionText = params.questionText
+        tQ.type = TestingType.get(params.type)
         params.list('answerText').eachWithIndex  { a, index ->
             def tA = new TestingA()
             tA.answerText = a
@@ -69,6 +70,7 @@ class AdminController {
 
 
         tQ.questionText = params.questionText
+        tQ.type = TestingType.get(params.type)
         params.list('answerText').eachWithIndex  { a, index ->
             def tA = new TestingA()
             tA.answerText = a
