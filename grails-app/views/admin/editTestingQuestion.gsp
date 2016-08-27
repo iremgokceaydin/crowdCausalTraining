@@ -39,7 +39,7 @@
                     <br>
                 </g:each>
             </div>
-            <g:submitButton name="Submit"/>
+            <g:submitButton name="Submit" onclick="return setCorrectAnswerIndex();"/>
         </g:form><br>
 
 
@@ -63,6 +63,20 @@
 
         function removeAnswer(elem){
             $(elem).parent().remove();
+        }
+
+        function setCorrectAnswerIndex(){
+            if($("input[type=radio]:checked").length == 0) {
+                alert('Please select a correct answer for this question!');
+                return false;
+            }
+            else {
+                $("input[type=radio]").each(function (index) {
+                    if ($(this).prop('checked'))
+                        $(this).val(index);
+                });
+                return confirm('Are you sure you want to submit the question?');
+            }
         }
 
     </script>

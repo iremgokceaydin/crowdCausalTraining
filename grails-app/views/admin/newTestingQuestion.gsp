@@ -17,6 +17,16 @@
             </ul>
         </g:hasErrors>
 
+        <g:eachError bean="${newTestingQ}" var="error">
+            ${error.field}: <g:message error="${error}" />
+            //For Debugging the ERR-CODES
+            <ul>
+                <g:each in="${error.codes}" var="code">
+                    <li>${code}</li>
+                </g:each>
+            </ul>
+        </g:eachError>
+
         <g:form action="createTestingQuestion">
             Question:<br>
             <g:textArea name="questionText" value="${newTestingQ.questionText}" rows="5" cols="60"/><br/><br>

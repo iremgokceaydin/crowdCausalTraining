@@ -16,27 +16,28 @@ class AdminController {
 
     def createTestingQuestion(){
         print params
-        def isThereError = false
         def tQ = new TestingQ()
         tQ.questionText = params.questionText
-        params.answerText.eachWithIndex  { a, index ->
+        params.list('answerText').eachWithIndex  { a, index ->
             def tA = new TestingA()
             tA.answerText = a
             if (params.containsKey("correctAnswer") && params.correctAnswer.toInteger() == index) {
                 tQ.correctAnswer = tA
             }
-            if(tQ.addToAnswers(tA).save()) {
-                isThereError = false
-            }
-            else
-                isThereError = true
+            tQ.addToAnswers(tA)
         }
 
-        if(!isThereError) {
+        if(tQ.save()) {
             redirect(action: "testing")
         }
-        else
-            render(view:"newTestingQuestion", model:[newTestingQ:tQ])
+        else {
+//            def locale = Locale.getDefault()
+//            //println locale
+//            tQ.errors?.allErrors?.each{
+//                println  messageSource.getMessage(it, locale)
+//            }
+            render(view: "newTestingQuestion", model: [newTestingQ: tQ])
+        }
     }
 
     def newTestingAnswer(){
@@ -52,34 +53,48 @@ class AdminController {
     }
 
     def updateTestingQuestion(){
-        def testingQ = TestingQ.get(params.question_id)
-        testingQ.answers.clear()
+        print params
 
-        def isThereError = false
-        testingQ.questionText = params.questionText
-        params.answerText.eachWithIndex  { a, index ->
+        def tQ = TestingQ.get(params.question_id)
+
+        print (params.answerText instanceof Collection)
+        print (params.answerText instanceof List)
+        print (params.answerText.getClass().isArray())
+        print params.list('answerText')
+
+        print tQ.questionText
+        print tQ.answers.size()
+
+        tQ.answers.clear()
+
+
+        tQ.questionText = params.questionText
+        params.list('answerText').eachWithIndex  { a, index ->
             def tA = new TestingA()
             tA.answerText = a
             if (params.containsKey("correctAnswer") && params.correctAnswer.toInteger() == index) {
-                testingQ.correctAnswer = tA
+                tQ.correctAnswer = tA
             }
-            if(testingQ.addToAnswers(tA).save()) {
-                isThereError = false
-            }
-            else
-                isThereError = true
+            tQ.addToAnswers(tA)
         }
 
-        if(!isThereError) {
+        if(tQ.save()) {
             redirect(action: "testing")
         }
-        else
-            render(view:"editTestingQuestion", model:[question:testingQ])
+        else {
+//            def locale = Locale.getDefault()
+//            //println locale
+//            tQ.errors?.allErrors?.each{
+//                println  messageSource.getMessage(it, locale)
+//            }
+            render(view: "newTestingQuestion", model: [newTestingQ: tQ])
+        }
     }
 
     def deleteTestingQuestion(){
         def testingQ = TestingQ.get(params.question_id)
-        testingQ.delete()
+        testingQ.delete(flush:true)
+        redirect(action:"testing")
     }
 
     def training() { }
