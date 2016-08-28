@@ -1469,3 +1469,6 @@ select this_.id as id1_2_0_, this_.version as version2_2_0_, this_.correct_answe
 	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
 	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
 	at java.lang.Thread.run(Thread.java:745)
+2016-08-27 14:19:39 jdbc[12]: exception
+org.h2.jdbc.JdbcSQLException: Value too long for column "QUESTION_TEXT VARCHAR(255) NOT NULL": "'It is helpful to make a distinction between two very general uses of the term cause. Sometimes when we say x causes y, x and y ... (694)"; SQL statement:
+insert into testingq (id, version, correct_answer_id, question_text, type_id) values (null, ?, ?, ?, ?) [22001-192]

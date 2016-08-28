@@ -1,6 +1,6 @@
 <html>
 <head>
-    <meta name="layout" content="${gspLayout ?: 'main'}"/>
+    <meta name="layout" content="admin"/>
     <title><g:message code='springSecurity.login.title'/></title>
     <style type="text/css" media="screen">
     #login {
@@ -115,17 +115,12 @@
         </form>
     </div>
 </div>
-<script>
-    (function() {
-        document.forms['loginForm'].elements['${usernameParameter ?: 'username'}'].focus();
-    })();
-</script>
+
 <content tag="script">
     <script>
-        $(document).ready(function () {
-            $("#footer").hide();
-        });
-
+        (function() {
+            document.forms['loginForm'].elements['${usernameParameter ?: 'username'}'].focus();
+        })();
     </script>
 </content>
 </body>

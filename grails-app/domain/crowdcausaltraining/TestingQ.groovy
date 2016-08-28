@@ -5,6 +5,7 @@ class TestingQ {
     static constraints = {
         questionText nullable: false
         questionText blank: false
+        questionText type: 'text'
         correctAnswer nullable: true
         type nullable: false
         highlights nullable: true

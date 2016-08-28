@@ -1,15 +1,15 @@
 <!doctype html>
 <html>
 <head>
-    <meta name="layout" content="main"/>
+    <meta name="layout" content="admin"/>
 </head>
 <body>
 
-<div id="admin_testing" class="jumbotron" style="padding-bottom:10px;margin-bottom:10px">
-    <h1>Crowd Causal Project</h1>
-    <h2>Admin Panel - Testing</h2>
+
+
     <div class="row">
-        <g:if test="${testingQuestions.empty}">
+        <h2>Testing Questions</h2>
+        <g:if test="${qs.empty}">
             <p>There are no questions yet!</p>
         </g:if>
         <g:else>
@@ -21,45 +21,41 @@
                     <td>Highlights</td>
                     <td>Actions</td>
                 </tr>
-                <g:each var="testingQuestion" in="${testingQuestions}">
+                <g:each var="q" in="${qs}">
                     <tr>
-                        <td>${testingQuestion.type.shortName}</td>
-                        <td>${testingQuestion.questionText}</td>
+                        <td>${q.type.shortName}</td>
+                        <td>${q.questionText}</td>
                         <td style="column-width: 300px">
-                            <g:each var="answer" in="${testingQuestion.answers}">
-                                <g:if test="${testingQuestion.correctAnswer != null && answer.id == testingQuestion.correctAnswer.id}">
-                                    <input type="radio" name="correctAnswer" checked="checked" value="${answer.id}" disabled="true"/>
+                            <g:each var="answer" in="${q.answers}">
+                                <g:if test="${q.correctAnswer != null && answer.id == q.correctAnswer.id}">
+                                    <input type="radio" name="correctAnswer_${q.id}" checked="checked" value="${answer.id}" disabled="true"/>
                                 </g:if>
                                 <g:else>
-                                    <input type="radio" name="correctAnswer" value="${answer.id}" disabled="true"/>
+                                    <input type="radio" name="correctAnswer_${q.id}" value="${answer.id}" disabled="true"/>
                                 </g:else>
 
                                 ${answer.answerText}<br>
                             </g:each>
                         </td>
-                        <td><g:each var="highlight" in="${testingQuestion.highlights}"></g:each></td>
-                        <td><g:form >
-                            <g:hiddenField name="question_id" value="${testingQuestion.id}" />
-                            <g:actionSubmit value="Edit" action="editTestingQuestion"/>
-                            <g:actionSubmit value="Delete" action="deleteTestingQuestion" onclick="return confirm('Are you sure you want to delete the question?')"/>
-                        </g:form></td>
+                        <td><g:each var="highlight" in="${q.highlights}"></g:each></td>
+                        <td>
+                            <g:link mapping="editTesting" params='[id:"${q.id}"]'><input type="button" value="Edit"/></g:link>
+
+                            <g:if test="${q.type.id == crowdcausaltraining.TestingType.findByShortName('Type2').id}">
+                                <g:link mapping="editTestingHighlights" params='[id:"${q.id}"]'><input type="button" value="Highlights"/></g:link>
+                            </g:if>
+                            <g:link action="deleteTestingQ" params='[id:"${q.id}"]' onclick="return confirm('Are you sure you want to delete the question?')"><input type="button" value="Delete"/></g:link>
+                        </td>
                     </tr>
                 </g:each>
             </table>
         </g:else>
-
+        <br>
+        <g:link action="newTestingQ"><button type="button">Add another question</button></g:link>
     </div>
-</div>
-<g:link action="newTestingQuestion"><button type="button">Add another question</button></g:link>
 
-<content tag="script">
-    <script>
-        $(document).ready(function () {
-            $("#footer").hide();
-        });
 
-    </script>
-</content>
+
 
 </body>
 </html>

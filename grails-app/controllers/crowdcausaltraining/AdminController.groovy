@@ -5,30 +5,30 @@ class AdminController {
     def index() { }
 
     def testing() {
-        def testingQuestions = TestingQ.list()
-        [testingQuestions:testingQuestions]
+        def qs = TestingQ.list()
+        [qs:qs]
     }
 
-    def newTestingQuestion(){
-        def newTestingQ = new TestingQ()
-        [newTestingQ:newTestingQ]
+    def newTestingQ(){
+        def q = new TestingQ()
+        [q:q]
     }
 
-    def createTestingQuestion(){
+    def createTestingQ(){
         print params
-        def tQ = new TestingQ()
-        tQ.questionText = params.questionText
-        tQ.type = TestingType.get(params.type)
+        def q = new TestingQ()
+        q.questionText = params.questionText
+        q.type = TestingType.get(params.type)
         params.list('answerText').eachWithIndex  { a, index ->
             def tA = new TestingA()
             tA.answerText = a
             if (params.containsKey("correctAnswer") && params.correctAnswer.toInteger() == index) {
-                tQ.correctAnswer = tA
+                q.correctAnswer = tA
             }
-            tQ.addToAnswers(tA)
+            q.addToAnswers(tA)
         }
 
-        if(tQ.save()) {
+        if(q.save()) {
             redirect(action: "testing")
         }
         else {
@@ -37,50 +37,38 @@ class AdminController {
 //            tQ.errors?.allErrors?.each{
 //                println  messageSource.getMessage(it, locale)
 //            }
-            render(view: "newTestingQuestion", model: [newTestingQ: tQ])
+            render(view: "newTestingQ", model: [q: q])
         }
     }
 
-    def newTestingAnswer(){
+    def newTestingA(){
         print params
-//        [answerCounter = params.answerCounter]
-//        def newAnswer = new TestingA()
-        render(template:"newTestingAnswer")
+        render(template:"newTestingA")
     }
 
-    def editTestingQuestion(){
-        def testingQ = TestingQ.get(params.question_id)
-        [question:testingQ]
+    def editTestingQ(){
+        def q = TestingQ.get(params.id)
+        [q:q]
     }
 
-    def updateTestingQuestion(){
-        print params
+    def updateTestingQ(){
+        def q = TestingQ.get(params.id)
+        q.answers.clear()
+        if(params.type.toInteger() == TestingType.findByShortName('Type1').id)
+            q.highlights.clear()
 
-        def tQ = TestingQ.get(params.question_id)
-
-        print (params.answerText instanceof Collection)
-        print (params.answerText instanceof List)
-        print (params.answerText.getClass().isArray())
-        print params.list('answerText')
-
-        print tQ.questionText
-        print tQ.answers.size()
-
-        tQ.answers.clear()
-
-
-        tQ.questionText = params.questionText
-        tQ.type = TestingType.get(params.type)
+        q.questionText = params.questionText
+        q.type = TestingType.get(params.type)
         params.list('answerText').eachWithIndex  { a, index ->
             def tA = new TestingA()
             tA.answerText = a
             if (params.containsKey("correctAnswer") && params.correctAnswer.toInteger() == index) {
-                tQ.correctAnswer = tA
+                q.correctAnswer = tA
             }
-            tQ.addToAnswers(tA)
+            q.addToAnswers(tA)
         }
 
-        if(tQ.save()) {
+        if(q.save()) {
             redirect(action: "testing")
         }
         else {
@@ -89,14 +77,31 @@ class AdminController {
 //            tQ.errors?.allErrors?.each{
 //                println  messageSource.getMessage(it, locale)
 //            }
-            render(view: "newTestingQuestion", model: [newTestingQ: tQ])
+            render(view: "newTestingQ", model: [tQ: tQ])
         }
     }
 
-    def deleteTestingQuestion(){
-        def testingQ = TestingQ.get(params.question_id)
-        testingQ.delete(flush:true)
+    def deleteTestingQ(){
+        def q = TestingQ.get(params.id)
+        q.delete(flush:true)
         redirect(action:"testing")
+    }
+
+    def editHighlightsOfTestingQ(){
+        def q = TestingQ.get(params.id)
+        [q:q]
+    }
+
+    def updateHighlightsOfTestingQ(){
+        def q = TestingQ.get(params.id)
+        q.highlights = []
+        q.highlights = params.list('highlights')
+        if(q.save()) {
+            redirect(action: "testing")
+        }
+        else {
+            render(view: "editHighlightsOfTestingQ", model: [q: q])
+        }
     }
 
     def training() { }
