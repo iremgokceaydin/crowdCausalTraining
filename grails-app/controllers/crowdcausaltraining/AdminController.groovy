@@ -93,9 +93,12 @@ class AdminController {
     }
 
     def updateHighlightsOfTestingQ(){
+        print params
         def q = TestingQ.get(params.id)
         q.highlights = []
-        q.highlights = params.list('highlights')
+        params.list('highlight').each  {
+            q.highlights.push(it)
+        }
         if(q.save()) {
             redirect(action: "testing")
         }

@@ -24,8 +24,8 @@
                 <g:each var="q" in="${qs}">
                     <tr>
                         <td>${q.type.shortName}</td>
-                        <td>${q.questionText}</td>
-                        <td style="column-width: 300px">
+                        <td style="width: 50%;">${q.questionText}</td>
+                        <td>
                             <g:each var="answer" in="${q.answers}">
                                 <g:if test="${q.correctAnswer != null && answer.id == q.correctAnswer.id}">
                                     <input type="radio" name="correctAnswer_${q.id}" checked="checked" value="${answer.id}" disabled="true"/>
@@ -37,8 +37,14 @@
                                 ${answer.answerText}<br>
                             </g:each>
                         </td>
-                        <td><g:each var="highlight" in="${q.highlights}"></g:each></td>
                         <td>
+                            <ul>
+                            <g:each var="highlight" in="${q.highlights}">
+                                <li>${highlight}</li>
+                            </g:each>
+                            </ul>
+                        </td>
+                        <td style="width: 5%;">
                             <g:link mapping="editTesting" params='[id:"${q.id}"]'><input type="button" value="Edit"/></g:link>
 
                             <g:if test="${q.type.id == crowdcausaltraining.TestingType.findByShortName('Type2').id}">

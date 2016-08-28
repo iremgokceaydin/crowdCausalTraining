@@ -225,7 +225,7 @@ td {
     filter: alpha(opacity=60); /* For IE8 and earlier */
 }
 
-#results{
+#chunks{
     margin: 5px;
     background-color: rgba(86,61,124,.15);
     border: 1px solid rgba(86,61,124,.2);
@@ -248,7 +248,7 @@ td {
     box-shadow: 2px 2px 2px #888888;
 }
 
-.currentResult{
+.currentChunk{
     border: 4px solid rgb(31, 113, 167);
     opacity: 0.9;
     filter: alpha(opacity=0.9);
@@ -256,13 +256,13 @@ td {
     border-radius: 4px;
 }
 
-.result{
+.chunk{
     margin: 5px;
     background-color: rgba(175, 180, 181, 0.54);
     border-radius: 4px;
 }
 
-.result textarea{
+.chunk textarea{
     resize: vertical;
     background-color: white;
 }
