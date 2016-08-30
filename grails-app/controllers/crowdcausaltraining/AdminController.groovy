@@ -55,6 +55,7 @@ class AdminController {
         def q = TestingQ.get(params.id)
         q.answers.clear()
 
+
         if(params.type.toInteger() == QType.findByShortName('Type1').id)
             q.highlights.clear()
 

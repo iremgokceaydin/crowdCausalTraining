@@ -9,9 +9,14 @@ class UrlMappings {
             }
         }
 
-        "/"(view:"/introduction/index")
+        "/"(controller:"admin", action: "index")
         "500"(view:'/error')
         "404"(view:'/notFound')
+
+        name introduction: "/introduction/index/$worker_id" {
+            controller = "introduction"
+            action = "index"
+        }
 
         name newTesting: "/admin/testing/new" {
             controller = "admin"

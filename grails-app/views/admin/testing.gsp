@@ -24,7 +24,7 @@
                 <g:each var="q" in="${qs}">
                     <tr>
                         <td>${q.type.shortName}</td>
-                        <td style="width: 50%;">${q.questionText}</td>
+                        <td style="width: 50%;" id="${q.type.shortName}">${q.questionText}</td>
                         <td>
                             <g:each var="answer" in="${q.answers}">
                                 <g:if test="${q.correctAnswer != null && answer.id == q.correctAnswer.id}">
@@ -41,6 +41,9 @@
                             <ul>
                             <g:each var="highlight" in="${q.highlights}">
                                 <li>${highlight}</li>
+                                <g:javascript>
+                                    $('#Type2').highlight('${highlight}');
+                                </g:javascript>
                             </g:each>
                             </ul>
                         </td>
@@ -59,9 +62,6 @@
         <br>
         <g:link mapping="newTesting"><button type="button">Add another question</button></g:link>
     </div>
-
-
-
 
 </body>
 </html>

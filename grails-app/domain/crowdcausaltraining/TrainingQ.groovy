@@ -7,7 +7,6 @@ class TrainingQ {
         type nullable: false
     }
     static mapping = {
-        chunks sort:'id', order:'desc'
     }
 
     String postText

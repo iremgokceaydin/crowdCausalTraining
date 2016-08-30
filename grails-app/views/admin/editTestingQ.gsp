@@ -28,7 +28,7 @@
 
         <g:form mapping="updateTesting" params='[id:"${q.id}"]'>
             <g:select name='type' value="${q?.type?.id}"
-                      from='${crowdcausaltraining.QType.findByType("Testing")}'
+                      from='${crowdcausaltraining.QType.findAllByType("Testing")}'
                       optionKey="id" optionValue="shortName"></g:select><br>
 
             Question:<br>

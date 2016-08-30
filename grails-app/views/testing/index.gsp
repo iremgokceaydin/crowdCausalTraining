@@ -5,53 +5,83 @@
 </head>
 <body>
 
-<h1>Simple Task</h1>
-<g:each class="row">
+<h1>Testing Tasks</h1>
+<div class="row">
     <g:if test="${qs.empty}">
         <p>There are no questions yet!</p>
+
     </g:if>
     <g:else>
-        <g:form action="save">
+        <g:form action="save" name="formToSubmit">
             <g:hiddenField name="worker_id" value="${worker.workerId}"/>
+            <g:hiddenField name="page" value="${page}"/>
             <g:each var="q" in="${qs}">
-            <div class="col-md-6">
-                <p class="question">${q.questionText}</p>
-                <p>
-                    <g:each var="a" in="${q.answers}">
-                        <label class="checkbox-inline"><input name="answer_${q.id}" type="radio" value="${a.id}">&nbsp;${a.answerText}</label><br>
-                    </g:each>
-                </p>
-            </div>
+                <g:hiddenField name="question" value="${q.id}"/>
+                <div class="col-md-6">
+                    <p class="question" id="${q.type.shortName}">${q.questionText}</p>
+                    <g:if test="${q.type.shortName} == 'Type2'">
+                        <g:each var="highlight" in="${q.highlights}">
+                            <g:javascript>
+                                $('#Type2').highlight('${highlight}');
+                            </g:javascript>
+                        </g:each>
+                    </g:if>
+                    <p>
+                        <g:each var="a" in="${q.answers}">
+                            <g:if test="${worker.testingAs != null && worker.testingAs.find{it.id == a.id} != null}">
+                                <label class="checkbox-inline"><input name="answer_${q.id}" type="radio" value="${a.id}" checked='checked'>&nbsp;${a.answerText}</label><br>
+                            </g:if>
+                            <g:else>
+                                <label class="checkbox-inline"><input name="answer_${q.id}" type="radio" value="${a.id}">&nbsp;${a.answerText}</label><br>
+                            </g:else>
+
+                        </g:each>
+                    </p>
+                </div>
             </g:each>
         </g:form>
     </g:else>
 </div>
+
 
 <content tag="script">
     <script>
         var $target = $('#step2_icon');
         activateStep($target);
         $( document ).ready(function() {
-            $(".next-step").click(function (e) {
-                $("#footer").hide();
-                if(${totalPage} > ${page}){
-                    window.location.href = "/testing?page=" + (${page}+1);
-                }
-                else {
-                    window.location.href = "/training";
-                }
-            });
+            if('${qs.empty}' == 'true')
+                $(".next-step").hide()
+            else {
+                $(".next-step").click(function (e) {
+                    return validateTestingForm(e);
+                });
+            }
 
             $(".prev-step").click(function (e) {
                 $("#footer").hide();
-                if(${page} > 1){
-                    window.location.href = "/testing?page=" + (${page}-1);
+                var page = ${page};
+                if(page > 1){
+                    window.location.href = "/testing?page=" + (page-1) + "&worker_id=${worker.workerId}";
                 }
                 else {
-                    window.location.href = "/introduction";
+                    window.location.href = "/introduction?worker_id=${worker.workerId}";
                 }
             });
         });
+
+        function validateTestingForm(e) {
+            if ($("input[name^='answer']:checked").length != ${pageFactor}) //pageFactor
+            {
+                alert("Please select an answer!");
+                return false;
+            }
+            else{
+                e.preventDefault();
+                $("#footer").hide();
+                $("#formToSubmit").submit();
+                return true;
+            }
+        }
     </script>
 </content>
 

@@ -12,16 +12,16 @@
 
 <content tag="script">
     <script>
+        var $target = $('#step1_icon');
+        activateStep($target);
+
         $( document ).ready(function() {
             $(".next-step").click(function (e) {
                 $("#footer").hide();
-                window.location.href = "/testing?worker_id="${worker_id} + "&page=1";
+                window.location.href = "/testing?worker_id=${worker.workerId}" + "&page=1";
             });
         });
 
-
-        var $target = $('#step1_icon');
-        activateStep($target);
     </script>
 </content>
 

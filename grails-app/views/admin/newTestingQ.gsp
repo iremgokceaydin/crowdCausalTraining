@@ -29,7 +29,7 @@
 
         <g:form action="createTestingQ">
             <g:select name='type' value="${q?.type?.id}"
-                      from='${QType.findByType("Testing")}'
+                      from='${QType.findAllByType("Testing")}'
                       optionKey="id" optionValue="shortName"></g:select><br><br>
 
             Question:<br>
