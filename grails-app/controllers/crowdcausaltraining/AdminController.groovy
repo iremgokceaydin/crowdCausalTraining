@@ -18,7 +18,7 @@ class AdminController {
         print params
         def q = new TestingQ()
         q.questionText = params.questionText
-        q.type = TestingType.get(params.type)
+        q.type = QType.get(params.type)
         params.list('answerText').eachWithIndex  { a, index ->
             def tA = new TestingA()
             tA.answerText = a
@@ -54,11 +54,12 @@ class AdminController {
     def updateTestingQ(){
         def q = TestingQ.get(params.id)
         q.answers.clear()
-        if(params.type.toInteger() == TestingType.findByShortName('Type1').id)
+
+        if(params.type.toInteger() == QType.findByShortName('Type1').id)
             q.highlights.clear()
 
         q.questionText = params.questionText
-        q.type = TestingType.get(params.type)
+        q.type = QType.get(params.type)
         params.list('answerText').eachWithIndex  { a, index ->
             def tA = new TestingA()
             tA.answerText = a
@@ -68,7 +69,7 @@ class AdminController {
             q.addToAnswers(tA)
         }
 
-        if(q.save()) {
+        if(q.save()) { //validate: false, flush: true
             redirect(action: "testing")
         }
         else {
@@ -77,7 +78,7 @@ class AdminController {
 //            tQ.errors?.allErrors?.each{
 //                println  messageSource.getMessage(it, locale)
 //            }
-            render(view: "newTestingQ", model: [tQ: tQ])
+            render(view: "editTestingQ", model: [q: q])
         }
     }
 

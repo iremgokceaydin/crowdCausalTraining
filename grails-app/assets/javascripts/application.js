@@ -40,22 +40,6 @@ $(document).ready(function () {
         }
     });
 
-    $(".next-step").click(function (e) {
-        $("#footer").hide();
-        var pressedButtonId = $(this).attr('id');
-        if(pressedButtonId == "step1next"){
-            //var redirectURL = '${createLink( controller:"testing", action:"index")}';
-            window.location.href = "/testing?page=1";
-        }
-    });
-
-    $(".prev-step").click(function (e) {
-        $("#footer").hide();
-        var pressedButtonId = $(this).attr('id');
-        if(pressedButtonId == "step2prev"){
-            window.location.href = "/introduction";
-        }
-    });
 });
 
 function activateStep($elem) {

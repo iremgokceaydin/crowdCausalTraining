@@ -1,4 +1,4 @@
-<%@ page import="crowdcausaltraining.TestingType" %>
+<%@ page import="crowdcausaltraining.QType" %>
 <!doctype html>
 <html>
 <head>

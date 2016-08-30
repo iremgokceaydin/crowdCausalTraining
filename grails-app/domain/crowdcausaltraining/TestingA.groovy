@@ -3,9 +3,7 @@ package crowdcausaltraining
 class TestingA {
 
     static constraints = {
-        answerText nullable:false
-        answerText blank: false
-        answerText type: 'text'
+        answerText type: 'text', nullable:false, blank: false// , unique: true
     }
 
     static belongsTo = [question: TestingQ]

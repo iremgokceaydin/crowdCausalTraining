@@ -1,4 +1,4 @@
-<%@ page import="crowdcausaltraining.TestingType" %>
+<%@ page import="crowdcausaltraining.QType" %>
 <!doctype html>
 <html>
 <head>
@@ -8,18 +8,27 @@
 
     <h2>Edit Testing Question</h2>
     <div class="row" style="text-align: center;">
+        %{--<g:hasErrors bean="${q}">--}%
+            %{--<ul>--}%
+                %{--<g:eachError var="err" bean="${q}">--}%
+                    %{--<li>${err}</li>--}%
+                    %{--<g:each in="${err.codes}" var="code">--}%
+                        %{--<li>${code}</li>--}%
+                    %{--</g:each>--}%
+                %{--</g:eachError>--}%
+            %{--</ul>--}%
+        %{--</g:hasErrors>--}%
         <g:hasErrors bean="${q}">
-            <ul>
+            <ul class="fieldError">
                 <g:eachError var="err" bean="${q}">
-                    <li>${err}</li>
+                    <li><g:message error="${err}"/></li>
                 </g:eachError>
             </ul>
         </g:hasErrors>
 
-        <g:form action="updateTestingQ">
-            <g:hiddenField name="id" value="${q.id}"/>
+        <g:form mapping="updateTesting" params='[id:"${q.id}"]'>
             <g:select name='type' value="${q?.type?.id}"
-                      from='${crowdcausaltraining.TestingType.all}'
+                      from='${crowdcausaltraining.QType.findByType("Testing")}'
                       optionKey="id" optionValue="shortName"></g:select><br>
 
             Question:<br>

@@ -16,8 +16,9 @@
 <body>
 
     <div class="container">
-
-        <g:layoutBody/>
+        <div class="jumbotron" style="padding-bottom:10px;margin-bottom:10px">
+            <g:layoutBody/>
+        </div>
 
         <div id="footer" class="row" style="display:none;">
             <section style="margin-top:-20px">

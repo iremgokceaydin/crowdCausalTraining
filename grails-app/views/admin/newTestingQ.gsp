@@ -1,4 +1,4 @@
-<%@ page import="crowdcausaltraining.TestingType" %>
+<%@ page import="crowdcausaltraining.QType" %>
 <!doctype html>
 <html>
 <head>
@@ -29,7 +29,7 @@
 
         <g:form action="createTestingQ">
             <g:select name='type' value="${q?.type?.id}"
-                      from='${TestingType.list()}'
+                      from='${QType.findByType("Testing")}'
                       optionKey="id" optionValue="shortName"></g:select><br><br>
 
             Question:<br>

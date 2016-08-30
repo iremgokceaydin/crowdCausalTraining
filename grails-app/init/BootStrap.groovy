@@ -1,7 +1,7 @@
 import com.crowdCausalTraining.Role
 import com.crowdCausalTraining.User
 import com.crowdCausalTraining.UserRole
-import crowdcausaltraining.TestingType
+import crowdcausaltraining.QType
 
 class BootStrap {
 
@@ -17,8 +17,12 @@ class BootStrap {
             it.clear()
         }
 
-        def testingType1 = new TestingType(shortName: 'Type1', longName: 'No highlight').save()
-        def testingType2 = new TestingType(shortName: 'Type2', longName: 'Highlights').save()
+        def testingType1 = new QType(type: 'Testing', shortName: 'Type1', longName: 'No highlight').save()
+        def testingType2 = new QType(type: 'Testing', shortName: 'Type2', longName: 'Highlights').save()
+        def trainingType1 = new QType(type: 'Training', shortName: 'Type1', longName: 'No text').save()
+        def trainingType2 = new QType(type: 'Training', shortName: 'Type2', longName: 'No text and no highlight').save()
+        def trainingType3 = new QType(type: 'Training', shortName: 'Type3', longName: 'No answer').save()
+
     }
     def destroy = {
     }

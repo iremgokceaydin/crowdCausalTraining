@@ -47,7 +47,7 @@
                         <td style="width: 5%;">
                             <g:link mapping="editTesting" params='[id:"${q.id}"]'><input type="button" value="Edit"/></g:link>
 
-                            <g:if test="${q.type.id == crowdcausaltraining.TestingType.findByShortName('Type2').id}">
+                            <g:if test="${q.type.id == crowdcausaltraining.QType.findWhere(type: "Testing", shortName: "Type2").id}">
                                 <g:link mapping="editTestingHighlights" params='[id:"${q.id}"]'><input type="button" value="Highlights"/></g:link>
                             </g:if>
                             <g:link action="deleteTestingQ" params='[id:"${q.id}"]' onclick="return confirm('Are you sure you want to delete the question?')"><input type="button" value="Delete"/></g:link>
@@ -57,7 +57,7 @@
             </table>
         </g:else>
         <br>
-        <g:link action="newTestingQ"><button type="button">Add another question</button></g:link>
+        <g:link mapping="newTesting"><button type="button">Add another question</button></g:link>
     </div>
 
 

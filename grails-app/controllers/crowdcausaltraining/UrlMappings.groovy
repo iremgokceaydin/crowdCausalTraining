@@ -13,7 +13,7 @@ class UrlMappings {
         "500"(view:'/error')
         "404"(view:'/notFound')
 
-        "/admin/testing/new" {
+        name newTesting: "/admin/testing/new" {
             controller = "admin"
             action = "newTestingQ"
         }
@@ -21,6 +21,11 @@ class UrlMappings {
         name editTesting: "/admin/testing/edit/$id" {
             controller = "admin"
             action = "editTestingQ"
+        }
+
+        name updateTesting: "/admin/testing/update/$id" {
+            controller = "admin"
+            action = "updateTestingQ"
         }
 
         name editTestingHighlights: "/admin/testing/edit/$id/highlights"{

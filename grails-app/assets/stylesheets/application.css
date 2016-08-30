@@ -35,6 +35,12 @@ body{
     font-size: 18px;
 }
 
+.fieldError {
+    border-style: solid;
+    border-color: red;
+    padding: 3px;
+}
+
 .jumbotron p {
     font-size: 18px;
 }

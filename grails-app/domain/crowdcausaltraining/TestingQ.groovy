@@ -3,21 +3,19 @@ package crowdcausaltraining
 class TestingQ {
 
     static constraints = {
-        questionText nullable: false
-        questionText blank: false
-        questionText type: 'text'
+        questionText type: 'text', nullable: false, blank: false//, unique: true
         correctAnswer nullable: true
         type nullable: false
         highlights nullable: true
     }
     static mapping = {
-        answers sort:'id', order:'asc'
+        answers sort:'id', order:'desc'
         answers cascade: "all-delete-orphan"
     }
 
     String questionText
     static hasMany = [answers: TestingA]
     TestingA correctAnswer
-    TestingType type
+    QType type
     List<String> highlights
 }
