@@ -27,11 +27,11 @@
                         <td style="width: 50%;" id="${q.type.shortName}">${q.questionText}</td>
                         <td>
                             <g:each var="answer" in="${q.answers}">
-                                <g:if test="${q.correctAnswer != null && answer.id == q.correctAnswer.id}">
-                                    <input type="radio" name="correctAnswer_${q.id}" checked="checked" value="${answer.id}" disabled="true"/>
+                                <g:if test="${crowdcausaltraining.Owner.findByType("Admin").testingAs.find {it.id == answer.id} != null}">
+                                    <input type="radio" name="answer_${q.id}" checked="checked" value="${answer.id}" disabled="true"/>
                                 </g:if>
                                 <g:else>
-                                    <input type="radio" name="correctAnswer_${q.id}" value="${answer.id}" disabled="true"/>
+                                    <input type="radio" name="answer_${q.id}" value="${answer.id}" disabled="true"/>
                                 </g:else>
 
                                 ${answer.answerText}<br>

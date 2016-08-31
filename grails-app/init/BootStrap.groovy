@@ -1,6 +1,7 @@
 import com.crowdCausalTraining.Role
 import com.crowdCausalTraining.User
 import com.crowdCausalTraining.UserRole
+import crowdcausaltraining.Owner
 import crowdcausaltraining.QType
 
 class BootStrap {
@@ -22,6 +23,18 @@ class BootStrap {
         def trainingType1 = new QType(type: 'Training', shortName: 'Type1', longName: 'No text').save()
         def trainingType2 = new QType(type: 'Training', shortName: 'Type2', longName: 'No text and no highlight').save()
         def trainingType3 = new QType(type: 'Training', shortName: 'Type3', longName: 'No answer').save()
+
+        def adminOwner = new Owner(type: 'Admin').save()
+
+        QType.withSession {
+            it.flush()
+            it.clear()
+        }
+
+        Owner.withSession {
+            it.flush()
+            it.clear()
+        }
 
     }
     def destroy = {

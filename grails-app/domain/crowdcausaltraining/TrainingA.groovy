@@ -6,5 +6,6 @@ class TrainingA {
     }
 
     String text
-    static hasMany = [highlights: TrainingA_H]
+    static hasMany = [highlights: TrainingA_H, questions: TrainingQ, owners: Owner]
+    static belongsTo = [TrainingQ, Owner]
 }

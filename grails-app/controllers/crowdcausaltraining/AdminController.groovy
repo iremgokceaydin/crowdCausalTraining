@@ -22,13 +22,14 @@ class AdminController {
         params.list('answerText').eachWithIndex  { a, index ->
             def tA = new TestingA()
             tA.answerText = a
-            if (params.containsKey("correctAnswer") && params.correctAnswer.toInteger() == index) {
-                q.correctAnswer = tA
+            if (params.containsKey("answer") && params.answer.toInteger() == index) {
+                Owner.findByType("Admin").addToTestingAs(tA)
             }
             q.addToAnswers(tA)
         }
 
         if(q.save()) {
+            Owner.findByType("Admin").save(flush:true)
             redirect(action: "testing")
         }
         else {
@@ -59,18 +60,22 @@ class AdminController {
         if(params.type.toInteger() == QType.findByShortName('Type1').id)
             q.highlights.clear()
 
-        q.questionText = params.questionText
+        if(q.questionText != params.questionText) {
+            q.questionText = params.questionText
+            q.highlights = []
+        }
         q.type = QType.get(params.type)
         params.list('answerText').eachWithIndex  { a, index ->
             def tA = new TestingA()
             tA.answerText = a
-            if (params.containsKey("correctAnswer") && params.correctAnswer.toInteger() == index) {
-                q.correctAnswer = tA
+            if (params.containsKey("answer") && params.answer.toInteger() == index) {
+                Owner.findByType("Admin").addToTestingAs(tA)
             }
             q.addToAnswers(tA)
         }
 
         if(q.save()) { //validate: false, flush: true
+            Owner.findByType("Admin").save(flush:true)
             redirect(action: "testing")
         }
         else {
@@ -85,6 +90,11 @@ class AdminController {
 
     def deleteTestingQ(){
         def q = TestingQ.get(params.id)
+        Owner admin = Owner.findByType("Admin")
+        q.answers.each { a->
+            if(admin.testingAs.find{ it.id == a.id } != null)
+                admin.removeFromTestingAs(a)
+        }
         q.delete(flush:true)
         redirect(action:"testing")
     }

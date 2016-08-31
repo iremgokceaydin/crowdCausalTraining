@@ -7,6 +7,15 @@
 
 <h1>Testing Tasks</h1>
 <div class="row">
+
+    <g:hasErrors bean="${worker}">
+        <ul class="fieldError">
+            <g:eachError var="err" bean="${worker}">
+                <li><g:message error="${err}"/></li>
+            </g:eachError>
+        </ul>
+    </g:hasErrors>
+
     <g:if test="${qs.empty}">
         <p>There are no questions yet!</p>
 
@@ -28,7 +37,7 @@
                     </g:if>
                     <p>
                         <g:each var="a" in="${q.answers}">
-                            <g:if test="${worker.testingAs != null && worker.testingAs.find{it.id == a.id} != null}">
+                            <g:if test="${worker.testingAs != null && worker.testingAs.find {it.id == a.id} != null}">
                                 <label class="checkbox-inline"><input name="answer_${q.id}" type="radio" value="${a.id}" checked='checked'>&nbsp;${a.answerText}</label><br>
                             </g:if>
                             <g:else>
@@ -77,7 +86,7 @@
             }
             else{
                 e.preventDefault();
-                $("#footer").hide();
+                //$("#footer").hide();
                 $("#formToSubmit").submit();
                 return true;
             }

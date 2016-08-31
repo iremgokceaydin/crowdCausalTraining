@@ -1,4 +1,4 @@
-<%@ page import="crowdcausaltraining.QType" %>
+<%@ page import="crowdcausaltraining.Owner; crowdcausaltraining.QType" %>
 <!doctype html>
 <html>
 <head>
@@ -38,11 +38,11 @@
             <div id="answersContainer">
                 <g:each var="answer" in="${q.answers}">
                     <div>
-                        <g:if test="${q.correctAnswer != null && answer.id == q.correctAnswer.id}">
-                            <input type="radio" name="correctAnswer" checked="checked" value="${answer.id}"/>
+                        <g:if test="${crowdcausaltraining.Owner.findByType("Admin").testingAs.find {it.id == answer.id} != null}">
+                            <input type="radio" name="answer" checked="checked" value="${answer.id}"/>
                         </g:if>
                         <g:else>
-                            <input type="radio" name="correctAnswer" value="${answer.id}"/>
+                            <input type="radio" name="answer" value="${answer.id}"/>
                         </g:else>
                         <g:textField name="answerText" value="${answer.answerText}" style="width:400px"/>
                         <button type="button" onclick="removeAnswer(this)">
@@ -51,7 +51,7 @@
                     <br>
                 </g:each>
             </div>
-            <g:submitButton name="Submit" onclick="return setCorrectAnswerIndex();"/>
+            <g:submitButton name="Submit" onclick="return setAnswerIndex();"/>
         </g:form><br>
 
     </div>
@@ -71,7 +71,7 @@
             $(elem).parent().remove();
         }
 
-        function setCorrectAnswerIndex(){
+        function setAnswerIndex(){
             if($("input[type=radio]").length > 0 && $("input[type=radio]:checked").length == 0) {
                 alert('Please select a correct answer for this question!');
                 return false;

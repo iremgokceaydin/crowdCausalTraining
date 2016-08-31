@@ -50,7 +50,7 @@
                                 </a>
                             </li>
                             <li id='step4_icon' role="presentation" class="disabled">
-                                <a href="#step4_progress" data-toggle="tab" aria-controls="step4_progress" role="tab" title="Step 2">
+                                <a href="#step4_progress" data-toggle="tab" aria-controls="step4_progress" role="tab" title="Step 4">
                                     <span class="round-tab">
                                         <i class="glyphicon glyphicon-pencil"></i>
                                     </span>
