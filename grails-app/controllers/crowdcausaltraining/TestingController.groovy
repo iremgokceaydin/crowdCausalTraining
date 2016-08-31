@@ -7,7 +7,7 @@ class TestingController {
         def worker = Owner.findOrCreateByTypeAndWorkerId("Worker",params.worker_id)
         def page = params.page.toInteger()
         def qs = TestingQ.findAll([max: testingPageFactor, offset: testingPageFactor * (page-1)])
-        [qs:qs, page:page, pageFactor: testingPageFactor, worker : worker]
+        [qs:qs, page:page, worker : worker]
     }
 
     def save(){

@@ -79,7 +79,7 @@
         });
 
         function validateTestingForm(e) {
-            if ($("input[name^='answer']:checked").length != ${pageFactor}) //pageFactor
+            if ($("input[name^='answer']:checked").length != $(".question").length) //pageFactor
             {
                 alert("Please select an answer!");
                 return false;

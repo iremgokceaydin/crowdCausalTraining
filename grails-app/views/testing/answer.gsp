@@ -6,8 +6,8 @@
 <body>
 
 <h1>Testing Tasks</h1>
+<g:each var="q" in="${qs}">
 <div class="row">
-    <g:each var="q" in="${qs}">
         <p class="question" id="${q.type.shortName}">${q.questionText}</p>
         <g:if test="${q.type.shortName} == 'Type2'">
             <g:each var="highlight" in="${q.highlights}">
@@ -18,7 +18,7 @@
         </g:if>
 
         <div class="col-md-6">
-            <u>Your Answer:</u> <img style="display: none" id="worker_answer_${q.id}_isCorrect" width="30px" height="30px" src="${assetPath(src: 'ok.png')}"/>
+            <u>Your Answer:</u> <img style="display: none" id="worker_answer_${q.id}_isCorrect" width="30px" height="30px" src="${assetPath(src: 'ok.png')}"/><img style="display: none" id="worker_answer_${q.id}_isWrong" width="30px" height="30px" src="${assetPath(src: 'cross.png')}"/>
             <p>
                 <g:each var="a" in="${q.answers}">
                     <g:if test="${worker.testingAs != null && worker.testingAs.find {it.id == a.id} != null}">
@@ -28,6 +28,11 @@
                                 $("#worker_answer_${q.id}_isCorrect").show();
                             </g:javascript>
                         </g:if>
+                        <g:else>
+                            <g:javascript>
+                                $("#worker_answer_${q.id}_isWrong").show();
+                            </g:javascript>
+                        </g:else>
                         <br>
                     </g:if>
                     <g:else>
@@ -51,9 +56,8 @@
                 </g:each>
             </p>
         </div>
-    </g:each>
-
 </div>
+</g:each>
 
 
 <content tag="script">
