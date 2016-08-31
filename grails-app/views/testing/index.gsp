@@ -27,11 +27,11 @@
             <g:each var="q" in="${qs}">
                 <g:hiddenField name="question" value="${q.id}"/>
                 <div class="col-md-6">
-                    <p class="question" id="${q.type.shortName}">${q.questionText}</p>
+                    <p class="question" id="${q.id}">${q.questionText}</p>
                     <g:if test="${q.type.shortName} == 'Type2'">
                         <g:each var="highlight" in="${q.highlights}">
                             <g:javascript>
-                                $('#Type2').highlight('${highlight}');
+                                $('#${q.id}').highlight('${highlight}');
                             </g:javascript>
                         </g:each>
                     </g:if>
@@ -67,10 +67,10 @@
             }
 
             $(".prev-step").click(function (e) {
-                $("#footer").hide();
+                //$("#footer").hide();
                 var page = ${page};
                 if(page > 1){
-                    window.location.href = "/testing?page=" + (page-1) + "&worker_id=${worker.workerId}";
+                    window.location.href = "/testing/answer?page=" + (page-1) + "&worker_id=${worker.workerId}";
                 }
                 else {
                     window.location.href = "/introduction?worker_id=${worker.workerId}";

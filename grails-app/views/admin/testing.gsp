@@ -24,7 +24,7 @@
                 <g:each var="q" in="${qs}">
                     <tr>
                         <td>${q.type.shortName}</td>
-                        <td style="width: 50%;" id="${q.type.shortName}">${q.questionText}</td>
+                        <td style="width: 50%;" id="${q.id}">${q.questionText}</td>
                         <td>
                             <g:each var="answer" in="${q.answers}">
                                 <g:if test="${crowdcausaltraining.Owner.findByType("Admin").testingAs.find {it.id == answer.id} != null}">
@@ -42,7 +42,7 @@
                             <g:each var="highlight" in="${q.highlights}">
                                 <li>${highlight}</li>
                                 <g:javascript>
-                                    $('#Type2').highlight('${highlight}');
+                                    $('#${q.id}').highlight('${highlight}');
                                 </g:javascript>
                             </g:each>
                             </ul>

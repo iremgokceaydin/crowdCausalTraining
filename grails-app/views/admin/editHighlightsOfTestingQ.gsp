@@ -29,6 +29,7 @@
             </ul>
         </g:hasErrors>
 
+        <u>Highlights:</u>
         <g:form action="updateHighlightsOfTestingQ">
             <fieldset id="inputsToSubmit">
                 <g:hiddenField name="id" value="${q.id}"/>
@@ -37,7 +38,7 @@
             <div id="chunk-0" class="chunk currentChunk">
                 <input type="text" placeholder="Highlight some words from the question (post)">
             </div>
-
+            <br>
             <g:submitButton name="Submit" onclick="return prepareInputsAndSubmit();"/>
         </g:form>
     </div>

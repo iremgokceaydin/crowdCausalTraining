@@ -93,6 +93,18 @@ function clearReferencedWordsFromPosts(){ //fix it
     }
 }
 
+jQuery.fn.removeHighlight = function (pat) {
+    return this.find("span.highlight").each(function () {
+        if (!pat || pat.toUpperCase() == $(this).html().toUpperCase()) {
+            this.parentNode.firstChild.nodeName;
+            with (this.parentNode) {
+                replaceChild(this.firstChild, this);
+                normalize();
+            }
+        }
+    }).end();
+};
+
 function removeSelection(){
     if (window.getSelection) {
         if (window.getSelection().empty) {  // Chrome
