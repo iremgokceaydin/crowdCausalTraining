@@ -52,10 +52,10 @@ var selectedWordtoShowHighlights = false;
 var lastItemToHighlightPost;
 var selectedText;
 var highlightListForTrainingQ = [];
-var trainingPostsNumberinEachStep = 2;
 var alertEditingLength = 20;
 var alertEditing = "Please add some text of at least " + alertEditingLength + " characters";
 var alertWords = "Please add at least two words of cause-and-effect by highlighting some words from the posts";
+var chunkIndex = 0;
 
 function highlightForAllChunks(){
     $("#chunks .chunk").each(
@@ -121,7 +121,7 @@ function removeSelection(){
     }
 }
 
-function createPost(questionType, postText, postId, isLatest, isAnswerPage){ //merged with posts onclick
+function createPost(questionType, postText, postId, isLatest, isAnswerPage, isAdmin){ //merged with posts onclick
     var $div = $("<div>", {id: "post-"+postId, class: "post"});
     var $p = $("<p>");
     $p.html(postText);
@@ -130,7 +130,7 @@ function createPost(questionType, postText, postId, isLatest, isAnswerPage){ //m
     $div.click(function(){
         $(".currentPost").removeClass("currentPost");
         $(this).addClass("currentPost");
-        if(questionType != "Type1" && !isAnswerPage){
+        if(isAdmin || (questionType != "Type1" && !isAnswerPage)){
             var selectedText = $.selection();
             if(selectedText){
                 if($("#chunks div").length > 0){
@@ -147,7 +147,7 @@ function createPost(questionType, postText, postId, isLatest, isAnswerPage){ //m
                     $("#addChunkAlert").hide();
                 }
                 else{
-                    $("#addCausalAlert").show();
+                    $("#addChunkAlert").show();
                 }
                 removeSelection();
             }
@@ -161,14 +161,14 @@ function createPost(questionType, postText, postId, isLatest, isAnswerPage){ //m
     return $div;
 }
 
-function createChunk(chunkId, questionType, isAnswerPage){
+function createChunk(questionType, isAnswerPage, isAdmin){
     collapseCurrent();
 
-    var div = $("<div>", {id: "chunk-"+chunkId, class: "panel chunk"});
-    var button = $("<button>", {'data-toggle':"collapse", id:"collapseSelective", class:"btn btn-info", 'data-parent':"#chunks", 'data-target':"#collapse-"+chunkId, style:"width:100%;"});
+    var div = $("<div>", {id: "chunk-"+chunkIndex, class: "panel chunk"});
+    var button = $("<button>", {'data-toggle':"collapse", id:"collapseSelective", class:"btn btn-info", 'data-parent':"#chunks", 'data-target':"#collapse-"+chunkIndex, style:"width:100%;"});
     var p1 = $("<p>", {id: "alertWords", class:"alertMsg"});
     p1.html('<span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;' + alertWords);
-    var divInner = $("<div>", {id: "collapse-"+chunkId, class: "panel-collapse collapse in"});
+    var divInner = $("<div>", {id: "collapse-"+chunkIndex, class: "panel-collapse collapse in"});
     $(divInner).collapse({"toggle": false, 'parent': '#chunks'});
     var input = $("<input>", {type: "text", placeholder:"Highlight some words from the posts"});
     var p2 = $("<p>", {id: "alertEditing", class:"alertMsg"});
@@ -183,6 +183,7 @@ function createChunk(chunkId, questionType, isAnswerPage){
     $("#chunks").append(div);
 
     $(div).addClass("currentChunk");
+    chunkIndex++;
 
     $(input).selectize({
         plugins: ['drag_drop','remove_button'],
@@ -232,9 +233,10 @@ function createChunk(chunkId, questionType, isAnswerPage){
         }
     });
     $('.currentChunk .selectize-input input').attr("readonly",'');
-    if(questionType == "Type1" || (questionType == "Type2" && isAnswerPage))
-        $('.currentChunk .selectize-input input').attr("disabled",'disabled');//added important
-
+    if(!isAdmin) {
+        if (questionType == "Type1" || (questionType == "Type2" && isAnswerPage))
+            $('.currentChunk .selectize-input input').attr("disabled", 'disabled');//added important
+    }
     $(div).find("button").click(function(e){ //this div only expandable using collapse icon
         if($('#toggleAll').attr("show") == "true"){
             collapseAll();
@@ -258,15 +260,18 @@ function createChunk(chunkId, questionType, isAnswerPage){
 }
 
 
-function highlightAndAddToChunk(referencedPost, selectedText, questionType, isAnswerPage){ //added modified
+function highlightAndAddToChunk(referencedPost, selectedText, questionType, isAnswerPage, isAdmin){ //added modified
     if($("#chunks div").length > 0){
         $('#'+referencedPost).find("p").highlight(selectedText);//{ wordsOnly: true }
         $('.currentChunk input')[0].selectize.createItem(selectedText);
         var $createdItem = $('.currentChunk .selectize-input .item').last();
         $createdItem.attr("id", $('.currentChunk').attr("id") + "-casual-"+($('.currentChunk .selectize-input .item').length-1));
         $createdItem.attr("referencedPost", $('#'+referencedPost).attr("id"));
-        if(questionType == "Type1" || (questionType == "Type2" && isAnswerPage))
-            $createdItem.find("a").remove();
+        if(!isAdmin){
+            if(questionType == "Type1" || (questionType == "Type2" && isAnswerPage))
+                $createdItem.find("a").remove();
+        };
+
         $("span:contains('" + selectedText + "')").each(
             function(index, elem){
                 $(this).attr("referencedChunk",$createdItem.attr("id"));
@@ -286,8 +291,6 @@ function removeChunk(){
     $('.currentChunk').remove();
     if($("#chunks .chunk").length > 0)
         $('#' + idToFocus).find('button').click();
-
-    //TODO: fix the causalIndex
 }
 
 
@@ -307,24 +310,36 @@ function focusOnTheLatest(){
 
 function prepareInputsforAdminTrainingChunksSubmit(){
     if($("#chunks .chunk").length > 0){
-        $('.chunk').each(function(index, elem){
-            var highlights = [];
-            $(elem).find('.items .item').each(function(index, elem){
-                var highlight = {};
-                highlight.index = index;
-                highlight.value = $(elem).attr("data-value");
-                highlight.referencedPost = $(elem).attr("referencedPost");
-                highlights.push(highlight);
+        var a = isThereEmptyWords();
+        var b = isThereEmptyText();
+        if(!( a || b)){
+            var input_chunks = $("<input>", {type: "hidden", name:"numberOfChunks", value: $('.chunk').length});
+            $('#inputsToSubmit').append(input_chunks);
+
+            $('.chunk').each(function(index, elem){
+                var highlights = [];
+                $(elem).find('.items .item').each(function(index, elem){
+                    var highlight = {};
+                    highlight.index = index;
+                    highlight.value = $(elem).attr("data-value");
+                    highlight.referencedPost = $(elem).attr("referencedPost");
+                    highlights.push(highlight);
+                });
+
+                var input_highlights = $("<input>", {type: "hidden", name:"chunk-" + index + "-highlights", value: JSON.stringify(highlights)});
+                var input_text = $("<input>", {type: "hidden", name:"chunk-" + index + "-text", value:$(elem).find("textarea").val()});
+                $('#inputsToSubmit').append(input_highlights);
+                $('#inputsToSubmit').append(input_text);
+
             });
 
-            var input_highlights = $("<input>", {type: "hidden", name:"chunk-" + index + "-highlights", value: JSON.stringify(highlights)});
-            var input_text = $("<input>", {type: "hidden", name:"chunk-" + index + "-text", value:$(elem).find("textarea").val()});
-            $('#inputsToSubmit').append(input_highlights);
-            $('#inputsToSubmit').append(input_text);
+            return true;
+        }
+        else{
+            alert("Please fix the errors!");
+            return false;
+        }
 
-        });
-
-        return true;
     }
     else{
         alert("Add at least one causal chunk item first!");
@@ -354,14 +369,14 @@ function prepareInputsforAdminTestingHighlightsSubmit(){
 function collapseAll(){
     $("#chunks button").addClass("collapsed");
     $('#chunks .in').collapse("hide");
-    $("#chunks textarea").attr("readonly","");//added
+    //$("#chunks textarea").attr("readonly","");//added
     $("#posts").unhighlight({ element: 'span', className: 'highlight' });
     $('#toggleAll').html("Show All");
     $('#toggleAll').attr("show", "false");
     selectedWordtoShowHighlights = false;
 }
 
-function expandAll(){
+function expandAll(isAnswerPage){
     $('#chunks .in').collapse("hide");
     setTimeout(function(){
         $('#chunks .panel-collapse').collapse("show");
@@ -369,7 +384,7 @@ function expandAll(){
         $(".currentChunk").removeClass("currentChunk"); //added
         $("#toggleAll").html("Hide All");
         $("#toggleAll").attr("show", "true");
-        if(answerIsOn)
+        if(isAnswerPage)
             $("#chunks textarea").attr("readonly","");//added
         else
             $('#chunks textarea').removeAttr('readonly');
@@ -381,4 +396,30 @@ function expandAll(){
 function expandCurrentCollapsed($result){
     // no need to expand manually, button is doing itself already, so just highlight the words as follows
     highlightForOnlyOneChunk($result);
+}
+
+function isThereEmptyText(){
+    var emptyText = false;
+    $("#chunks .chunk").each(
+        function(index, elem){
+            if($(elem).find("textarea").val() == "" || $(elem).find("textarea").val().length < alertEditingLength){
+                $(elem).find("#alertEditing").show();
+                emptyText = true;
+            }
+        });
+
+    return emptyText;
+}
+
+function isThereEmptyWords(){
+    var emptyWords = false;
+    $("#chunks .chunk").each(
+        function(index, elem){
+            if($(elem).find(".selectize-input .item").length < 2){
+                $(elem).find("#alertWords").show();
+                emptyWords = true;
+            }
+        });
+
+    return emptyWords;
 }

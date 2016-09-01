@@ -9,4 +9,8 @@ class QType {
     String shortName
     String longName
     String type
+
+    public String getShortAndLongName() {
+        return "$shortName - $longName"
+    }
 }

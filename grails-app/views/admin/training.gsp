@@ -25,19 +25,24 @@
                     <td style="width: 5%">${q.type.shortName}</td>
                     <td style="width: 60%">
                         <g:each var="post" in="${q.posts}">
-                            <li>${post.postText}</li>
+                            <li id="post-${post.id}">${post.postText}</li>
                         </g:each>
 
                     </td>
                     <td>
+                        <table>
                         <g:each var="chunk" in="${q.chunks}">
                             <tr>
                             <g:each var="h" in="${chunk.highlights}">
                                 <li>${h.text}</li>
+                                <g:javascript>
+                                    $('#post-${h.referencedPostId}').highlight('${h.text}');
+                                </g:javascript>
                             </g:each><br>
                             ${chunk.text}
                             </tr>
                         </g:each>
+                        </table>
                     </td>
                     <td style="width: 5%;">
                         <g:link mapping="editTraining" params='[id:"${q.id}"]'><input type="button" value="Edit"/></g:link>

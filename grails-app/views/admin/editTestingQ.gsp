@@ -29,7 +29,7 @@
         <g:form mapping="updateTesting" params='[id:"${q.id}"]'>
             <g:select name='type' value="${q?.type?.id}"
                       from='${crowdcausaltraining.QType.findAllByType("Testing")}'
-                      optionKey="id" optionValue="shortName"></g:select><br>
+                      optionKey="id" optionValue="shortAndLongName"></g:select><br>
 
             Question:<br>
             <g:textArea name="questionText" value="${q.questionText}" rows="5" cols="60"/><br/>

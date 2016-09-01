@@ -20,7 +20,7 @@
     <g:form action="updateTrainingQ" params='[id:"${q.id}"]'>
         <g:select name='type' value="${q?.type?.id}"
                   from='${QType.findAllByType("Training")}'
-                  optionKey="id" optionValue="shortName"></g:select><br><br>
+                  optionKey="id" optionValue="shortAndLongName"></g:select><br><br>
 
         <button type="button" onclick="addPost()">Add Post</button><br><br>
         Posts:<br>
@@ -28,10 +28,10 @@
             <g:each var="p" in="${q.posts}">
                 <div>
                     <g:if test="${p.isLatest == true}">
-                        <input type="radio" name="selectedPost" checked="checked" value="${p.id}"/>
+                        <input type="radio" name="latestPost" checked="checked" value="${p.id}"/>
                     </g:if>
                     <g:else>
-                        <input type="radio" name="selectedPost" value="${p.id}"/>
+                        <input type="radio" name="latestPost" value="${p.id}"/>
                     </g:else>
                     <g:textArea name="postText" value="${p.postText}" rows="5" cols="60"/>
                     <button type="button" onclick="removePost(this)">

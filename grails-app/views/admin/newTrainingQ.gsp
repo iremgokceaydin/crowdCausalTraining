@@ -20,7 +20,7 @@
     <g:form action="createTrainingQ">
         <g:select name='type' value="${q?.type?.id}"
                   from='${QType.findAllByType("Training")}'
-                  optionKey="id" optionValue="shortName"></g:select><br><br>
+                  optionKey="id" optionValue="shortAndLongName"></g:select><br><br>
 
         <button type="button" onclick="addPost()">Add Post</button><br><br>
         Posts:<br>

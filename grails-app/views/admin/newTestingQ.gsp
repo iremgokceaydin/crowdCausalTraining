@@ -28,7 +28,7 @@
         <g:form action="createTestingQ">
             <g:select name='type' value="${q?.type?.id}"
                       from='${QType.findAllByType("Testing")}'
-                      optionKey="id" optionValue="shortName"></g:select><br><br>
+                      optionKey="id" optionValue="shortAndLongName"></g:select><br><br>
 
             Question:<br>
             <g:textArea name="questionText" value="${q.questionText}" rows="5" cols="60"/><br/><br>

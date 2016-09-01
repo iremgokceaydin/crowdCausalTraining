@@ -9,5 +9,5 @@ class TrainingA_H {
 
     String text
     TrainingQ_P referencedPost
-    static belongsTo = [answer: TrainingA]
+    static belongsTo = [chunk: TrainingA]
 }

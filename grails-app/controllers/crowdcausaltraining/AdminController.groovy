@@ -1,5 +1,7 @@
 package crowdcausaltraining
 
+import groovy.json.JsonSlurper
+
 class AdminController {
 
     def index() { }
@@ -134,6 +136,7 @@ class AdminController {
         render(template:"newTrainingQ_P")
     }
 
+    //TODO check validation for child as well
     def createTrainingQ(){
         print params
         def q = new TrainingQ()
@@ -166,6 +169,7 @@ class AdminController {
     }
 
     def updateTrainingQ(){
+        print params
         def q = TrainingQ.get(params.id)
         q.posts.clear()
 
@@ -192,14 +196,58 @@ class AdminController {
 
     }
 
-    def deleteTrainingQ(){
-        def q = Training.get(params.id)
+    def updateChunksOfTrainingQ(){
+        print params
+        def q = TrainingQ.get(params.id)
         Owner admin = Owner.findByType("Admin")
         q.chunks.each { c->
             if(admin.trainingAs.find{ it.id == c.id } != null)
-                admin.removeFromTrainingAs(a)
+                admin.removeFromTrainingAs(c)
+        }
+        q.chunks.clear()
+
+        def numberOfChunks = params.numberOfChunks.toInteger()
+        for (def i = 0; i < numberOfChunks; i++) {
+            def chunk = new TrainingA()
+            chunk.question = q
+            chunk.text = params.get("chunk-"+i+"-text")
+
+            def jsonSlurper = new JsonSlurper()
+            def highlights = jsonSlurper.parseText(params.get("chunk-"+i+"-highlights"))
+            highlights.each { highlight->
+                def h = new TrainingA_H()
+                h.text = highlight.value
+                h.referencedPost = TrainingQ_P.get(highlight.referencedPost.split("-")[1])
+                chunk.addToHighlights(h)
+            }
+            q.addToChunks(chunk)
+
+        }
+        if(q.save()) { //validate: false, flush: true
+            q.chunks.each {admin.addToTrainingAs(it).save()}
+            redirect(action: "training")
+        }
+        else {
+            render(view: "editChunksOfTrainingQ", model: [q: q])
+        }
+
+    }
+
+    def deleteTrainingQ(){
+        def q = TrainingQ.get(params.id)
+        Owner admin = Owner.findByType("Admin")
+        q.chunks.each { c->
+            if(admin.trainingAs.find{ it.id == c.id } != null)
+                admin.removeFromTrainingAs(c)
         }
         q.delete(flush:true)
         redirect(action:"training")
     }
+
+//    def newTrainingA(){
+//        print params
+//        def qType = params.qType
+//        def chunk = new TrainingA()
+//        render(template:"newTrainingA", qType : qType, c: chunk)
+//    }
 }
