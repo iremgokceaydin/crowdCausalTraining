@@ -50,7 +50,7 @@
         <div id="chunks" class="panel-group">
             <g:each var="c" in="${q.chunks}">
                 <g:javascript>
-                    createChunk('chunks','${c.id}', '${q.type.shortName}', false, true);
+                    createChunk('chunks', '${q.type.shortName}', false, true, "", "toggleAll");
                 </g:javascript>
                 <g:each var="h" in="${c.highlights}">
                     <g:javascript>
@@ -79,7 +79,7 @@
         $( document ).ready(function() {
 
             $('#addChunk').click(function() {
-                createChunk('chunks','${q.type.shortName}', false, true);
+                createChunk('chunks','${q.type.shortName}', false, true, "", "toggleAll");
             });
 
             $('#removeChunk').click(function() {
@@ -89,12 +89,12 @@
             $('#toggleAll').click(function() {
                 if ($(this).attr("show") == "true"){
                     if($("#chunks .chunk").length >= 1){
-                        collapseAll();
+                        collapseAll("chunks", "toggleAll");
                     }
                 }
                 else{
                     if($("#chunks .chunk").length >= 1){
-                        expandAll(false);
+                        expandAll(false,"chunks", "toggleAll");
                     }
                 }
             });

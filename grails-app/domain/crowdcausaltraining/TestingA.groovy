@@ -9,4 +9,5 @@ class TestingA {
     static belongsTo = [question: TestingQ]
 
     String answerText
+
 }

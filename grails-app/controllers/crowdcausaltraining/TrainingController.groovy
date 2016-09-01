@@ -24,9 +24,10 @@ class TrainingController {
 
 
         q.chunks.each { c->
-            if(worker.trainingAs.find{ it.id == c.id } != null)
-                worker.removeFromTrainingAs(c)
+            if(worker.trainingAs.find{ it.question.id == c.question.id } != null)
+                worker.removeFromTrainingAs(c).save(flush:true)
         }
+
 
         def numberOfChunks = params.numberOfChunks.toInteger()
         for (def i = 0; i < numberOfChunks; i++) {
@@ -42,8 +43,8 @@ class TrainingController {
                 h.referencedPost = TrainingQ_P.get(highlight.referencedPost.split("-")[1])
                 chunk.addToHighlights(h)
             }
-            worker.addToTrainingAs(chunk).save()
             q.addToChunks(chunk)
+            worker.addToTrainingAs(chunk).save(flush:true)
 
         }
         if(q.save()) { //validate: false, flush: true

@@ -1,3 +1,3 @@
 <g:javascript>
-    createChunk('chunks','${c.id}','${qType}',false, true);
+    createChunk('chunks','${qType}',false, true, "", "toggleAll");
 </g:javascript>

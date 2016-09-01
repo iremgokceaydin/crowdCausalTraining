@@ -45,7 +45,7 @@
                         <g:each var="c" in="${q.chunks}">
                             <g:if test="${worker.trainingAs.find{it.id == c.id} != null}">
                                 <g:javascript>
-                                    createChunk('chunks-1','${c.id}', '${q.type.shortName}', true, false);
+                                    createChunk('chunks-1', '${q.type.shortName}', true, false,'${c.text}', "toggleAll-1");
                                 </g:javascript>
                                 <g:each var="h" in="${c.highlights}">
                                     <g:javascript>
@@ -67,7 +67,7 @@
                         <g:each var="c" in="${q.chunks}">
                             <g:if test="${admin.trainingAs.find{it.id == c.id} != null}">
                                 <g:javascript>
-                                    createChunk('chunks-2','${c.id}', '${q.type.shortName}', true, true);
+                                    createChunk('chunks-2', '${q.type.shortName}', true, true,'${c.text}', "toggleAll-2");
                                 </g:javascript>
                                 <g:each var="h" in="${c.highlights}">
                                     <g:javascript>
@@ -91,7 +91,7 @@
             </div>
         </g:each>
     </g:else>
-</div>
+
 
 
 <content tag="script">
@@ -130,23 +130,15 @@
                 return false;
         }
 
-        $('#addChunk').click(function() {
-            createChunk('${qType}', false, false);
-        });
-
-        $('#removeChunk').click(function() {
-            removeChunk();
-        });
-
         $('#toggleAll-1').click(function() {
             if ($(this).attr("show") == "true"){
                 if($("#chunks-1 .chunk").length >= 1){
-                    collapseAll();
+                    collapseAll("chunks-1", "toggleAll-1");
                 }
             }
             else{
                 if($("#chunks-1 .chunk").length >= 1){
-                    expandAll(false);
+                    expandAll(false,"chunks-1", "toggleAll-1");
                 }
             }
         });
@@ -154,12 +146,12 @@
         $('#toggleAll-2').click(function() {
             if ($(this).attr("show") == "true"){
                 if($("#chunks-2 .chunk").length >= 1){
-                    collapseAll();
+                    collapseAll("chunks-2", "toggleAll-2");
                 }
             }
             else{
                 if($("#chunks-2 .chunk").length >= 1){
-                    expandAll(false);
+                    expandAll(false,"chunks-2", "toggleAll-2");
                 }
             }
         });

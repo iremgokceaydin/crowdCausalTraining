@@ -1,5 +1,7 @@
 package crowdcausaltraining
 
+import org.aspectj.weaver.patterns.TypePatternQuestions
+
 class TestingController {
     def testingPageFactor = 2
 
@@ -17,6 +19,13 @@ class TestingController {
         def qs = TestingQ.findAll([max: testingPageFactor, offset: testingPageFactor * (page-1)])
 
         params.list('question').each  { q ->
+            print q
+            def workersPrevAnswer = worker.testingAs?.find {it.question.id == q.toInteger()}
+            print workersPrevAnswer
+            if(workersPrevAnswer != null) {
+                print "here"
+                worker.removeFromTestingAs(workersPrevAnswer).save(flush: true)
+            }
             worker.addToTestingAs(TestingA.get(params.get("answer_" + q)))
         }
 

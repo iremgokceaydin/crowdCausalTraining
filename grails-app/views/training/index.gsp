@@ -51,7 +51,7 @@
                     <g:each var="c" in="${q.chunks}">
                         <g:if test="${crowdcausaltraining.Owner.findByType("Admin").trainingAs.find{it.id == c.id} != null}">
                             <g:javascript>
-                            createChunk('chunks','${c.id}', '${q.type.shortName}', false, false);
+                            createChunk('chunks', '${q.type.shortName}', false, false, '${worker.trainingAs.find{it.question.id==c.question.id}?.text}', "toggleAll");
                             </g:javascript>
                             <g:each var="h" in="${c.highlights}">
                                 <g:javascript>
@@ -114,7 +114,7 @@
         }
 
         $('#addChunk').click(function() {
-            createChunk('chunks','${qType}', false, false);
+            createChunk('chunks','${qType}', false, false, "", "toggleAll");
         });
 
         $('#removeChunk').click(function() {
@@ -124,12 +124,12 @@
         $('#toggleAll').click(function() {
             if ($(this).attr("show") == "true"){
                 if($("#chunks .chunk").length >= 1){
-                    collapseAll();
+                    collapseAll("chunks", "toggleAll");
                 }
             }
             else{
                 if($("#chunks .chunk").length >= 1){
-                    expandAll(false);
+                    expandAll(false,"chunks", "toggleAll");
                 }
             }
         });

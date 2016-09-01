@@ -54,22 +54,20 @@ class AdminController {
     def updateTestingQ(){
         def q = TestingQ.get(params.id)
         def admin = Owner.findByType("Admin")
-        q.answers.clear()
+
         q.answers.each {a ->
             if(admin.testingAs.find {it.id == a.id})
                 admin.removeFromTestingAs(a)
-
         }
+
         q.answers.clear()
 
         if(params.type.toInteger() == QType.findByTypeAndShortName("Testing", 'Type1').id)
             q.highlights.clear()
 
-        if(q.questionText != params.questionText) {
-            q.questionText = params.questionText
-            q.highlights = []
-        }
+        q.questionText = params.questionText
         q.type = QType.get(params.type)
+
         params.list('answerText').eachWithIndex  { a, index ->
             def tA = new TestingA()
             tA.answerText = a
@@ -79,7 +77,7 @@ class AdminController {
             q.addToAnswers(tA)
         }
 
-        if(q.save()) { //validate: false, flush: true
+        if(q.save(flush:true)) { //validate: false, flush: true
             admin.save(flush:true)
             redirect(action: "testing")
         }
@@ -204,7 +202,7 @@ class AdminController {
             if(admin.trainingAs.find{ it.id == c.id } != null)
                 admin.removeFromTrainingAs(c)
         }
-        //q.chunks.clear()
+        q.chunks.clear()
 
         def numberOfChunks = params.numberOfChunks.toInteger()
         for (def i = 0; i < numberOfChunks; i++) {
@@ -220,8 +218,10 @@ class AdminController {
                 h.referencedPost = TrainingQ_P.get(highlight.referencedPost.split("-")[1])
                 chunk.addToHighlights(h)
             }
-            admin.addToTrainingAs(chunk).save()
+
             q.addToChunks(chunk)
+            admin.addToTrainingAs(chunk).save()
+
 
         }
         if(q.save()) { //validate: false, flush: true

@@ -57,8 +57,8 @@ var alertEditing = "Please add some text of at least " + alertEditingLength + " 
 var alertWords = "Please add at least two words of cause-and-effect by highlighting some words from the posts";
 var chunkIndex = 0;
 
-function highlightForAllChunks(){
-    $("#chunks .chunk").each(
+function highlightForAllChunks(chunksParent){
+    $("#"+chunksParent + " .chunk").each(
         function(index, elem){
             highlightForOnlyOneChunk($(elem));
         });
@@ -161,11 +161,11 @@ function createPost(questionType, postText, postId, isLatest, isAnswerPage, isAd
     return $div;
 }
 
-function createChunk(targetParent,questionType, isAnswerPage, isAdmin){
+function createChunk(chunksParent,questionType, isAnswerPage, isAdmin, chunkText, toggleId){
     collapseCurrent();
 
     var div = $("<div>", {id: "chunk-"+chunkIndex, class: "panel chunk"});
-    var button = $("<button>", {'data-toggle':"collapse", id:"collapseSelective", class:"btn btn-info", 'data-parent':"#chunks", 'data-target':"#collapse-"+chunkIndex, style:"width:100%;"});
+    var button = $("<button>", {'data-toggle':"collapse", id:"collapseSelective", class:"btn btn-info", 'data-parent':"#"+chunksParent, 'data-target':"#collapse-"+chunkIndex, style:"width:100%;"});
     var p1 = $("<p>", {id: "alertWords", class:"alertMsg"});
     p1.html('<span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;' + alertWords);
     var divInner = $("<div>", {id: "collapse-"+chunkIndex, class: "panel-collapse collapse in"});
@@ -174,13 +174,15 @@ function createChunk(targetParent,questionType, isAnswerPage, isAdmin){
     var p2 = $("<p>", {id: "alertEditing", class:"alertMsg"});
     p2.html('<span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;' + alertEditing);
     var textArea = $("<textarea>", {class:"form-control", rows:"1", id:"textEdit", placeholder:"Enter some text here"});
+    if(isAnswerPage || chunkText != "")
+        textArea.val(chunkText);
     divInner.append(input);
     div.append(button);
     div.append(p1);
     div.append(divInner);
     div.append(p2);
     div.append(textArea);
-    $("#"+targetParent).append(div);
+    $("#"+chunksParent).append(div);
 
     $(div).addClass("currentChunk");
     chunkIndex++;
@@ -196,7 +198,7 @@ function createChunk(targetParent,questionType, isAnswerPage, isAdmin){
             }
         },
         onItemAdd: function (value, item) {
-            if($('.currentChunk .selectize-input .item').length > 1) //naive expectation: 1 for cause 1 for effect
+            if($("#"+chunksParent + " .currentChunk .selectize-input .item").length > 1) //naive expectation: 1 for cause 1 for effect
                 p1.hide();
             $(item).click(function(e){
                 var target = e.target || e.srcElement;
@@ -205,8 +207,8 @@ function createChunk(targetParent,questionType, isAnswerPage, isAdmin){
                     if(selectedWordtoShowHighlights && lastItemToHighlightPost == $(item).attr('data-value')){
                         $(item).removeClass('active');
                         selectedWordtoShowHighlights = false;
-                        if($('#toggleAll').attr("show") == "true"){
-                            highlightForAllChunks();
+                        if($('#'+toggleId).attr("show") == "true"){
+                            highlightForAllChunks(chunksParent);
                         }
                         else{
                             highlightForOnlyOneChunk(div);
@@ -233,21 +235,21 @@ function createChunk(targetParent,questionType, isAnswerPage, isAdmin){
 
         }
     });
-    $('.currentChunk .selectize-input input').attr("readonly",'');
+    $("#"+chunksParent + " .currentChunk .selectize-input input").attr("readonly",'');
     if(!isAdmin) {
         if (questionType == "Type1" || (questionType == "Type2" && isAnswerPage))
-            $('.currentChunk .selectize-input input').attr("disabled", 'disabled');//added important
+            $("#"+chunksParent + " .currentChunk .selectize-input input").attr("disabled", 'disabled');//added important
     }
     $(div).find("button").click(function(e){ //this div only expandable using collapse icon
-        if($('#toggleAll').attr("show") == "true"){
-            collapseAll();
+        if($('#'+toggleId).attr("show") == "true"){
+            collapseAll(chunksParent, toggleId);
             setTimeout(function(){ $(this).click();}, 600);
         }
         else{
-            collapseCurrent();
+            collapseCurrent(chunksParent, toggleId);
             $(this).parent().addClass("currentChunk");
             if(!isAnswerPage)
-                $('.currentChunk textarea').removeAttr('readonly');
+                $("#"+chunksParent + " .currentChunk textarea").removeAttr('readonly');
             expandCurrentCollapsed($(this).parent());
         }
     });
@@ -309,6 +311,7 @@ function focusOnTheLatest(){
     $('#posts').scrollTop($('#posts')[0].scrollHeight);
 }
 
+//TODO make the id of chunksParent dynamic, edit all the subsequent functions accordingly
 function prepareInputsforAdminTrainingChunksSubmit(){
     if($("#chunks .chunk").length > 0){
         var a = isThereEmptyWords();
@@ -367,31 +370,31 @@ function prepareInputsforAdminTestingHighlightsSubmit(){
     }
 }
 
-function collapseAll(){
-    $("#chunks button").addClass("collapsed");
-    $('#chunks .in').collapse("hide");
+function collapseAll(chunksParent, toggleId){
+    $("#"+chunksParent+" button").addClass("collapsed");
+    $("#"+chunksParent+" .in").collapse("hide");
     //$("#chunks textarea").attr("readonly","");//added
     $("#posts").unhighlight({ element: 'span', className: 'highlight' });
-    $('#toggleAll').html("Show All");
-    $('#toggleAll').attr("show", "false");
+    $('#'+toggleId).html("Show All");
+    $('#'+toggleId).attr("show", "false");
     selectedWordtoShowHighlights = false;
 }
 
-function expandAll(isAnswerPage){
-    $('#chunks .in').collapse("hide");
+function expandAll(isAnswerPage,chunksParent, toggleId){
+    $("#"+chunksParent+" .in").collapse("hide");
     setTimeout(function(){
-        $('#chunks .panel-collapse').collapse("show");
-        $("#chunks button.collapsed").removeClass("collapsed");
-        $(".currentChunk").removeClass("currentChunk"); //added
-        $("#toggleAll").html("Hide All");
-        $("#toggleAll").attr("show", "true");
+        $("#"+chunksParent+" .panel-collapse").collapse("show");
+        $("#"+chunksParent+" button.collapsed").removeClass("collapsed");
+        $("#"+chunksParent+" .currentChunk").removeClass("currentChunk"); //added
+        $('#'+toggleId).html("Hide All");
+        $('#'+toggleId).attr("show", "true");
         if(isAnswerPage)
-            $("#chunks textarea").attr("readonly","");//added
+            $("#"+chunksParent+" textarea").attr("readonly","");//added
         else
-            $('#chunks textarea').removeAttr('readonly');
+            $("#"+chunksParent+" textarea").removeAttr('readonly');
     }, 600);
 
-    highlightForAllChunks();
+    highlightForAllChunks(chunksParent);
 }
 
 function expandCurrentCollapsed($result){
