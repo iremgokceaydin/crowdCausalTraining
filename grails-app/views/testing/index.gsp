@@ -1,3 +1,4 @@
+<%@ page import="crowdcausaltraining.QType" %>
 <!doctype html>
 <html>
 <head>
@@ -27,8 +28,14 @@
             <g:each var="q" in="${qs}">
                 <g:hiddenField name="question" value="${q.id}"/>
                 <div class="col-md-6">
-                    <p class="question" id="${q.id}">${q.questionText}</p>
-                    <g:if test="${q.type.shortName} == 'Type2'">
+                    <g:if test="${q.type.id == QType.findByTypeAndShortName('Testing', 'Type1').id}">
+                        <p class="question">Q: Which of the following statements reflect the knowledge in the passage?</p>
+                    </g:if>
+                    <g:else>
+                        <p class="question">Q: To which causal statement does the highlighted statement correspond?</p>
+                    </g:else>
+                    <p class="passage" id="${q.id}">${q.questionText}</p>
+                    <g:if test="${q.type.id == QType.findByTypeAndShortName('Testing', 'Type2').id}">
                         <g:each var="highlight" in="${q.highlights}">
                             <g:javascript>
                                 $('#${q.id}').highlight('${highlight}');

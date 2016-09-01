@@ -8,7 +8,7 @@
 <h1>Testing Tasks</h1>
 <g:each var="q" in="${qs}">
 <div class="row">
-        <p class="question" id="${q.type.shortName}">${q.questionText}</p>
+        <p class="passage" id="${q.type.shortName}">${q.questionText}</p>
         <g:if test="${q.type.shortName} == 'Type2'">
             <g:each var="highlight" in="${q.highlights}">
                 <g:javascript>
@@ -75,7 +75,7 @@
                 }
                 else
                 {
-                    window.location.href = "/training?page=1" + "&worker_id=${worker.workerId}";
+                    window.location.href = "/introduction/tutorial?worker_id=${worker.workerId}";
                 }
             });
 

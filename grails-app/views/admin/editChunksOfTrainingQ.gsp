@@ -45,7 +45,7 @@
 
         <button id="addChunk" type="button" class="btn btn-primary">Add</button>
         <button id="removeChunk" type="button" class="btn btn-primary">Remove</button>
-        <button id="toggleAll" type="button" class="btn btn-primary" style="float:right;">Show All</button>
+        <button id="toggleAll" type="button" class="btn btn-primary" style="float:right;">Show All</button><br><br>
 
         <div id="chunks" class="panel-group">
             <g:each var="c" in="${q.chunks}">
@@ -79,14 +79,6 @@
         $( document ).ready(function() {
 
             $('#addChunk').click(function() {
-                %{--$.ajax({--}%
-                    %{--url: "/admin/newTrainingA",--}%
-                    %{--data: {'qType' :'${q.type.shortName}'},--}%
-                    %{--type: "GET",--}%
-                    %{--}).done(function(data) {--}%
-                        %{--alert(data);--}%
-                        %{--$('#scriptContainer').append( data);--}%
-                    %{--});--}%
                 createChunk('${q.type.shortName}', false, true);
             });
 

@@ -201,6 +201,7 @@ function createChunk(questionType, isAnswerPage, isAdmin){
             $(item).click(function(e){
                 var target = e.target || e.srcElement;
                 if(target.tagName != "A"){ //if cross is clicked to remove a word
+                    //$("#posts").unhighlight({ element: 'span', className: 'highlight' });
                     if(selectedWordtoShowHighlights && lastItemToHighlightPost == $(item).attr('data-value')){
                         $(item).removeClass('active');
                         selectedWordtoShowHighlights = false;
@@ -212,7 +213,7 @@ function createChunk(questionType, isAnswerPage, isAdmin){
                         }
                     }
                     else{
-                        clearReferencedWordsFromPosts();
+                        clearReferencedWordsFromPosts();//TODO somewhere
                         highlightForOneItem(item);
                         selectedWordtoShowHighlights = true;
                         lastItemToHighlightPost = $(item).attr('data-value');

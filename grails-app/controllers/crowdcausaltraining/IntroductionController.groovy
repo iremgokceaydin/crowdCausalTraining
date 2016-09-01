@@ -9,4 +9,12 @@ class IntroductionController {
         [worker : worker]
 
     }
+
+    def tutorial() {
+        print params
+        def worker = Owner.findOrCreateByTypeAndWorkerId("Worker",params.worker_id)
+        worker.save(flush:true)
+        [worker : worker]
+
+    }
 }
