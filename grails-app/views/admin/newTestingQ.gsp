@@ -8,14 +8,6 @@
 
     <h2>New Testing Question</h2>
     <div class="row" style="text-align: center;">
-        %{--<g:hasErrors bean="${q}">--}%
-            %{--<ul>--}%
-                %{--<g:eachError var="err" bean="${q}">--}%
-                    %{--<li>${err}</li>--}%
-                %{--</g:eachError>--}%
-            %{--</ul>--}%
-        %{--</g:hasErrors>--}%
-
         %{--<g:eachError bean="${q}" var="error">--}%
             %{--${error.field}: <g:message error="${error}" />--}%
             %{--<ul>--}%

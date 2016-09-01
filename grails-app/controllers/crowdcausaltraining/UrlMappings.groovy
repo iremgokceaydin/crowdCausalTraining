@@ -37,5 +37,27 @@ class UrlMappings {
             controller = "admin"
             action = "editHighlightsOfTestingQ"
         }
+
+
+
+        name newTraining: "/admin/training/new" {
+            controller = "admin"
+            action = "newTrainingQ"
+        }
+
+        name editTraining: "/admin/training/edit/$id" {
+            controller = "admin"
+            action = "editTrainingQ"
+        }
+
+        name editTrainingChunks: "/admin/training/edit/$id/chunks"{
+            controller = "admin"
+            action = "editChunksOfTrainingQ"
+        }
+
+        name updateTraining: "/admin/training/update/$id" {
+            controller = "admin"
+            action = "updateTrainingQ"
+        }
     }
 }

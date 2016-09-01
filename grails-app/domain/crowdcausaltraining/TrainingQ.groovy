@@ -3,13 +3,11 @@ package crowdcausaltraining
 class TrainingQ {
 
     static constraints = {
-        post type: 'text', nullable: false, blank: false, unique: true
         type nullable: false
+        posts cascade: "all-delete-orphan"
+        chunks cascade: "all-delete-orphan"
+        posts sort:'isLatest'
     }
-    static mapping = {
-    }
-
-    String postText
-    static hasMany = [chunks: TrainingA]
+    static hasMany = [posts: TrainingQ_P, chunks: TrainingA]
     QType type
 }

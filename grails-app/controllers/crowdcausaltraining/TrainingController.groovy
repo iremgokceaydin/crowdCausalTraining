@@ -9,4 +9,6 @@ class TrainingController {
         def qs = TrainingQ.findAll([max: trainingPageFactor, offset: trainingPageFactor * (page-1)])
         [qs:qs, page:page, pageFactor: trainingPageFactor, worker : worker]
     }
+
+
 }

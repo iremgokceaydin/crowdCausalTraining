@@ -39,7 +39,7 @@
                 <input type="text" placeholder="Highlight some words from the question (post)">
             </div>
             <br>
-            <g:submitButton name="Submit" onclick="return prepareInputsAndSubmit();"/>
+            <g:submitButton name="Submit" onclick="return prepareInputsforAdminTestingHighlightsSubmit();"/>
         </g:form>
     </div>
 
@@ -115,25 +115,6 @@
                 $(".post").trigger("click");
             });
         });
-
-        function prepareInputsAndSubmit(){
-            if($('.currentChunk .selectize-input .item').length == 0) {
-                alert("Please add highlights!");
-                return false;
-            }
-            else {
-                $(".chunk").find('.items .item').each(function () {
-                    var input_highlight = $("<input>", {
-                        type: "hidden",
-                        name: "highlight",
-                        value: $(this).attr("data-value")
-                    });
-                    $('#inputsToSubmit').append(input_highlight);
-                });
-
-                return true;
-            }
-        }
 
     </script>
 </content>

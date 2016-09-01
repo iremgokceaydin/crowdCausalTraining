@@ -6,8 +6,7 @@ class TestingA {
         answerText type: 'text', nullable:false, blank: false, unique: 'question'
     }
 
-    static belongsTo = [TestingQ]
+    static belongsTo = [question: TestingQ]
 
     String answerText
-    TestingQ question
 }
