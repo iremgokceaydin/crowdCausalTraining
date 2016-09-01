@@ -50,12 +50,12 @@
         <div id="chunks" class="panel-group">
             <g:each var="c" in="${q.chunks}">
                 <g:javascript>
-                    createChunk('${c.id}', '${q.type.shortName}', false, true);
+                    createChunk('chunks','${c.id}', '${q.type.shortName}', false, true);
                 </g:javascript>
                 <g:each var="h" in="${c.highlights}">
                     <g:javascript>
                         var selectedText = '${h.text}';
-                        highlightAndAddToChunk("post-"+'${h.referencedPost.id}',selectedText,'${q.type.shortName}', false, true);
+                        highlightAndAddToChunk("chunks","post-"+'${h.referencedPost.id}',selectedText,'${q.type.shortName}', false, true);
                     </g:javascript>
                 </g:each>
             </g:each>
@@ -79,7 +79,7 @@
         $( document ).ready(function() {
 
             $('#addChunk').click(function() {
-                createChunk('${q.type.shortName}', false, true);
+                createChunk('chunks','${q.type.shortName}', false, true);
             });
 
             $('#removeChunk').click(function() {

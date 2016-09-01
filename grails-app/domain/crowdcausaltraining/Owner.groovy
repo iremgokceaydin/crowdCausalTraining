@@ -4,6 +4,7 @@ class Owner {
 
     static constraints = {
         workerId nullable:true
+        trainingAs cascade: "all-delete-orphan"
     }
 
     String type //Admin OR Worker

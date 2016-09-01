@@ -7,11 +7,12 @@ class TrainingA {
         text nullable: true, blank: false
     }
 
-    static hasMany = [highlights: TrainingA_H, owners: Owner]
+    static hasMany = [highlights: TrainingA_H]
     static belongsTo = [TrainingQ, Owner]
 
     String text
     TrainingQ question
+    Owner owner
 
 
 }

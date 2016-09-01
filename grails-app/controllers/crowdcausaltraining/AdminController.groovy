@@ -204,7 +204,7 @@ class AdminController {
             if(admin.trainingAs.find{ it.id == c.id } != null)
                 admin.removeFromTrainingAs(c)
         }
-        q.chunks.clear()
+        //q.chunks.clear()
 
         def numberOfChunks = params.numberOfChunks.toInteger()
         for (def i = 0; i < numberOfChunks; i++) {
@@ -220,11 +220,11 @@ class AdminController {
                 h.referencedPost = TrainingQ_P.get(highlight.referencedPost.split("-")[1])
                 chunk.addToHighlights(h)
             }
+            admin.addToTrainingAs(chunk).save()
             q.addToChunks(chunk)
 
         }
         if(q.save()) { //validate: false, flush: true
-            q.chunks.each {admin.addToTrainingAs(it).save()}
             redirect(action: "training")
         }
         else {

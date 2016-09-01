@@ -1,3 +1,4 @@
+<%@ page import="crowdcausaltraining.Owner" %>
 <!doctype html>
 <html>
 <head>
@@ -48,15 +49,17 @@
 
                 <div id="chunks" class="panel-group">
                     <g:each var="c" in="${q.chunks}">
-                        <g:javascript>
-                        createChunk('${c.id}', '${q.type.shortName}', false, false);
-                        </g:javascript>
-                        <g:each var="h" in="${c.highlights}">
+                        <g:if test="${crowdcausaltraining.Owner.findByType("Admin").trainingAs.find{it.id == c.id} != null}">
                             <g:javascript>
-                            var selectedText = '${h.text}';
-                            highlightAndAddToChunk("post-"+'${h.referencedPost.id}',selectedText,'${q.type.shortName}', false, false);
+                            createChunk('chunks','${c.id}', '${q.type.shortName}', false, false);
                             </g:javascript>
-                        </g:each>
+                            <g:each var="h" in="${c.highlights}">
+                                <g:javascript>
+                                var selectedText = '${h.text}';
+                                highlightAndAddToChunk("chunks","post-"+'${h.referencedPost.id}',selectedText,'${q.type.shortName}', false, false);
+                                </g:javascript>
+                            </g:each>
+                        </g:if>
                     </g:each>
                 </div>
 
@@ -65,6 +68,9 @@
             <g:form action="save" name="formToSubmit">
                 <fieldset id="inputsToSubmit">
                     <g:hiddenField name="id" value="${q.id}"/>
+                    <g:hiddenField name="worker_id" value="${worker.workerId}"/>
+                    <g:hiddenField name="qType" value="${qType}"/>
+                    <g:hiddenField name="page" value="${page}"/>
                 </fieldset>
             </g:form>
         </g:each>
@@ -108,7 +114,7 @@
         }
 
         $('#addChunk').click(function() {
-            createChunk('${qType}', false, false);
+            createChunk('chunks','${qType}', false, false);
         });
 
         $('#removeChunk').click(function() {

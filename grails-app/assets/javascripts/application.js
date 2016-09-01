@@ -161,7 +161,7 @@ function createPost(questionType, postText, postId, isLatest, isAnswerPage, isAd
     return $div;
 }
 
-function createChunk(questionType, isAnswerPage, isAdmin){
+function createChunk(targetParent,questionType, isAnswerPage, isAdmin){
     collapseCurrent();
 
     var div = $("<div>", {id: "chunk-"+chunkIndex, class: "panel chunk"});
@@ -180,7 +180,7 @@ function createChunk(questionType, isAnswerPage, isAdmin){
     div.append(divInner);
     div.append(p2);
     div.append(textArea);
-    $("#chunks").append(div);
+    $("#"+targetParent).append(div);
 
     $(div).addClass("currentChunk");
     chunkIndex++;
@@ -261,8 +261,8 @@ function createChunk(questionType, isAnswerPage, isAdmin){
 }
 
 
-function highlightAndAddToChunk(referencedPost, selectedText, questionType, isAnswerPage, isAdmin){ //added modified
-    if($("#chunks div").length > 0){
+function highlightAndAddToChunk(chunksParent,referencedPost, selectedText, questionType, isAnswerPage, isAdmin){ //added modified
+    if($("#" +chunksParent + " div").length > 0){
         $('#'+referencedPost).find("p").highlight(selectedText);//{ wordsOnly: true }
         $('.currentChunk input')[0].selectize.createItem(selectedText);
         var $createdItem = $('.currentChunk .selectize-input .item').last();
@@ -299,7 +299,7 @@ function collapseCurrent(){
     $("#posts").unhighlight({ element: 'span', className: 'highlight' });
     $(".currentChunk .in").collapse("hide");
     $(".currentChunk button").addClass('collapsed');
-    $(".currentChunk textarea").attr("readonly","");
+    //$(".currentChunk textarea").attr("readonly","");
     $(".currentChunk textarea").height(20);
     $(".currentChunk").removeClass("currentChunk");
     selectedWordtoShowHighlights = false;
