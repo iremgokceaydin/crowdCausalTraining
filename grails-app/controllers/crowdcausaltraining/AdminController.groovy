@@ -39,6 +39,7 @@ class AdminController {
                         admin.removeFromTestingAs(b)
                 }
                 q.delete(flush: true)
+                admin.save()
                 render(view: "newTestingQ", model: [q: temp_q, errors:errors])
             }
             else {
@@ -67,6 +68,7 @@ class AdminController {
     def updateTestingQ(){
         def q = TestingQ.get(params.id)
         def admin = Owner.findByType("Admin")
+        def isError = false
 
         q.answers.each {a ->
             if(admin.testingAs.find {it.id == a.id})
@@ -74,25 +76,33 @@ class AdminController {
         }
 
         q.answers.clear()
+        q.save(flush:true)
 
         if(params.questionText != q.questionText) //TODO: should not be like this but because the unique constraint fails with update somehow I needed to
             q.questionText = params.questionText
         q.type = QType.get(params.type)
+        if(q.type == QType.findByTypeAndShortName("Testing", "Type1"))
+            q.highlights = []
 
         params.list('answerText').eachWithIndex  { a, index ->
             def tA = new TestingA()
             tA.answerText = a
             q.addToAnswers(tA)
-            if (params.containsKey("answer") && params.answer.toInteger() == index) {
-                admin.addToTestingAs(tA)
+            if(!q.save(flush:true)){
+                isError = true
+            }
+            else {
+                if (params.containsKey("answer") && params.answer.toInteger() == index) {
+                    admin.addToTestingAs(tA).save(flush:true)
+                }
             }
         }
 
-        if(q.save()) { //validate: false, flush: true
+        if(!isError) {
             admin.save()
             redirect(action: "testing")
         }
-        else {
+        else{
             render(view: "editTestingQ", model: [q: q])
         }
     }

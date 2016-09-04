@@ -24,13 +24,13 @@ class TestingController {
             print workersPrevAnswer
             if(workersPrevAnswer != null) {
                 print "here"
-                worker.removeFromTestingAs(workersPrevAnswer).save(flush: true)
+                worker.removeFromTestingAs(workersPrevAnswer)
             }
             worker.addToTestingAs(TestingA.get(params.get("answer_" + q)))
         }
 
 
-        if(worker.save(flush: true)) { //validate: false, flush: true
+        if(worker.save()) {
             redirect(action: "answer", params: [page:  page, worker_id: worker.workerId])
 
         }
