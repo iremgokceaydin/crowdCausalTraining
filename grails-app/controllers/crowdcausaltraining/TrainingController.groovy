@@ -25,7 +25,7 @@ class TrainingController {
 
         q.chunks.each { c->
             if(worker.trainingAs.find{ it.question.id == c.question.id } != null)
-                worker.removeFromTrainingAs(c).save(flush:true)
+                worker.removeFromTrainingAs(c)
         }
 
 

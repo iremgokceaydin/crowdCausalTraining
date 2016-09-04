@@ -20,24 +20,37 @@ class AdminController {
 
     def createTestingQ(){ //ToDo unique constraint
         print params
+        def admin = Owner.findByType("Admin")
+        def isError = false
+
         def q = new TestingQ()
         q.questionText = params.questionText
         q.type = QType.get(params.type)
         params.list('answerText').eachWithIndex  { a, index ->
             def tA = new TestingA()
             tA.answerText = a
-            if (params.containsKey("answer") && params.answer.toInteger() == index) {
-                Owner.findByType("Admin").addToTestingAs(tA)
-            }
             q.addToAnswers(tA)
+            if(!q.save(flush:true)){
+                isError = true
+                def temp_q = q
+                def errors = q.errors.allErrors
+                q.answers.each { b->
+                    if(admin.testingAs.find{ it.id == b.id } != null)
+                        admin.removeFromTestingAs(b)
+                }
+                q.delete(flush: true)
+                render(view: "newTestingQ", model: [q: temp_q, errors:errors])
+            }
+            else {
+                if (params.containsKey("answer") && params.answer.toInteger() == index) {
+                    admin.addToTestingAs(tA)
+                }
+            }
         }
 
-        if(q.save(flush:true)) {
-            Owner.findByType("Admin").save(flush:true)
+        if(!isError) {
+            admin.save()
             redirect(action: "testing")
-        }
-        else {
-            render(view: "newTestingQ", model: [q: q])
         }
     }
 
@@ -62,23 +75,21 @@ class AdminController {
 
         q.answers.clear()
 
-        if(params.type.toInteger() == QType.findByTypeAndShortName("Testing", 'Type1').id)
-            q.highlights.clear()
-
-        q.questionText = params.questionText
+        if(params.questionText != q.questionText) //TODO: should not be like this but because the unique constraint fails with update somehow I needed to
+            q.questionText = params.questionText
         q.type = QType.get(params.type)
 
         params.list('answerText').eachWithIndex  { a, index ->
             def tA = new TestingA()
             tA.answerText = a
+            q.addToAnswers(tA)
             if (params.containsKey("answer") && params.answer.toInteger() == index) {
                 admin.addToTestingAs(tA)
             }
-            q.addToAnswers(tA)
         }
 
-        if(q.save(flush:true)) { //validate: false, flush: true
-            admin.save(flush:true)
+        if(q.save()) { //validate: false, flush: true
+            admin.save()
             redirect(action: "testing")
         }
         else {
@@ -93,7 +104,7 @@ class AdminController {
             if(admin.testingAs.find{ it.id == a.id } != null)
                 admin.removeFromTestingAs(a)
         }
-        q.delete(flush:true)
+        q.delete()
         redirect(action:"testing")
     }
 
@@ -138,6 +149,7 @@ class AdminController {
     def createTrainingQ(){
         print params
         def q = new TrainingQ()
+        def error = false
         q.type = QType.get(params.type)
         params.list('postText').eachWithIndex  { pT, index ->
             def tQ_P = new TrainingQ_P()
@@ -145,14 +157,14 @@ class AdminController {
             if (params.containsKey("latestPost") && params.latestPost.toInteger() == index) {
                 tQ_P.isLatest = true
             }
-            q.addToPosts(tQ_P)
+            if(!q.addToPosts(tQ_P)) {
+                error = true
+                render(view: "newTrainingQ", model: [q: q])
+            }
         }
-
-        if(q.save()) {
+        if(!error) {
+            q.save()
             redirect(action: "training")
-        }
-        else {
-            render(view: "newTrainingQ", model: [q: q])
         }
     }
 

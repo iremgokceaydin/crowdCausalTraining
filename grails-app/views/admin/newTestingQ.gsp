@@ -16,13 +16,13 @@
                 %{--</g:each>--}%
             %{--</ul>--}%
         %{--</g:eachError>--}%
-        <g:hasErrors bean="${q}">
+        <g:if test="${errors != null && !errors.empty}">
             <ul class="fieldError">
-                <g:eachError var="err" bean="${q}">
+                <g:each var="err" in="${errors}">
                     <li><g:message error="${err}"/></li>
-                </g:eachError>
+                </g:each>
             </ul>
-        </g:hasErrors>
+        </g:if>
 
 
         <g:form action="createTestingQ">
