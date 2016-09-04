@@ -159,7 +159,7 @@ class AdminController {
     def createTrainingQ(){
         print params
         def q = new TrainingQ()
-        def error = false
+        def isError = false
         q.type = QType.get(params.type)
         params.list('postText').eachWithIndex  { pT, index ->
             def tQ_P = new TrainingQ_P()
@@ -167,13 +167,17 @@ class AdminController {
             if (params.containsKey("latestPost") && params.latestPost.toInteger() == index) {
                 tQ_P.isLatest = true
             }
-            if(!q.addToPosts(tQ_P)) {
-                error = true
-                render(view: "newTrainingQ", model: [q: q])
+
+            q.addToPosts(tQ_P)
+            if(!q.save(flush:true)){
+                isError = true
+                def temp_q = q
+                def errors = q.errors.allErrors
+                q.delete(flush: true)
+                render(view: "newTrainingQ", model: [q: temp_q, errors:errors])
             }
         }
-        if(!error) {
-            q.save()
+        if(!isError) {
             redirect(action: "training")
         }
     }
@@ -190,30 +194,48 @@ class AdminController {
 
     def updateTrainingQ(){
         print params
+        def admin = Owner.findByType("Admin")
+        def workers = Owner.findAllByType("Worker")
         def q = TrainingQ.get(params.id)
-        q.posts.clear()
-
-        if(params.type.toInteger() == QType.findByTypeAndShortName("Training", 'Type3').id)
-            q.chunks.clear()
-
+        def isError = false
 
         q.type = QType.get(params.type)
+        //if(q.type == QType.findByTypeAndShortName("Training", "Type3")) {
+            q.chunks.each {a ->
+                if(admin.trainingAs.find {it.id == a.id})
+                    admin.removeFromTrainingAs(a).save()
+                workers.each {w ->
+                    if(w.trainingAs.find {it.id == a.id})
+                        w.removeFromTrainingAs(a).save()
+                }
+            }
+        //}
+        q.chunks.clear()
+        q.posts.clear()
+        q.save(flush:true)
+        print q.posts.size()
+
         params.list('postText').eachWithIndex  { pT, index ->
             def tQ_P = new TrainingQ_P()
             tQ_P.postText = pT
             if (params.containsKey("latestPost") && params.latestPost.toInteger() == index) {
+                print "here"
                 tQ_P.isLatest = true
             }
+
             q.addToPosts(tQ_P)
+
+            if(!q.save(flush:true)){
+                isError = true
+            }
         }
 
-        if(q.save()) { //validate: false, flush: true
+        if(!isError) {
             redirect(action: "training")
         }
-        else {
+        else{
             render(view: "editTrainingQ", model: [q: q])
         }
-
     }
 
     def updateChunksOfTrainingQ(){
@@ -225,6 +247,7 @@ class AdminController {
                 admin.removeFromTrainingAs(c)
         }
         q.chunks.clear()
+        q.save(flush:true)
 
         def numberOfChunks = params.numberOfChunks.toInteger()
         for (def i = 0; i < numberOfChunks; i++) {

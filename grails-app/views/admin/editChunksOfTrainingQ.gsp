@@ -50,7 +50,7 @@
         <div id="chunks" class="panel-group">
             <g:each var="c" in="${q.chunks}">
                 <g:javascript>
-                    createChunk('chunks', '${q.type.shortName}', false, true, "", "toggleAll");
+                    createChunk('chunks', '${q.type.shortName}', false, true, '${c.text}', "toggleAll");
                 </g:javascript>
                 <g:each var="h" in="${c.highlights}">
                     <g:javascript>

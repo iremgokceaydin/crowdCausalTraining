@@ -4,6 +4,9 @@ class Owner {
 
     static constraints = {
         workerId nullable:true
+    }
+
+    static mapping = {
         trainingAs cascade: "all-delete-orphan"
     }
 
