@@ -6,7 +6,7 @@
 // to create separate JavaScript files as needed.
 //
 //= require jquery
-//= require bootstrap
+//= require bootstrap.min
 //= require jquery-ui
 //= require jquery.highlight
 //= require jquery.selection
@@ -162,14 +162,15 @@ function createPost(questionType, postText, postId, isLatest, isAnswerPage, isAd
 }
 
 function createChunk(chunksParent,questionType, isAnswerPage, isAdmin, chunkText, toggleId){
-    collapseCurrent();
+    collapseCurrentForAdd(chunksParent);
+    $("#" + chunksParent + " .currentChunk").removeClass("currentChunk");
 
     var div = $("<div>", {id: "chunk-"+chunkIndex, class: "panel chunk"});
     var button = $("<button>", {'data-toggle':"collapse", id:"collapseSelective", class:"btn btn-info", 'data-parent':"#"+chunksParent, 'data-target':"#collapse-"+chunkIndex, style:"width:100%;"});
     var p1 = $("<p>", {id: "alertWords", class:"alertMsg"});
     p1.html('<span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;' + alertWords);
     var divInner = $("<div>", {id: "collapse-"+chunkIndex, class: "panel-collapse collapse in"});
-    $(divInner).collapse({"toggle": false, 'parent': '#chunks'});
+    $(divInner).collapse({"toggle": false, 'parent': '#'+chunksParent});
     var input = $("<input>", {type: "text", placeholder:"Highlight some words from the posts"});
     var p2 = $("<p>", {id: "alertEditing", class:"alertMsg"});
     p2.html('<span class="glyphicon glyphicon-exclamation-sign"></span>&nbsp;' + alertEditing);
@@ -246,11 +247,24 @@ function createChunk(chunksParent,questionType, isAnswerPage, isAdmin, chunkText
             setTimeout(function(){ $(this).click();}, 600);
         }
         else{
-            collapseCurrent(chunksParent, toggleId);
-            $(this).parent().addClass("currentChunk");
+            if($(this).parent().hasClass("currentChunk")) {
+                if ($(this).hasClass("collapsed")){
+                    //expand will be done automatically by accordion structure
+                    highlightForOnlyOneChunk($(this).parent());
+                }
+                else
+                    afterCollapseCurrent(chunksParent);
+            }
+            else{
+                //others automatically will be collapsed due to accordion nature
+                afterCollapseCurrent(chunksParent);
+                $("#" + chunksParent + " .currentChunk").removeClass("currentChunk");
+                $(this).parent().addClass("currentChunk");
+                highlightForOnlyOneChunk($(this).parent());
+            }
+
             if(!isAnswerPage)
                 $("#"+chunksParent + " .currentChunk textarea").removeAttr('readonly');
-            expandCurrentCollapsed($(this).parent());
         }
     });
 
@@ -297,13 +311,18 @@ function removeChunk(){
 }
 
 
-function collapseCurrent(){
+function collapseCurrentForAdd(chunksParent){
     $("#posts").unhighlight({ element: 'span', className: 'highlight' });
-    $(".currentChunk .in").collapse("hide");
-    $(".currentChunk button").addClass('collapsed');
+    $("#" + chunksParent + " .currentChunk .in").collapse("hide");
+    $("#" + chunksParent + " .currentChunk button").addClass('collapsed');
     //$(".currentChunk textarea").attr("readonly","");
-    $(".currentChunk textarea").height(20);
-    $(".currentChunk").removeClass("currentChunk");
+    $("#" + chunksParent + " .currentChunk textarea").height(20);
+    selectedWordtoShowHighlights = false;
+}
+
+function afterCollapseCurrent(chunksParent){
+    $("#posts").unhighlight({ element: 'span', className: 'highlight' });
+    $("#" + chunksParent + " .currentChunk textarea").height(20);
     selectedWordtoShowHighlights = false;
 }
 
@@ -397,9 +416,12 @@ function expandAll(isAnswerPage,chunksParent, toggleId){
     highlightForAllChunks(chunksParent);
 }
 
-function expandCurrentCollapsed($result){
+function expandCurrentCollapsed($chunk){
+    // $chunk.find("button.collapsed").removeClass("collapsed");
+    // // alert($chunk.find("div.collapse").className);
+    // $chunk.find(".panel-collapse").collapse("show");
     // no need to expand manually, button is doing itself already, so just highlight the words as follows
-    highlightForOnlyOneChunk($result);
+    highlightForOnlyOneChunk($chunk);
 }
 
 function isThereEmptyText(){
