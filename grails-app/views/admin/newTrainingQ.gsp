@@ -40,6 +40,7 @@
                 <br>
             </g:each>
         </div>
+        <br>
         <g:submitButton name="Submit" onclick="return validateForm();"/>
     </g:form><br>
 

@@ -66,7 +66,7 @@
             </div>
 
             <g:form action="save" name="formToSubmit">
-                <fieldset id="inputsToSubmit">
+                <fieldset id="inputsToSubmit" style="border:none;">
                     <g:hiddenField name="id" value="${q.id}"/>
                     <g:hiddenField name="worker_id" value="${worker.workerId}"/>
                     <g:hiddenField name="qType" value="${qType}"/>

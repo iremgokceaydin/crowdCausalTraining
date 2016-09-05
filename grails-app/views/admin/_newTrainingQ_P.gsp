@@ -4,3 +4,4 @@
     <button type="button" onclick="removePost(this)">
     <span><i class="glyphicon glyphicon-minus"></i> </span></button>
 </div>
+<br>
