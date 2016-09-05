@@ -8,7 +8,8 @@
 * compiled file, but it's generally better to create a new file per style scope.
 *
 *= require fonts/glyphicons-halflings-regular
-*= require bootstrap
+*= require bootstrap.min
+*= require bootstrap-glyphicons
 *= require jquery-ui
 *= require selectize
 *= require_self
@@ -231,10 +232,9 @@ td {
     filter: alpha(opacity=60); /* For IE8 and earlier */
 }
 
-#chunks{
+.chunks{
     margin: 5px;
     background-color: rgba(86,61,124,.15);
-    border: 1px solid rgba(86,61,124,.2);
     border-radius: 4px;
     max-height: 400px;
     overflow-y: auto;

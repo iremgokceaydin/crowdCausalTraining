@@ -41,7 +41,7 @@
 
                     <button id="toggleAll-1" type="button" class="btn btn-primary" style="float:right;">Show All</button><br><br>
 
-                    <div id="chunks-1" class="panel-group">
+                    <div id="chunks-1" class="chunks panel-group">
                         <g:each var="c" in="${q.chunks}">
                             <g:if test="${worker.trainingAs.find{it.id == c.id} != null}">
                                 <g:javascript>
@@ -63,7 +63,7 @@
 
                     <button id="toggleAll-2" type="button" class="btn btn-primary" style="float:right;">Show All</button><br><br>
 
-                    <div id="chunks-2" class="panel-group">
+                    <div id="chunks-2" class="chunks panel-group">
                         <g:each var="c" in="${q.chunks}">
                             <g:if test="${admin.trainingAs.find{it.id == c.id} != null}">
                                 <g:javascript>

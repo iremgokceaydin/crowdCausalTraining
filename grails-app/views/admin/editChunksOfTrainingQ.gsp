@@ -47,7 +47,7 @@
         <button id="removeChunk" type="button" class="btn btn-primary">Remove</button>
         <button id="toggleAll" type="button" class="btn btn-primary" style="float:right;">Show All</button><br><br>
 
-        <div id="chunks" class="panel-group">
+        <div id="chunks" class="chunks panel-group">
             <g:each var="c" in="${q.chunks}">
                 <g:javascript>
                     createChunk('chunks', '${q.type.shortName}', false, true, '${c.text}', "toggleAll");
@@ -64,7 +64,7 @@
     </div>
 
     <g:form action="updateChunksOfTrainingQ">
-        <fieldset id="inputsToSubmit">
+        <fieldset id="inputsToSubmit" style="border:none;">
             <g:hiddenField name="id" value="${q.id}"/>
         </fieldset>
         <div style="float:right">

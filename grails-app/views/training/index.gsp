@@ -47,7 +47,7 @@
 
                 <button id="toggleAll" type="button" class="btn btn-primary" style="float:right;">Show All</button><br><br>
 
-                <div id="chunks" class="panel-group">
+                <div id="chunks" class="chunks panel-group">
                     <g:each var="c" in="${q.chunks}">
                         <g:if test="${crowdcausaltraining.Owner.findByType("Admin").trainingAs.find{it.id == c.id} != null}">
                             <g:javascript>
