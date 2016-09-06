@@ -17,7 +17,6 @@
 
         $( document ).ready(function() {
             $(".next-step").click(function (e) {
-                $("#footer").hide();
                 window.location.href = "/testing?worker_id=${worker.workerId}" + "&page=1";
             });
         });

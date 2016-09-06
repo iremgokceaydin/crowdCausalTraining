@@ -31,7 +31,7 @@
 
         <u>Highlights:</u>
         <g:form action="updateHighlightsOfTestingQ">
-            <fieldset id="inputsToSubmit">
+            <fieldset id="inputsToSubmit" style="border:none;">
                 <g:hiddenField name="id" value="${q.id}"/>
             </fieldset>
 

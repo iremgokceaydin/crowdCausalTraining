@@ -10,6 +10,8 @@ class TrainingQ {
     static mapping = {
         posts cascade: "all-delete-orphan"
         chunks cascade: "all-delete-orphan"
+        chunks sort: 'id'
+        sort type: "asc"
     }
 
     static hasMany = [posts: TrainingQ_P, chunks: TrainingA]

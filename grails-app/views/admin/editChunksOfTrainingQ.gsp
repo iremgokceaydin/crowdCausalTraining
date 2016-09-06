@@ -30,10 +30,10 @@
     <div class="col-md-6">
         <u>Posts:</u>
         <div class="alertMsg" id="addChunkAlert" style="display:none;">Add causal item first from the panel on the right.</div>
-        <div id="posts">
+        <div id="posts-${q.id}">
             <g:each var="p" in="${q.posts}">
                 <g:javascript>
-                    var $div = createPost('${q.type.shortName}', '${p.postText}', '${p.id}', ${p.isLatest}, false, true);
+                    var $div = createPost('${q.id}','${q.type.shortName}', '${p.postText}', '${p.id}', ${p.isLatest}, false, true);
                     $div.trigger('click');
                 </g:javascript>
             </g:each>
@@ -43,19 +43,19 @@
     <div class="col-md-6">
         <u>Chunks:</u><br>
 
-        <button id="addChunk" type="button" class="btn btn-primary">Add</button>
-        <button id="removeChunk" type="button" class="btn btn-primary">Remove</button>
-        <button id="toggleAll" type="button" class="btn btn-primary" style="float:right;">Show All</button><br><br>
+        <button id="addChunk-${q.id}" type="button" class="btn btn-primary">Add</button>
+        <button id="removeChunk-${q.id}" type="button" class="btn btn-primary">Remove</button>
+        <button id="toggleAll-${q.id}" type="button" class="btn btn-primary" style="float:right;">Show All</button><br><br>
 
-        <div id="chunks" class="chunks panel-group">
-            <g:each var="c" in="${q.chunks}">
+        <div id="chunks-${q.id}" class="chunks panel-group">
+            <g:each var="c" in="${admin.trainingAs?.findAll {it.question.id == q.id}?}">
                 <g:javascript>
-                    createChunk('chunks', '${q.type.shortName}', false, true, '${c.text}', "toggleAll");
+                    createChunk('${q.id}', '${q.type.shortName}', false, true, '${c.text}');
                 </g:javascript>
                 <g:each var="h" in="${c.highlights}">
                     <g:javascript>
                         var selectedText = '${h.text}';
-                        highlightAndAddToChunk("chunks","post-"+'${h.referencedPost.id}',selectedText,'${q.type.shortName}', false, true);
+                        highlightAndAddToChunk('${q.id}',"post-"+'${h.referencedPost.id}',selectedText,'${q.type.shortName}', false, true);
                     </g:javascript>
                 </g:each>
             </g:each>
@@ -65,10 +65,9 @@
 
     <g:form action="updateChunksOfTrainingQ">
         <fieldset id="inputsToSubmit" style="border:none;">
-            <g:hiddenField name="id" value="${q.id}"/>
         </fieldset>
         <div style="float:right">
-            <g:submitButton name="Submit" onclick="return prepareInputsforAdminTrainingChunksSubmit();"/>
+            <g:submitButton name="Submit" onclick="return prepareInputsforAdminTrainingChunksSubmit(${q.id});"/>
         </div>
     </g:form>
 
@@ -78,23 +77,23 @@
     <script id="scriptContainer">
         $( document ).ready(function() {
 
-            $('#addChunk').click(function() {
-                createChunk('chunks','${q.type.shortName}', false, true, "", "toggleAll");
+            $('#addChunk-${q.id}').click(function() {
+                createChunk('${q.id}','${q.type.shortName}', false, true, "");
             });
 
-            $('#removeChunk').click(function() {
-                removeChunk();
+            $('#removeChunk-${q.id}').click(function() {
+                removeChunk('${q.id}');
             });
 
-            $('#toggleAll').click(function() {
+            $('#toggleAll-${q.id}').click(function() {
                 if ($(this).attr("show") == "true"){
-                    if($("#chunks .chunk").length >= 1){
-                        collapseAll("chunks", "toggleAll");
+                    if($("#chunks-${q.id} .chunk").length >= 1){
+                        collapseAll('${q.id}');
                     }
                 }
                 else{
-                    if($("#chunks .chunk").length >= 1){
-                        expandAll(false,"chunks", "toggleAll");
+                    if($("#chunks-${q.id} .chunk").length >= 1){
+                        expandAll(false,'${q.id}');
                     }
                 }
             });

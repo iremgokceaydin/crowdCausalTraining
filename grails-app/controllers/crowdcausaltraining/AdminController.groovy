@@ -188,8 +188,9 @@ class AdminController {
     }
 
     def editChunksOfTrainingQ(){
+        Owner admin = Owner.findByType("Admin")
         def q = TrainingQ.get(params.id)
-        [q:q]
+        [q:q, admin: admin]
     }
 
     def updateTrainingQ(){
@@ -253,10 +254,10 @@ class AdminController {
         for (def i = 0; i < numberOfChunks; i++) {
             def chunk = new TrainingA()
             chunk.question = q
-            chunk.text = params.get("chunk-"+i+"-text")
+            chunk.text = params.get("chunk-"+q.id+"-"+i+"-text")
 
             def jsonSlurper = new JsonSlurper()
-            def highlights = jsonSlurper.parseText(params.get("chunk-"+i+"-highlights"))
+            def highlights = jsonSlurper.parseText(params.get("chunk-"+q.id+"-"+i+"-highlights"))
             highlights.each { highlight->
                 def h = new TrainingA_H()
                 h.text = highlight.value
@@ -265,15 +266,15 @@ class AdminController {
             }
 
             q.addToChunks(chunk)
-            admin.addToTrainingAs(chunk).save()
-
+            admin.addToTrainingAs(chunk)
 
         }
         if(q.save()) { //validate: false, flush: true
+            admin.save()
             redirect(action: "training")
         }
         else {
-            render(view: "editChunksOfTrainingQ", model: [q: q])
+            render(view: "editChunksOfTrainingQ", model: [q: q, admin:admin])
         }
 
     }
@@ -289,10 +290,4 @@ class AdminController {
         redirect(action:"training")
     }
 
-//    def newTrainingA(){
-//        print params
-//        def qType = params.qType
-//        def chunk = new TrainingA()
-//        render(template:"newTrainingA", qType : qType, c: chunk)
-//    }
 }
