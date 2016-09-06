@@ -27,14 +27,12 @@ class TrainingController {
         params.list("id").each  { qId ->
             print "here"+qId
             def q = TrainingQ.get(qId)
-            def l = []
-            l += worker.trainingAs?.findAll {it.question.id == q.id}
-
-            l.each { chunk ->
-                worker.removeFromTrainingAs(chunk)
-                q.removeFromChunks(chunk)
-                chunk.delete(flush:true)
+            worker.trainingAs?.findAll{ it.question.id == q.id }.each { c->
+                worker.removeFromTrainingAs(c)
+                q.removeFromChunks(c)
             }
+
+            q.save(flush:true)
 
             params.list("numberOfChunks").each  { chunksNumber ->
                 def totalChunksForOneQ = chunksNumber.toInteger()
