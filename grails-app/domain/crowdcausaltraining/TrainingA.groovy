@@ -8,7 +8,7 @@ class TrainingA {
 
     static mapping = {
         highlights cascade: "all-delete-orphan"
-        highlights sort:'id'
+        highlights sort:'id', order:'asc'
     }
 
     static hasMany = [highlights: TrainingA_H]

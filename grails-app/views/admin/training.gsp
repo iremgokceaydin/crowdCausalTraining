@@ -1,4 +1,4 @@
-<%@ page import="crowdcausaltraining.QType" %>
+<%@ page import="crowdcausaltraining.Owner; crowdcausaltraining.QType" %>
 <!doctype html>
 <html>
 <head>
@@ -32,7 +32,7 @@
                     </td>
                     <td>
                         <table border="1px" style="width: 100%;">
-                        <g:each var="chunk" in="${q.chunks}">
+                        <g:each var="chunk" in="${crowdcausaltraining.Owner.findByType("Admin").trainingAs?.findAll {it.question.id == q.id}}">
                             <tr>
                                 <td>
                                     <g:each var="h" in="${chunk.highlights}">

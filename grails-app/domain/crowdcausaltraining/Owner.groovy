@@ -8,6 +8,7 @@ class Owner {
 
     static mapping = {
         trainingAs cascade: "all-delete-orphan"
+        trainingAs sort:'id', order:'asc'
     }
 
     String type //Admin OR Worker

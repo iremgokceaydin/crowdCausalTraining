@@ -10,7 +10,7 @@ class TestingQ {
     static mapping = {
         answers sort:'id', order:'asc'
         answers cascade: "all-delete-orphan"
-        sort type: "asc"
+        sort type: "asc", id: "asc"
     }
 
     String questionText

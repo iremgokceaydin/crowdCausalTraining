@@ -8,11 +8,11 @@
 <h1>Testing Tasks</h1>
 <g:each var="q" in="${qs}">
 <div class="row">
-        <p class="passage" id="${q.type.shortName}">${q.questionText}</p>
+        <p class="passage" id="${q.id}">${q.questionText}</p>
         <g:if test="${q.type.shortName} == 'Type2'">
             <g:each var="highlight" in="${q.highlights}">
                 <g:javascript>
-                    $('#Type2').highlight('${highlight}');
+                    $('#${q.id}').highlight('${highlight}');
                 </g:javascript>
             </g:each>
         </g:if>

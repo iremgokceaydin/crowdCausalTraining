@@ -22,6 +22,12 @@
 
     </g:if>
     <g:else>
+        <g:if test="${qType == 'Type1'}">
+            <h2>Task 1 : Answers</h2>
+        </g:if>
+        <g:else test="${qType == 'Type2'}">
+            <h2>Task 2: Answers</h2>
+        </g:else>
         <g:each var="q" in="${qs}">
             <div class="row answerPost">
                 <u>Posts:</u>
@@ -104,14 +110,41 @@
             $(".next-step").text("Continue");
             $(".next-step").click(function (e) {
                 var page = ${page};
-                var totalPage = ${totalPage};
-                if (totalPage > page)
-                {
-                    window.location.href = "/training?qType=${qType}&page=" + (page+1) + "&worker_id=${worker.workerId}";
+                var totalPageType1 = ${totalPageType1};
+                var totalPageType2 = ${totalPageType2};
+                var totalPageType3 = ${totalPageType3};
+
+                if('${qType}' == 'Type1') {
+                    if (totalPageType1 > page) {
+                        window.location.href = "/training?qType=Type1&page=" + (page + 1) + "&worker_id=${worker.workerId}";
+                    }
+                    else {
+                        if(totalPageType2 > 0)
+                            window.location.href = "/training?qType=Type2&page=1&worker_id=${worker.workerId}";
+                        else if(totalPageType3 > 0)
+                            window.location.href = "/training?qType=Type3&page=1&worker_id=${worker.workerId}";
+                        else
+                            window.location.href = "/complete?worker_id=${worker.workerId}";
+                    }
                 }
-                else
-                {
-                    window.location.href = "/complete?worker_id=${worker.workerId}";
+                else if('${qType}' == 'Type2') {
+                    if (totalPageType2 > page) {
+                        window.location.href = "/training?qType=Type2&page=" + (page + 1) + "&worker_id=${worker.workerId}";
+                    }
+                    else {
+                        if(totalPageType3 > 0)
+                            window.location.href = "/training?qType=Type3&page=1&worker_id=${worker.workerId}";
+                        else
+                            window.location.href = "/complete?worker_id=${worker.workerId}";
+                    }
+                }
+                else if('${qType}' == 'Type3') {
+                    if (totalPageType3 > page) {
+                        window.location.href = "/training?qType=Type3&page=" + (page + 1) + "&worker_id=${worker.workerId}";
+                    }
+                    else {
+                        window.location.href = "/complete?worker_id=${worker.workerId}";
+                    }
                 }
             });
 

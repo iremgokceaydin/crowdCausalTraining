@@ -11,18 +11,22 @@ class TrainingController {
         def page = params.page.toInteger()
         def qType = params.qType //ShortNames: Type1, Type2, Type3
         def qs = TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", qType), [max: trainingPageFactor, offset: trainingPageFactor * (page-1)])
-        [qs:qs, qType:qType, page:page, worker : worker, admin: admin]
+        def totalPageType1 = Math.ceil(TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", "Type1")).size() / trainingPageFactor).toInteger();
+        def totalPageType2 = Math.ceil(TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", "Type2")).size() / trainingPageFactor).toInteger();
+        def totalPageType3 = Math.ceil(TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", "Type3")).size() / trainingPageFactor).toInteger();
+        [qs:qs, qType:qType, page:page, worker : worker, admin: admin,  totalPageType1:totalPageType1,totalPageType2:totalPageType2,totalPageType3:totalPageType3]
     }
 
     def save(){
         print params
-        def admin = Owner.findByType("Admin")
         def worker = Owner.findOrSaveByTypeAndWorkerId("Worker",params.worker_id)
         def page = params.page.toInteger()
         def qType = params.qType
         def qs = TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", qType), [max: trainingPageFactor, offset: trainingPageFactor * (page-1)])
-        def totalPage = Math.ceil(TrainingQ.all.size() / trainingPageFactor).toInteger();
         def isError = false
+        def totalPageType1 = Math.ceil(TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", "Type1")).size() / trainingPageFactor).toInteger();
+        def totalPageType2 = Math.ceil(TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", "Type2")).size() / trainingPageFactor).toInteger();
+        def totalPageType3 = Math.ceil(TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", "Type3")).size() / trainingPageFactor).toInteger();
 
         params.list("id").each  { qId ->
             print "here"+qId
@@ -57,11 +61,17 @@ class TrainingController {
         }
 
         if(worker.save()) {
-            print "size"+worker.trainingAs.size()
-            redirect(action: "answer", params: [page:  page,qType:  qType,worker_id : worker.workerId])
+            if(qType == "Type3") {
+                if(totalPageType3 > page)
+                    redirect(action: "index", params: [page: page+1, qType: qType, worker_id: worker.workerId])
+                else
+                    redirect(controller: "complete", action: "index", params: [worker_id: worker.workerId])
+            }
+            else
+                redirect(action: "answer", params: [page:  page,qType:  qType,worker_id : worker.workerId])
         }
         else
-            render(view: "index", model: [qs: qs, page: page, qType: qType, worker: worker])
+            render(view: "index", model: [qs: qs, page: page, qType: qType, worker: worker,totalPageType1:totalPageType1,totalPageType2:totalPageType2,totalPageType3:totalPageType3])
     }
 
     def answer(){
@@ -69,12 +79,14 @@ class TrainingController {
         def admin = Owner.findByType("Admin")
         def worker = Owner.findByWorkerId(params.worker_id)
         def page = params.page.toInteger()
-        def totalPage = Math.ceil(TrainingQ.all.size() / trainingPageFactor).toInteger();
+        def totalPageType1 = Math.ceil(TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", "Type1")).size() / trainingPageFactor).toInteger();
+        def totalPageType2 = Math.ceil(TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", "Type2")).size() / trainingPageFactor).toInteger();
+        def totalPageType3 = Math.ceil(TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", "Type3")).size() / trainingPageFactor).toInteger();
         def qType = params.qType
 
         def qs = TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", qType), [max: trainingPageFactor, offset: trainingPageFactor * (page-1)])
 
-        [qs:qs, page:page,qType: qType, totalPage:totalPage, admin : admin, worker : worker]
+        [qs:qs, page:page,qType: qType, totalPageType1:totalPageType1,totalPageType2:totalPageType2,totalPageType3:totalPageType3, admin : admin, worker : worker]
     }
 
 
