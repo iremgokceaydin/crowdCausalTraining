@@ -129,24 +129,28 @@ function createPost(questionId,questionType, postText, postId, isLatest, isAnswe
         $(this).addClass("currentPost");
         if(isAdmin || (questionType != "Type1" && !isAnswerPage)){
             var selectedText = $.selection();
-            if(selectedText){
-                if($("#chunks-"+ questionId+" div").length > 0){
-                    $('#posts-'+ questionId +' .currentPost p').highlight(selectedText);//{ wordsOnly: true }
-                    $('#chunks-'+ questionId+ ' .currentChunk input')[0].selectize.createItem(selectedText);
-                    var createdItem = $('#chunks-'+ questionId+' .currentChunk .selectize-input div').last();
-                    createdItem.attr("id", $('#chunks-'+ questionId+' .currentChunk').attr("id") + "-chunk-"+($('#chunks-'+ questionId+' .currentChunk .selectize-input div').length-1));
-                    createdItem.attr("referencedPost", $('#posts-'+ questionId+' .currentPost').attr("id"));
-                    $("span:contains('" + selectedText + "')").each(
-                        function(index, elem){
-                            $(this).attr("referencedChunk",createdItem.attr("id"));
-                        }); //oneTime, can be reassign after highlightForOnlyOneResult
-                    //$('.currentResult textarea').val($('.currentResult input')[0].selectize.items.join(" "));
-                    $("#addChunkAlert").hide();
+            if (selectedText) {
+                if ($('#chunks-' + questionId + ' .currentChunk').length != 0) {
+                    if ($("#chunks-" + questionId + " div").length > 0) {
+                        $('#posts-' + questionId + ' .currentPost p').highlight(selectedText);//{ wordsOnly: true }
+                        $('#chunks-' + questionId + ' .currentChunk input')[0].selectize.createItem(selectedText);
+                        var createdItem = $('#chunks-' + questionId + ' .currentChunk .selectize-input div').last();
+                        createdItem.attr("id", $('#chunks-' + questionId + ' .currentChunk').attr("id") + "-chunk-" + ($('#chunks-' + questionId + ' .currentChunk .selectize-input div').length - 1));
+                        createdItem.attr("referencedPost", $('#posts-' + questionId + ' .currentPost').attr("id"));
+                        $("span:contains('" + selectedText + "')").each(
+                            function (index, elem) {
+                                $(this).attr("referencedChunk", createdItem.attr("id"));
+                            }); //oneTime, can be reassign after highlightForOnlyOneResult
+                        //$('.currentResult textarea').val($('.currentResult input')[0].selectize.items.join(" "));
+                        $("#addChunkAlert").hide();
+                    }
+                    else {
+                        $("#addChunkAlert").show();
+                    }
+                    removeSelection();
                 }
-                else{
-                    $("#addChunkAlert").show();
-                }
-                removeSelection();
+                else
+                    alert("Select a chunk to add the highlights first!");
             }
         }
     });
