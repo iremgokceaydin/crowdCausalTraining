@@ -3,6 +3,7 @@ import com.crowdCausalTraining.User
 import com.crowdCausalTraining.UserRole
 import crowdcausaltraining.Owner
 import crowdcausaltraining.QType
+import crowdcausaltraining.Settings
 
 class BootStrap {
 
@@ -26,12 +27,19 @@ class BootStrap {
 
         def adminOwner = new Owner(type: 'Admin').save()
 
+        def settings = new Settings(pageFactorTesting: 5, pageFactorTraining: 1, numberOfCorrectTestingToFinish:5).save()
+
         QType.withSession {
             it.flush()
             it.clear()
         }
 
         Owner.withSession {
+            it.flush()
+            it.clear()
+        }
+
+        Settings.withSession {
             it.flush()
             it.clear()
         }

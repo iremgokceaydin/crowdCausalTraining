@@ -6,6 +6,23 @@ class AdminController {
 
     def index() { }
 
+    def settings() {
+        def pageFactorTesting = Settings.first().pageFactorTesting
+        def pageFactorTraining = Settings.first().pageFactorTraining
+        def numberOfCorrectTestingToFinish = Settings.first().numberOfCorrectTestingToFinish
+        [pageFactorTesting: pageFactorTesting, pageFactorTraining: pageFactorTraining, numberOfCorrectTestingToFinish: numberOfCorrectTestingToFinish]
+    }
+
+    def updateSettings(){
+        def settings = Settings.first()
+        settings.properties = params
+        if(settings.save())
+            redirect(action: "index")
+        else
+            render(view: "settings", model: [settings: settings])
+
+    }
+
     //TESTING
 
     def testing() {

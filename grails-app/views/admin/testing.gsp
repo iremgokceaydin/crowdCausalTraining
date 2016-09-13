@@ -15,14 +15,16 @@
         <g:else>
             <table border="3px">
                 <tr style="font-weight:bold">
+                    <td>#</td>
                     <td>Type</td>
                     <td>Question</td>
                     <td>Answers</td>
                     <td>Highlights</td>
                     <td>Actions</td>
                 </tr>
-                <g:each var="q" in="${qs}">
+                <g:each var="q" in="${qs}" status="i">
                     <tr>
+                        <td>${i+1}</td>
                         <td>${q.type.shortName}</td>
                         <td style="width: 50%;" id="${q.id}">${q.questionText}</td>
                         <td>

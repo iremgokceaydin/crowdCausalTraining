@@ -3,17 +3,17 @@ package crowdcausaltraining
 import groovy.json.JsonSlurper
 
 class TrainingController {
-    def trainingPageFactor = 1
 
     def index() {
         def worker = Owner.findOrCreateByTypeAndWorkerId("Worker",params.worker_id)
         def admin = Owner.findByType("Admin")
         def page = params.page.toInteger()
         def qType = params.qType //ShortNames: Type1, Type2, Type3
-        def qs = TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", qType), [max: trainingPageFactor, offset: trainingPageFactor * (page-1)])
-        def totalPageType1 = Math.ceil(TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", "Type1")).size() / trainingPageFactor).toInteger();
-        def totalPageType2 = Math.ceil(TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", "Type2")).size() / trainingPageFactor).toInteger();
-        def totalPageType3 = Math.ceil(TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", "Type3")).size() / trainingPageFactor).toInteger();
+        def pageFactor = Settings.first().pageFactorTraining
+        def qs = TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", qType), [max: pageFactor, offset: pageFactor * (page-1)])
+        def totalPageType1 = Math.ceil(TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", "Type1")).size() / pageFactor).toInteger();
+        def totalPageType2 = Math.ceil(TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", "Type2")).size() / pageFactor).toInteger();
+        def totalPageType3 = Math.ceil(TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", "Type3")).size() / pageFactor).toInteger();
         [qs:qs, qType:qType, page:page, worker : worker, admin: admin,  totalPageType1:totalPageType1,totalPageType2:totalPageType2,totalPageType3:totalPageType3]
     }
 
@@ -21,15 +21,15 @@ class TrainingController {
         print params
         def worker = Owner.findOrSaveByTypeAndWorkerId("Worker",params.worker_id)
         def page = params.page.toInteger()
+        def pageFactor = Settings.first().pageFactorTraining
         def qType = params.qType
-        def qs = TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", qType), [max: trainingPageFactor, offset: trainingPageFactor * (page-1)])
+        def qs = TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", qType), [max: pageFactor, offset: pageFactor * (page-1)])
         def isError = false
-        def totalPageType1 = Math.ceil(TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", "Type1")).size() / trainingPageFactor).toInteger();
-        def totalPageType2 = Math.ceil(TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", "Type2")).size() / trainingPageFactor).toInteger();
-        def totalPageType3 = Math.ceil(TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", "Type3")).size() / trainingPageFactor).toInteger();
+        def totalPageType1 = Math.ceil(TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", "Type1")).size() / pageFactor).toInteger();
+        def totalPageType2 = Math.ceil(TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", "Type2")).size() / pageFactor).toInteger();
+        def totalPageType3 = Math.ceil(TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", "Type3")).size() / pageFactor).toInteger();
 
         params.list("id").each  { qId ->
-            print "here"+qId
             def q = TrainingQ.get(qId)
             worker.trainingAs?.findAll{ it.question.id == q.id }.each { c->
                 worker.removeFromTrainingAs(c)
@@ -79,12 +79,13 @@ class TrainingController {
         def admin = Owner.findByType("Admin")
         def worker = Owner.findByWorkerId(params.worker_id)
         def page = params.page.toInteger()
-        def totalPageType1 = Math.ceil(TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", "Type1")).size() / trainingPageFactor).toInteger();
-        def totalPageType2 = Math.ceil(TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", "Type2")).size() / trainingPageFactor).toInteger();
-        def totalPageType3 = Math.ceil(TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", "Type3")).size() / trainingPageFactor).toInteger();
+        def pageFactor = Settings.first().pageFactorTraining
+        def totalPageType1 = Math.ceil(TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", "Type1")).size() / pageFactor).toInteger();
+        def totalPageType2 = Math.ceil(TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", "Type2")).size() / pageFactor).toInteger();
+        def totalPageType3 = Math.ceil(TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", "Type3")).size() / pageFactor).toInteger();
         def qType = params.qType
 
-        def qs = TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", qType), [max: trainingPageFactor, offset: trainingPageFactor * (page-1)])
+        def qs = TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", qType), [max: pageFactor, offset: pageFactor * (page-1)])
 
         [qs:qs, page:page,qType: qType, totalPageType1:totalPageType1,totalPageType2:totalPageType2,totalPageType3:totalPageType3, admin : admin, worker : worker]
     }

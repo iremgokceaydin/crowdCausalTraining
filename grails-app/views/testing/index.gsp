@@ -23,38 +23,48 @@
     </g:if>
     <g:else>
         <g:form action="save" name="formToSubmit">
+            <table>
             <g:hiddenField name="worker_id" value="${worker.workerId}"/>
             <g:hiddenField name="page" value="${page}"/>
-            <g:each var="q" in="${qs}">
-                <g:hiddenField name="question" value="${q.id}"/>
-                <div class="col-md-6">
-                    <g:if test="${q.type.id == QType.findByTypeAndShortName('Testing', 'Type1').id}">
-                        <p class="question">Q: Which of the following statements reflect the knowledge in the passage?</p>
-                    </g:if>
-                    <g:else>
-                        <p class="question">Q: To which causal statement does the highlighted statement correspond?</p>
-                    </g:else>
-                    <p class="passage" id="${q.id}">${q.questionText}</p>
-                    <g:if test="${q.type.id == QType.findByTypeAndShortName('Testing', 'Type2').id}">
-                        <g:each var="highlight" in="${q.highlights}">
-                            <g:javascript>
-                                $('#${q.id}').highlight('${highlight}');
-                            </g:javascript>
-                        </g:each>
-                    </g:if>
-                    <p>
-                        <g:each var="a" in="${q.answers}">
-                            <g:if test="${worker.testingAs != null && worker.testingAs.find {it.id == a.id} != null}">
-                                <label class="checkbox-inline"><input name="answer_${q.id}" type="radio" value="${a.id}" checked='checked'>&nbsp;${a.answerText}</label><br>
-                            </g:if>
-                            <g:else>
-                                <label class="checkbox-inline"><input name="answer_${q.id}" type="radio" value="${a.id}">&nbsp;${a.answerText}</label><br>
-                            </g:else>
+            <g:each var="q" in="${qs}" status="i">
+                <g:if test="${(i+1)%2}">
+                    <tr>
+                </g:if>
+                <td width="50%">
+                    <g:hiddenField name="question" value="${q.id}"/>
+                    <div>
+                        <g:if test="${q.type.id == QType.findByTypeAndShortName('Testing', 'Type1').id}">
+                            <p class="question">Q${i+1}: Which of the following statements reflect the knowledge in the passage?</p>
+                        </g:if>
+                        <g:else>
+                            <p class="question">Q${i+1}: To which causal statement does the highlighted statement correspond?</p>
+                        </g:else>
+                        <p class="passage" id="${q.id}">${q.questionText}</p>
+                        <g:if test="${q.type.id == QType.findByTypeAndShortName('Testing', 'Type2').id}">
+                            <g:each var="highlight" in="${q.highlights}">
+                                <g:javascript>
+                                    $('#${q.id}').highlight('${highlight}');
+                                </g:javascript>
+                            </g:each>
+                        </g:if>
+                        <p>
+                            <g:each var="a" in="${q.answers}">
+                                <g:if test="${worker.testingAs != null && worker.testingAs.find {it.id == a.id} != null}">
+                                    <label class="checkbox-inline"><input name="answer_${q.id}" type="radio" value="${a.id}" checked='checked'>&nbsp;${a.answerText}</label><br>
+                                </g:if>
+                                <g:else>
+                                    <label class="checkbox-inline"><input name="answer_${q.id}" type="radio" value="${a.id}">&nbsp;${a.answerText}</label><br>
+                                </g:else>
 
-                        </g:each>
-                    </p>
-                </div>
+                            </g:each>
+                        </p>
+                    </div>
+                </td>
+                <g:if test="${!((i+1)%2)}">
+                    </tr>
+                </g:if>
             </g:each>
+            </table>
         </g:form>
     </g:else>
 </div>

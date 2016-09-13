@@ -1,14 +1,13 @@
 package crowdcausaltraining
 
-import org.aspectj.weaver.patterns.TypePatternQuestions
 
 class TestingController {
-    def testingPageFactor = 2
 
     def index() {
         def worker = Owner.findOrCreateByTypeAndWorkerId("Worker",params.worker_id)
         def page = params.page.toInteger()
-        def qs = TestingQ.findAll([max: testingPageFactor, offset: testingPageFactor * (page-1)])
+        def pageFactor = Settings.first().pageFactorTesting
+        def qs = TestingQ.findAll([max: pageFactor, offset: pageFactor * (page-1)])
         [qs:qs, page:page, worker : worker]
     }
 
@@ -16,7 +15,8 @@ class TestingController {
         print params
         def worker = Owner.findOrCreateByTypeAndWorkerId("Worker",params.worker_id)
         def page = params.page.toInteger()
-        def qs = TestingQ.findAll([max: testingPageFactor, offset: testingPageFactor * (page-1)])
+        def pageFactor = Settings.first().pageFactorTesting
+        def qs = TestingQ.findAll([max: pageFactor, offset: pageFactor * (page-1)])
 
         params.list('question').each  { q ->
             print q
@@ -43,11 +43,12 @@ class TestingController {
         print params
         def admin = Owner.findByType("Admin")
         def worker = Owner.findByWorkerId(params.worker_id)
-        def totalPage = Math.ceil(TestingQ.all.size() / testingPageFactor).toInteger();
+        def pageFactor = Settings.first().pageFactorTesting
+        def totalPage = Math.ceil(TestingQ.all.size() / pageFactor).toInteger();
         def page = params.page.toInteger()
-        def qs = TestingQ.findAll([max: testingPageFactor, offset: testingPageFactor * (page-1)])
+        def qs = TestingQ.findAll([max: pageFactor, offset: pageFactor * (page-1)])
 
-        [qs:qs, page:page,totalPage:totalPage, pageFactor: testingPageFactor, admin : admin, worker : worker]
+        [qs:qs, page:page,totalPage:totalPage, pageFactor: pageFactor, admin : admin, worker : worker]
     }
 
 
