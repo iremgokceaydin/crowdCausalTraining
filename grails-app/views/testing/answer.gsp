@@ -5,10 +5,13 @@
 </head>
 <body>
 
-<h1>Testing Tasks</h1>
+<h1>Testing Examples - Answers </h1>
+<g:javascript>
+    var numberOfCorrect = 0;
+</g:javascript>
 <g:each var="q" in="${qs}">
-<div class="row">
-        <p class="passage" id="${q.id}">${q.questionText}</p>
+    <div class="row">
+        <p class="passage" id="${q.id}">Q-${q.id}: ${q.questionText}</p>
         <g:if test="${q.type.shortName} == 'Type2'">
             <g:each var="highlight" in="${q.highlights}">
                 <g:javascript>
@@ -26,6 +29,7 @@
                         <g:if test="${admin.testingAs.find {it.id == a.id} != null}">
                             <g:javascript>
                                 $("#worker_answer_${q.id}_isCorrect").show();
+                                numberOfCorrect++;
                             </g:javascript>
                         </g:if>
                         <g:else>
@@ -56,7 +60,7 @@
                 </g:each>
             </p>
         </div>
-</div>
+    </div>
 </g:each>
 
 
@@ -65,19 +69,35 @@
         var $target = $('#step2_icon');
         activateStep($target);
         $( document ).ready(function() {
-            $(".next-step").text("Continue");
-            $(".next-step").click(function (e) {
-                var page = ${page};
-                var totalPage = ${totalPage};
-                if (totalPage > page)
-                {
-                    window.location.href = "/testing?page=" + (page+1) + "&worker_id=${worker.workerId}";
-                }
-                else
-                {
+            var page = ${page};
+            var totalPage = ${totalPage};
+
+
+            if(numberOfCorrect == ${qs.size()}) {
+                $("#step2next").text("Start Training");
+                $("#step2next").click(function (e) {
                     window.location.href = "/introduction/tutorial?worker_id=${worker.workerId}";
-                }
-            });
+                });
+                $("#step2nextA").click(function (e) {
+                    if (totalPage > page) {
+                        window.location.href = "/testing?page=" + (page + 1) + "&worker_id=${worker.workerId}";
+                    }
+                    else
+                        alert("In fact, this was the last page for testing questions. Please start training now.");
+                });
+            }
+
+            else {
+                $("#step2next").hide();
+                $("#step2nextA").click(function (e) {
+                    if (totalPage > page) {
+                        window.location.href = "/testing?page=" + (page + 1) + "&worker_id=${worker.workerId}";
+                    }
+                    else {
+                        window.location.href = "/complete/fail?worker_id=${worker.workerId}";
+                    }
+                });
+            }
 
             $(".prev-step").click(function (e) {
                 $("#footer").hide();

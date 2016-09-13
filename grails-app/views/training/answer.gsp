@@ -5,7 +5,7 @@
 </head>
 <body>
 
-<h1>Training Task</h1>
+<h1>Training Examples - Answers</h1>
 
 
     <g:hasErrors bean="${worker}">
@@ -18,15 +18,15 @@
 
 
     <g:if test="${qs.empty}">
-        <p>There are no questions yet!</p>
+        <p>There are no examples yet!</p>
 
     </g:if>
     <g:else>
         <g:if test="${qType == 'Type1'}">
-            <h2>Task 1 : Answers</h2>
+            <h2>Example 1 : Answers</h2>
         </g:if>
         <g:else test="${qType == 'Type2'}">
-            <h2>Task 2: Answers</h2>
+            <h2>Example 2: Answers</h2>
         </g:else>
         <g:each var="q" in="${qs}">
             <div class="row answerPost">
@@ -124,7 +124,7 @@
                         else if(totalPageType3 > 0)
                             window.location.href = "/training?qType=Type3&page=1&worker_id=${worker.workerId}";
                         else
-                            window.location.href = "/complete?worker_id=${worker.workerId}";
+                            window.location.href = "/complete/success?worker_id=${worker.workerId}";
                     }
                 }
                 else if('${qType}' == 'Type2') {
@@ -135,7 +135,7 @@
                         if(totalPageType3 > 0)
                             window.location.href = "/training?qType=Type3&page=1&worker_id=${worker.workerId}";
                         else
-                            window.location.href = "/complete?worker_id=${worker.workerId}";
+                            window.location.href = "/complete/success?worker_id=${worker.workerId}";
                     }
                 }
                 else if('${qType}' == 'Type3') {
@@ -143,7 +143,7 @@
                         window.location.href = "/training?qType=Type3&page=" + (page + 1) + "&worker_id=${worker.workerId}";
                     }
                     else {
-                        window.location.href = "/complete?worker_id=${worker.workerId}";
+                        window.location.href = "/complete/success?worker_id=${worker.workerId}";
                     }
                 }
             });

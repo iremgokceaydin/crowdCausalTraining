@@ -65,7 +65,7 @@ class TrainingController {
                 if(totalPageType3 > page)
                     redirect(action: "index", params: [page: page+1, qType: qType, worker_id: worker.workerId])
                 else
-                    redirect(controller: "complete", action: "index", params: [worker_id: worker.workerId])
+                    redirect(controller: "complete", action: "success", params: [worker_id: worker.workerId])
             }
             else
                 redirect(action: "answer", params: [page:  page,qType:  qType,worker_id : worker.workerId])

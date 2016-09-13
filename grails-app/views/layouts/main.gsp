@@ -70,7 +70,7 @@
                     <div class="tab-content">
                         <div class="tab-pane" role="tabpanel" id="step1_progress">
                             <h3>Step 1</h3>
-                            <p>Introduction-1</p>
+                            <p>Introduction</p>
                             <ul class="list-inline pull-right">
                                 <li><button id="step1next" name="step1next" type="button" class="btn btn-primary next-step">Continue</button></li>
                             </ul>
@@ -80,12 +80,13 @@
                             <p>Testing</p>
                             <ul class="list-inline pull-right">
                                 <li><button id="step2prev" name="step2prev" type="button" class="btn btn-default prev-step">Previous</button></li>
+                                <li><button id="step2nextA" name="step2next" type="button" class="btn btn-primary next-step">See More Questions</button></li>
                                 <li><button id="step2next" name="step2next" type="button" class="btn btn-primary next-step">Save and continue</button></li>
                             </ul>
                         </div>
                         <div class="tab-pane" role="tabpanel" id="step3_progress">
                             <h3>Step 3</h3>
-                            <p>Introduction-2</p>
+                            <p>Tutorial</p>
                             <ul class="list-inline pull-right">
                                 <li><button id="step3prev" name="step3prev" type="button" class="btn btn-default prev-step">Previous</button></li>
                                 <li><button id="step3next" name="step3next" type="button" class="btn btn-primary next-step">Continue</button></li>

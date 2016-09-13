@@ -13,7 +13,7 @@ class UrlMappings {
         "500"(view:'/error')
         "404"(view:'/notFound')
 
-        name introduction: "/introduction/index/$worker_id" {
+        name introduction: "/introduction/index" {
             controller = "introduction"
             action = "index"
         }

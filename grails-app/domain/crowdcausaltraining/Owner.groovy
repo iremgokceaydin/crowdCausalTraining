@@ -4,6 +4,8 @@ class Owner {
 
     static constraints = {
         workerId nullable:true
+        isWorkerEligible nullable:true
+        lastTestingPageVisitedByWorker nullable:true
     }
 
     static mapping = {
@@ -12,7 +14,12 @@ class Owner {
     }
 
     String type //Admin OR Worker
-    int workerId
     static hasMany = [testingAs: TestingA, trainingAs: TrainingA]
+
+    //followings are worker specific
+    int workerId
+    boolean isWorkerEligible
+    int lastTestingPageVisitedByWorker
+
 
 }

@@ -11,10 +11,9 @@ class IntroductionController {
     }
 
     def tutorial() {
-        print params
         def worker = Owner.findOrCreateByTypeAndWorkerId("Worker",params.worker_id)
-        worker.save(flush:true)
+        worker.lastTestingPageVisitedByWorker = session["lastTestingPageVisited"]
+        worker.save()
         [worker : worker]
-
     }
 }

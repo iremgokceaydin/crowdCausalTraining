@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<h1>Training Task</h1>
+<h1>Training Examples</h1>
 <div class="row">
 
     <g:hasErrors bean="${worker}">
@@ -19,7 +19,7 @@
 
 
     <g:if test="${qs.empty}">
-        <p>There are no questions yet!</p>
+        <p>There are no examples yet!</p>
 
     </g:if>
     <g:else>
@@ -81,7 +81,7 @@
                 </g:if>
                 <g:elseif test="${qType == 'Type2' || qType == 'Type3'}">
                     <g:if test="${qType == 'Type2' && (admin.trainingAs?.findAll {it.question.id == q.id}?.empty)}">
-                        <p>There are no chunks added yet for this question!</p>
+                        <p>There are no chunks added yet for this example!</p>
                     </g:if>
                     <g:else>
                         <button id="addChunk-${q.id}" type="button" class="btn btn-primary addChunk" questionId="${q.id}">Add</button>

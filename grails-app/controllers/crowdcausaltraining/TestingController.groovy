@@ -40,12 +40,12 @@ class TestingController {
     }
 
     def answer(){
-        print params
         def admin = Owner.findByType("Admin")
         def worker = Owner.findByWorkerId(params.worker_id)
         def pageFactor = Settings.first().pageFactorTesting
         def totalPage = Math.ceil(TestingQ.all.size() / pageFactor).toInteger();
         def page = params.page.toInteger()
+        session["lastTestingPageVisited"] = page
         def qs = TestingQ.findAll([max: pageFactor, offset: pageFactor * (page-1)])
 
         [qs:qs, page:page,totalPage:totalPage, pageFactor: pageFactor, admin : admin, worker : worker]

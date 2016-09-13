@@ -29,7 +29,7 @@
                 <td><input name="pageFactorTraining" value="${pageFactorTraining}"></td>
                 <td><input name="numberOfCorrectTestingToFinish" value="${numberOfCorrectTestingToFinish}"></td>
             </tr>
-        </table>
+        </table><br>
         <g:submitButton name="Update"/>
     </g:form>
     <br>

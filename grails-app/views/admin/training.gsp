@@ -11,7 +11,7 @@
 <div class="row">
     <h2>Training Questions</h2>
     <g:if test="${qs.empty}">
-        <p>There are no questions yet!</p>
+        <p>There are no examples yet!</p>
     </g:if>
     <g:else>
         <table border="3px">

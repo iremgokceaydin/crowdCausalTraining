@@ -5,7 +5,7 @@
 </head>
 <body>
 
-<h1>Causal Crowd Coding - C^3</h1>
+<h1>Causal Crowd Coding - Tutorial</h1>
 <h2>Usage Scenario</h2>
 <div style="width: 100%;float: left;margin-bottom:20px;">
     <img src="${assetPath(src: 'dottedArrow2.png')}" class="img-responsive" alt="System" width="40px" style="position: absolute; margin-top: 50px;">
@@ -28,7 +28,7 @@
                 window.location.href = "/training?qType=Type1&page=1" + "&worker_id=${worker.workerId}";
             });
             $(".prev-step").click(function (e) {//TODO fix the static variable
-                window.location.href = "/testing/answer?page=${Math.ceil(crowdcausaltraining.TestingQ.all.size()/2).toInteger()}&worker_id=${worker.workerId}"; //TODO change it to dynamic pageFactor
+                window.location.href = "/testing/answer?page=${worker.lastTestingPageVisitedByWorker}&worker_id=${worker.workerId}"; //TODO change it to dynamic pageFactor
             });
         });
 
