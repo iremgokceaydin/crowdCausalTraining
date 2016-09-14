@@ -102,7 +102,7 @@
                         </div>
                         <div class="tab-pane" role="tabpanel" id="step5_progress_complete">
                             <h3>Complete</h3>
-                            <p>You have successfully completed all steps. Go worker!</p>
+                            <p>Completed all steps.</p>
                         </div>
                         <div class="clearfix"></div>
                     </div>

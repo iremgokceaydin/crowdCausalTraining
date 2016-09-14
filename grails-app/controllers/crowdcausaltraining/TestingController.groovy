@@ -23,7 +23,6 @@ class TestingController {
             def workersPrevAnswer = worker.testingAs?.find {it.question.id == q.toInteger()}
             print workersPrevAnswer
             if(workersPrevAnswer != null) {
-                print "here"
                 worker.removeFromTestingAs(workersPrevAnswer)
             }
             worker.addToTestingAs(TestingA.get(params.get("answer_" + q)))

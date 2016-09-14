@@ -27,7 +27,7 @@ class BootStrap {
 
         def adminOwner = new Owner(type: 'Admin').save()
 
-        def settings = new Settings(pageFactorTesting: 5, pageFactorTraining: 1, numberOfCorrectTestingToFinish:5).save()
+        def settings = new Settings(pageFactorTesting: 5, pageFactorTraining: 1, numberOfCorrectTestingToFinish:5, showPreviousTrainingPostsFactor:3).save()
 
         QType.withSession {
             it.flush()

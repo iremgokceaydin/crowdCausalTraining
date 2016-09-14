@@ -59,5 +59,6 @@ class UrlMappings {
             controller = "admin"
             action = "updateTrainingQ"
         }
+
     }
 }

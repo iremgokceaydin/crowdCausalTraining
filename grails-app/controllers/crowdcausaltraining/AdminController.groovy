@@ -7,10 +7,8 @@ class AdminController {
     def index() { }
 
     def settings() {
-        def pageFactorTesting = Settings.first().pageFactorTesting
-        def pageFactorTraining = Settings.first().pageFactorTraining
-        def numberOfCorrectTestingToFinish = Settings.first().numberOfCorrectTestingToFinish
-        [pageFactorTesting: pageFactorTesting, pageFactorTraining: pageFactorTraining, numberOfCorrectTestingToFinish: numberOfCorrectTestingToFinish]
+        def settings = Settings.first()
+        [settings : settings]
     }
 
     def updateSettings(){
@@ -86,10 +84,15 @@ class AdminController {
         def q = TestingQ.get(params.id)
         def admin = Owner.findByType("Admin")
         def isError = false
+        def workers = Owner.findAllByType("Worker")
 
         q.answers.each {a ->
             if(admin.testingAs.find {it.id == a.id})
                 admin.removeFromTestingAs(a)
+            workers.each {w ->
+                if(w.testingAs.find {it.id == a.id})
+                    w.removeFromTestingAs(a)
+            }
         }
 
         q.answers.clear()
@@ -178,20 +181,37 @@ class AdminController {
         def q = new TrainingQ()
         def isError = false
         q.type = QType.get(params.type)
+        def latestPost = ""
         params.list('postText').eachWithIndex  { pT, index ->
-            def tQ_P = new TrainingQ_P()
-            tQ_P.postText = pT
             if (params.containsKey("latestPost") && params.latestPost.toInteger() == index) {
-                tQ_P.isLatest = true
+                latestPost = pT
+            }
+            else{
+                def tQ_P = new TrainingQ_P()
+                tQ_P.postText = pT
+                tQ_P.isLatest = false
+                q.addToPosts(tQ_P)
+                if(!q.save(flush:true)){
+                    isError = true
+                    def temp_q = q
+                    def errors = q.errors.allErrors
+                    q.delete(flush: true)
+                    render(view: "newTrainingQ", model: [q: temp_q, errors:errors])
+                }
             }
 
-            q.addToPosts(tQ_P)
-            if(!q.save(flush:true)){
-                isError = true
-                def temp_q = q
-                def errors = q.errors.allErrors
-                q.delete(flush: true)
-                render(view: "newTrainingQ", model: [q: temp_q, errors:errors])
+            if(index == params.list('postText').size()-1){ //to be able to sort the id's of the posts in accordance with the isLatest choice
+                def tQ_P = new TrainingQ_P()
+                tQ_P.postText = latestPost
+                tQ_P.isLatest = true
+                q.addToPosts(tQ_P)
+                if(!q.save(flush:true)){
+                    isError = true
+                    def temp_q = q
+                    def errors = q.errors.allErrors
+                    q.delete(flush: true)
+                    render(view: "newTrainingQ", model: [q: temp_q, errors:errors])
+                }
             }
         }
         if(!isError) {
@@ -232,19 +252,29 @@ class AdminController {
         q.posts.clear()
         q.save(flush:true)
         print q.posts.size()
-
+        def latestPost = ""
         params.list('postText').eachWithIndex  { pT, index ->
-            def tQ_P = new TrainingQ_P()
-            tQ_P.postText = pT
             if (params.containsKey("latestPost") && params.latestPost.toInteger() == index) {
-                print "here"
-                tQ_P.isLatest = true
+                latestPost = pT
             }
+            else{
+                def tQ_P = new TrainingQ_P()
+                tQ_P.postText = pT
+                tQ_P.isLatest = false
+                q.addToPosts(tQ_P)
 
-            q.addToPosts(tQ_P)
-
-            if(!q.save(flush:true)){
-                isError = true
+                if(!q.save(flush:true)){
+                    isError = true
+                }
+            }
+            if(index == params.list('postText').size()-1){ //to be able to sort the id's of the posts in accordance with the isLatest choice
+                def tQ_P = new TrainingQ_P()
+                tQ_P.postText = latestPost
+                tQ_P.isLatest = true
+                q.addToPosts(tQ_P)
+                if(!q.save(flush:true)){
+                    isError = true
+                }
             }
         }
 

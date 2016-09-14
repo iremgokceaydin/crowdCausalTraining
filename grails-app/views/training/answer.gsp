@@ -18,7 +18,7 @@
 
 
     <g:if test="${qs.empty}">
-        <p>There are no examples yet!</p>
+        <p>There are no exa yet!</p>
 
     </g:if>
     <g:else>
@@ -32,17 +32,17 @@
             <div class="row answerPost">
                 <u>Posts:</u>
                 <div class="alertMsg" id="addChunkAlert" style="display:none;">Add causal item first from the panel on the right.</div>
-                <div id="posts-${q.id}">
+                <div id="posts-${q.id}" class="posts">
                     <g:each var="p" in="${q.posts}">
                         <g:javascript>
-                            var $div = createPost('${q.id}','${q.type.shortName}', '${p.postText}', '${p.id}', ${p.isLatest}, false, false);
+                            var $div = createPost('${q.id}','${q.type.shortName}', '${p.postText}', '${p.id}', ${p.isLatest}, false, false, false);
                             $div.trigger('click');
                         </g:javascript>
                     </g:each>
                 </div>
-            </div>
+            </div><br>
             <div class="row">
-                <div class="col-md-6 answerChunks">
+                <div class="col-md-5 answerChunks">
                     <u>Your Chunks:</u><br>
 
                     <button id="toggleAll-${q.id}-w" type="button" class="btn btn-primary toggleAll" style="float:right;" questionId="${q.id}-w">Show All</button><br><br>
@@ -65,8 +65,8 @@
                     </div>
                 </div>
 
-                <div class="col-md-6 answerChunks">
-                    <u>Correct Chunks:</u><br>
+                <div class="col-md-5 answerChunks">
+                    <u>Suggested Chunks:</u><br>
 
                     <button id="toggleAll-${q.id}-a" type="button" class="btn btn-primary toggleAll" style="float:right;" questionId="${q.id}-a">Show All</button><br><br>
 
@@ -97,6 +97,7 @@
                     </fieldset>
                 </g:form>
             </div>
+            <br>
         </g:each>
     </g:else>
 

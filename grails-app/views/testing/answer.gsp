@@ -47,7 +47,7 @@
             </p>
         </div>
         <div class="col-md-6">
-            <u>Correct Answer:</u>
+            <u>Suggested Answer:</u>
             <p>
                 <g:each var="a" in="${q.answers}">
                     <g:if test="${admin.testingAs != null && admin.testingAs.find {it.id == a.id} != null}">

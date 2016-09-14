@@ -33,7 +33,7 @@
         <div id="posts-${q.id}">
             <g:each var="p" in="${q.posts}">
                 <g:javascript>
-                    var $div = createPost('${q.id}','${q.type.shortName}', '${p.postText}', '${p.id}', ${p.isLatest}, false, true);
+                    var $div = createPost('${q.id}','${q.type.shortName}', '${p.postText}', '${p.id}', ${p.isLatest}, false, true, false);
                     $div.trigger('click');
                 </g:javascript>
             </g:each>

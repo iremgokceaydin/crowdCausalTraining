@@ -213,7 +213,7 @@ td {
     background-color: #FFFF88;
 }
 
-#posts{
+.posts{
     background-color: #f7f7f9;
     border: 1px solid #e1e1e8;
     border-radius: 4px;
@@ -296,15 +296,16 @@ td {
 }
 
 .answerPost{
-    background: rgb(208, 214, 218);
-    border-radius: 8px;
-    box-shadow: 5px 1px 1px rgba(0,0,0,.05);
+    /*background: rgb(208, 214, 218);*/
+    /*border-radius: 8px;*/
+    /*box-shadow: 5px 1px 1px rgba(0,0,0,.05);*/
 }
 
 .answerChunks{
     background: rgb(226, 242, 247);
-    border-radius: 8px;
+    /*border-radius: 8px;*/
     border: 3px solid #bfd8e0;
+    margin-left:5%;
 }
 
 /* From ORIGINAL END */

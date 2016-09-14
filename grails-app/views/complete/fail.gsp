@@ -5,7 +5,7 @@
 </head>
 <body>
 
-<h1>Causal Crowd Coding - C^3</h1>
+<h1>Causal Crowd Coding - Failure</h1>
 <h2>Dismissed!</h2>
 <p>Unfortunately, you failed to pass the testing stage! You will no longer be able to access the actual Amazon MTurk Task!</p>
 

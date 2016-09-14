@@ -118,12 +118,15 @@ function removeSelection(){
     }
 }
 
-function createPost(questionId,questionType, postText, postId, isLatest, isAnswerPage, isAdmin){ //merged with posts onclick
+function createPost(questionId,questionType, postText, postId, isLatest, isAnswerPage, isAdmin, isPrepend){ //merged with posts onclick
     var $div = $("<div>", {id: "post-"+postId, class: "post"});
     var $p = $("<p>");
     $p.html(postText);
     $div.append($p);
-    $("#posts-"+questionId).append($div);
+    if(isPrepend)
+        $("#posts-"+questionId).prepend($div);
+    else
+        $("#posts-"+questionId).append($div);
     $div.click(function(){
         $("#posts-"+questionId + " .currentPost").removeClass("currentPost");
         $(this).addClass("currentPost");
@@ -158,7 +161,8 @@ function createPost(questionId,questionType, postText, postId, isLatest, isAnswe
         $div.addClass("currentPost");
         $div.addClass("latestPost");
     }
-    focusOnTheLatest(questionId);
+    if(!isPrepend)
+        focusOnTheLatest(questionId);
     return $div;
 }
 

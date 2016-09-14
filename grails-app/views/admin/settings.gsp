@@ -23,11 +23,14 @@
                 <td>Testing Page Factor</td>
                 <td>Training Page Factor</td>
                 <td>Correct Number of Answer for Testing </td>
+                <td>Show Previous Training Posts Factor</td>
             </tr>
             <tr>
-                <td><input name="pageFactorTesting" value="${pageFactorTesting}"></td>
-                <td><input name="pageFactorTraining" value="${pageFactorTraining}"></td>
-                <td><input name="numberOfCorrectTestingToFinish" value="${numberOfCorrectTestingToFinish}"></td>
+                <td><input name="pageFactorTesting" value="${settings.pageFactorTesting}"></td>
+                <td><input name="pageFactorTraining" value="${settings.pageFactorTraining}"></td>
+                <td><input name="numberOfCorrectTestingToFinish" value="${settings.numberOfCorrectTestingToFinish}"></td>
+                <td><input name="showPreviousTrainingPostsFactor" value="${settings.showPreviousTrainingPostsFactor}"></td>
+
             </tr>
         </table><br>
         <g:submitButton name="Update"/>

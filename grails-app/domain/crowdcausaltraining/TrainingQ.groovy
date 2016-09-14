@@ -4,7 +4,6 @@ class TrainingQ {
 
     static constraints = {
         type nullable: false
-        posts sort:'isLatest'
     }
 
     static mapping = {
@@ -12,6 +11,8 @@ class TrainingQ {
         chunks cascade: "all-delete-orphan"
         chunks sort: 'id', order:'asc'
         sort type: "asc", id:"asc"
+        //posts sort:'isLatest' needed no more since I am creating the latest post latest.
+        posts sort:'id'
     }
 
     static hasMany = [posts: TrainingQ_P, chunks: TrainingA]

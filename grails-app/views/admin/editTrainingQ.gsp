@@ -28,10 +28,10 @@
             <g:each var="p" in="${q.posts}">
                 <div>
                     <g:if test="${p.isLatest == true}">
-                        <input type="radio" name="latestPost" checked="checked" value="${p.id}"/>
+                        <input type="radio" name="latestPost" checked="checked"/>
                     </g:if>
                     <g:else>
-                        <input type="radio" name="latestPost" value="${p.id}"/>
+                        <input type="radio" name="latestPost"/>
                     </g:else>
                     <g:textArea name="postText" value="${p.postText}" rows="5" cols="60"/>
                     <button type="button" onclick="removePost(this)">
@@ -70,7 +70,7 @@
                     if ($(this).prop('checked'))
                         $(this).val(index);
                 });
-                return confirm('Are you sure you want to submit the question?');
+                return confirm("If you change the type of the question, you will loose all the workers' answers for this question. Please back up the workers' data before proceeding. Are you sure you want to submit the question?");
             }
         }
 

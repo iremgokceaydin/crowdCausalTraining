@@ -90,5 +90,14 @@ class TrainingController {
         [qs:qs, page:page,qType: qType, totalPageType1:totalPageType1,totalPageType2:totalPageType2,totalPageType3:totalPageType3, admin : admin, worker : worker]
     }
 
+    def showPosts(){
+        print params
+        def q = TrainingQ.get(params.qId)
+        def attempt = params.attempt.toInteger()
+        def factor = Settings.first().showPreviousTrainingPostsFactor
+        def posts = TrainingQ_P.findAllByQuestion(q,[sort:'id',order:'desc', max: factor,offset: attempt*factor+1])
+        render(template: "showPosts", model: [posts: posts])
+    }
+
 
 }

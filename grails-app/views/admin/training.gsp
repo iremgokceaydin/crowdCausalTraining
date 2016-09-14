@@ -54,7 +54,7 @@
                         <g:if test="${q.type != crowdcausaltraining.QType.findByTypeAndShortName("Training", "Type3")}">
                             <g:link mapping="editTrainingChunks" params='[id:"${q.id}"]'><input type="button" value="Chunks"/></g:link>
                         </g:if>
-                        <g:link action="deleteTrainingQ" params='[id:"${q.id}"]' onclick="return confirm('Are you sure you want to delete the question?')"><input type="button" value="Delete"/></g:link>
+                        <g:link action="deleteTrainingQ" params='[id:"${q.id}"]' onclick="return confirm('Are you sure you want to delete the question? If you delete a question, you will loose all the workers answers for this question. Please back up the workers data before proceeding.')"><input type="button" value="Delete"/></g:link>
                     </td>
                 </tr>
             </g:each>
