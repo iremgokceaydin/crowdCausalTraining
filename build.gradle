@@ -13,6 +13,10 @@ buildscript {
     }
 }
 
+plugins { //added
+    id "io.spring.dependency-management" version "0.5.2.RELEASE"
+}
+
 version "0.1"
 group "crowdcausaltraining"
 
