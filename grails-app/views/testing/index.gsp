@@ -1,4 +1,3 @@
-<%@ page import="crowdcausaltraining.QType" %>
 <!doctype html>
 <html>
 <head>
@@ -27,14 +26,14 @@
 
             <g:hiddenField name="worker_id" value="${worker.workerId}"/>
             <g:hiddenField name="page" value="${page}"/>
-            <g:each var="q" in="${qs}">
+            <g:each var="q" in="${qs}" status="i">
                 <g:hiddenField name="question" value="${q.id}"/>
                 <div>
                     <g:if test="${q.type.id == QType.findByTypeAndShortName('Testing', 'Type1').id}">
-                        <p class="question">Q-${q.id}: Which of the following statements reflect the knowledge in the passage?</p>
+                        <p class="question">Q-${i+1+(page-1)*pageFactorTesting}: Which of the following statements reflect the knowledge in the passage?</p>
                     </g:if>
                     <g:else>
-                        <p class="question">Q-${q.id}: To which causal statement does the highlighted statement correspond?</p>
+                        <p class="question">Q-${i+1+(page-1)*pageFactorTesting}: To which causal statement does the highlighted statement correspond?</p>
                     </g:else>
                     <p class="passage" id="${q.id}">${q.questionText}</p>
                     <g:if test="${q.type.id == QType.findByTypeAndShortName('Testing', 'Type2').id}">

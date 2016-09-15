@@ -8,7 +8,8 @@ class TestingController {
         def page = params.page.toInteger()
         def pageFactor = Settings.first().pageFactorTesting
         def qs = TestingQ.findAll([max: pageFactor, offset: pageFactor * (page-1)])
-        [qs:qs, page:page, worker : worker]
+        def pageFactorTesting = Settings.first().pageFactorTesting
+        [qs:qs, page:page, worker : worker, pageFactorTesting: pageFactorTesting]
     }
 
     def save(){
@@ -17,6 +18,7 @@ class TestingController {
         def page = params.page.toInteger()
         def pageFactor = Settings.first().pageFactorTesting
         def qs = TestingQ.findAll([max: pageFactor, offset: pageFactor * (page-1)])
+        def pageFactorTesting = Settings.first().pageFactorTesting
 
         params.list('question').each  { q ->
             print q
@@ -30,11 +32,11 @@ class TestingController {
 
 
         if(worker.save()) {
-            redirect(action: "answer", params: [page:  page, worker_id: worker.workerId])
+            redirect(action: "answer", params: [page:  page, worker_id: worker.workerId, pageFactorTesting: pageFactorTesting])
 
         }
         else {
-            render(view: "index", model: [qs:qs, page:page, worker : worker])
+            render(view: "index", model: [qs:qs, page:page, worker : worker, pageFactorTesting: pageFactorTesting])
         }
     }
 
@@ -46,8 +48,9 @@ class TestingController {
         def page = params.page.toInteger()
         session["lastTestingPageVisited"] = page
         def qs = TestingQ.findAll([max: pageFactor, offset: pageFactor * (page-1)])
+        def pageFactorTesting = Settings.first().pageFactorTesting
 
-        [qs:qs, page:page,totalPage:totalPage, pageFactor: pageFactor, admin : admin, worker : worker]
+        [qs:qs, page:page,totalPage:totalPage, pageFactor: pageFactor, admin : admin, worker : worker, pageFactorTesting: pageFactorTesting]
     }
 
 

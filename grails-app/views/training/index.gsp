@@ -32,9 +32,9 @@
         <g:else >
             <h2>Task 3: Create chunks for posts and it will be evaluated later!</h2>
         </g:else>
-        <g:each var="q" in="${qs}">
+        <g:each var="q" in="${qs}" status="i">
             <div class="col-md-6">
-                <u>Posts:</u><br>
+                <u>Q-${i+1+(page-1)*pageFactorTraining} Posts:</u><br>
                 <div class="alertMsg" id="addChunkAlert" style="display:none;">Add causal item first from the panel on the right.</div>
                 <g:if test="${qType == 'Type1' || ((qType == 'Type2' || qType == 'Type3') && !worker?.trainingAs?.findAll{it.question.id==q.id}.empty)}">
                     <div id="posts-${q.id}" class="posts">
@@ -118,8 +118,6 @@
                         </div>
                     </g:else>
                 </g:elseif>
-
-
 
             </div>
 

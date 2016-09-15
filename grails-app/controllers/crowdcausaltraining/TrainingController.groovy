@@ -14,7 +14,8 @@ class TrainingController {
         def totalPageType1 = Math.ceil(TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", "Type1")).size() / pageFactor).toInteger();
         def totalPageType2 = Math.ceil(TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", "Type2")).size() / pageFactor).toInteger();
         def totalPageType3 = Math.ceil(TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", "Type3")).size() / pageFactor).toInteger();
-        [qs:qs, qType:qType, page:page, worker : worker, admin: admin,  totalPageType1:totalPageType1,totalPageType2:totalPageType2,totalPageType3:totalPageType3]
+        def pageFactorTraining = Settings.first().pageFactorTraining
+        [qs:qs, qType:qType, page:page, worker : worker, admin: admin,  totalPageType1:totalPageType1,totalPageType2:totalPageType2,totalPageType3:totalPageType3, pageFactorTraining:pageFactorTraining]
     }
 
     def save(){
@@ -28,6 +29,7 @@ class TrainingController {
         def totalPageType1 = Math.ceil(TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", "Type1")).size() / pageFactor).toInteger();
         def totalPageType2 = Math.ceil(TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", "Type2")).size() / pageFactor).toInteger();
         def totalPageType3 = Math.ceil(TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", "Type3")).size() / pageFactor).toInteger();
+        def pageFactorTraining = Settings.first().pageFactorTraining
 
         params.list("id").each  { qId ->
             def q = TrainingQ.get(qId)
@@ -63,15 +65,15 @@ class TrainingController {
         if(worker.save()) {
             if(qType == "Type3") {
                 if(totalPageType3 > page)
-                    redirect(action: "index", params: [page: page+1, qType: qType, worker_id: worker.workerId])
+                    redirect(action: "index", params: [page: page+1, qType: qType, worker_id: worker.workerId, pageFactorTraining:pageFactorTraining])
                 else
                     redirect(controller: "complete", action: "success", params: [worker_id: worker.workerId])
             }
             else
-                redirect(action: "answer", params: [page:  page,qType:  qType,worker_id : worker.workerId])
+                redirect(action: "answer", params: [page:  page,qType:  qType,worker_id : worker.workerId, pageFactorTraining:pageFactorTraining])
         }
         else
-            render(view: "index", model: [qs: qs, page: page, qType: qType, worker: worker,totalPageType1:totalPageType1,totalPageType2:totalPageType2,totalPageType3:totalPageType3])
+            render(view: "index", model: [qs: qs, page: page, qType: qType, worker: worker,totalPageType1:totalPageType1,totalPageType2:totalPageType2,totalPageType3:totalPageType3, pageFactorTraining:pageFactorTraining])
     }
 
     def answer(){
@@ -84,10 +86,11 @@ class TrainingController {
         def totalPageType2 = Math.ceil(TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", "Type2")).size() / pageFactor).toInteger();
         def totalPageType3 = Math.ceil(TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", "Type3")).size() / pageFactor).toInteger();
         def qType = params.qType
+        def pageFactorTraining = Settings.first().pageFactorTraining
 
         def qs = TrainingQ.findAllByType(QType.findByTypeAndShortName("Training", qType), [max: pageFactor, offset: pageFactor * (page-1)])
 
-        [qs:qs, page:page,qType: qType, totalPageType1:totalPageType1,totalPageType2:totalPageType2,totalPageType3:totalPageType3, admin : admin, worker : worker]
+        [qs:qs, page:page,qType: qType, totalPageType1:totalPageType1,totalPageType2:totalPageType2,totalPageType3:totalPageType3, admin : admin, worker : worker, pageFactorTraining:pageFactorTraining]
     }
 
     def showPosts(){

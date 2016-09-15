@@ -9,9 +9,9 @@
 <g:javascript>
     var numberOfCorrect = 0;
 </g:javascript>
-<g:each var="q" in="${qs}">
+<g:each var="q" in="${qs}" status="i">
     <div class="row">
-        <p class="passage" id="${q.id}">Q-${q.id}: ${q.questionText}</p>
+        <p class="passage" id="${q.id}">Q-${i+(page-1)*pageFactorTesting}: ${q.questionText}</p>
         <g:if test="${q.type.shortName} == 'Type2'">
             <g:each var="highlight" in="${q.highlights}">
                 <g:javascript>
