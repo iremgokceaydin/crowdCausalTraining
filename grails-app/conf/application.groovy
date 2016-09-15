@@ -36,7 +36,7 @@ grails.plugin.springsecurity.controllerAnnotations.staticRules = [
 	[pattern: '/training/**', access: ['permitAll']],
 	[pattern: '/complete/**', access: ['permitAll']],
 	[pattern: '/admin/**', access: 'isAuthenticated()'],
-	[pattern: '/db', access: 'isAuthenticated()']
+	[pattern: '/db/**', access: 'isAuthenticated()']
 ]
 
 grails.plugin.springsecurity.filterChain.chainMap = [
