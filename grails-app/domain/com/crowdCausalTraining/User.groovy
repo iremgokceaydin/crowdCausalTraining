@@ -5,7 +5,7 @@ import groovy.transform.ToString
 
 @EqualsAndHashCode(includes='username')
 @ToString(includes='username', includeNames=true, includePackage=false)
-class User implements Serializable {
+class AppUser implements Serializable {
 
 	private static final long serialVersionUID = 1
 

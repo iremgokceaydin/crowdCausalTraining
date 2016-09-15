@@ -1,5 +1,5 @@
 import com.crowdCausalTraining.Role
-import com.crowdCausalTraining.User
+import com.crowdCausalTraining.AppUser
 import com.crowdCausalTraining.UserRole
 import crowdcausaltraining.Owner
 import crowdcausaltraining.QType
@@ -11,7 +11,7 @@ class BootStrap {
         def adminRole = new Role(authority: 'ROLE_ADMIN').save()
         def userRole = new Role(authority: 'ROLE_USER').save()
 
-        def admin = new User(username: 'admin', password: '1').save()
+        def admin = new AppUser(username: 'admin', password: '1').save()
         UserRole.create admin, adminRole
 
         UserRole.withSession {

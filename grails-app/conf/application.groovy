@@ -16,7 +16,7 @@ environments {
 
 
 // Added by the Spring Security Core plugin:
-grails.plugin.springsecurity.userLookup.userDomainClassName = 'com.crowdCausalTraining.User'
+grails.plugin.springsecurity.userLookup.userDomainClassName = 'com.crowdCausalTraining.AppUser'
 grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'com.crowdCausalTraining.UserRole'
 grails.plugin.springsecurity.authority.className = 'com.crowdCausalTraining.Role'
 grails.plugin.springsecurity.controllerAnnotations.staticRules = [
