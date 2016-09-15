@@ -1,3 +1,4 @@
+<%@ page import="crowdcausaltraining.QType" %>
 <!doctype html>
 <html>
 <head>
