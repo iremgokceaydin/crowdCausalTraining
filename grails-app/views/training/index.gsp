@@ -48,7 +48,7 @@
                 </g:if>
                 <g:elseif test="${(qType == 'Type2' || qType == 'Type3') && worker?.trainingAs?.findAll{it.question.id==q.id}.empty}">
                     <button id="showPosts-${q.id}" type="button" class="btn btn-primary showPosts" questionId="${q.id}" attempt="0">Show Previous Posts</button>
-                    <div id="posts-${q.id}" class="posts"
+                    <div id="posts-${q.id}" class="posts">
                             <g:javascript>
                             var $div = createPost('${q.id}','${q.type.shortName}', '${q.latestPost().postText}', '${q.latestPost().id}', true, false, false, false);
                             $div.trigger('click');
