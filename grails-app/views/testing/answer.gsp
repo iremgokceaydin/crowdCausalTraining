@@ -77,7 +77,7 @@
             if(numberOfCorrect == ${crowdcausaltraining.Settings.numberOfCorrectTestingToFinish} || ${isTestingSuccessful} == 'true') {
                 $("#step2next").text("Start Training");
                 $("#step2next").click(function (e) {
-                    window.location.href = "/introduction/tutorial?worker_id=${worker.workerId}&isTestingSuccessful=true";
+                    window.location.href = "/introduction/tutorial?worker_id=${worker.workerId}";
                 });
                 $("#step2nextA").click(function (e) {
                     if (totalPage > page) {

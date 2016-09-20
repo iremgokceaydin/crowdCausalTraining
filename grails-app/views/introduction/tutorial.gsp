@@ -28,7 +28,7 @@
                 window.location.href = "/training?qType=Type1&page=1" + "&worker_id=${worker.workerId}";
             });
             $(".prev-step").click(function (e) {//TODO fix the static variable
-                window.location.href = "/testing/answer?page=${worker.lastTestingPageVisitedByWorker}&worker_id=${worker.workerId}"; //TODO change it to dynamic pageFactor
+                window.location.href = "/testing/answer?page=${worker.lastTestingPageVisitedByWorker}&worker_id=${worker.workerId}&isTestingSuccessful=true";
             });
         });
 
