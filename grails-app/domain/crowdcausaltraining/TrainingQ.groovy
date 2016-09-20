@@ -17,4 +17,15 @@ class TrainingQ {
 
     static hasMany = [posts: TrainingQ_P, chunks: TrainingA]
     QType type
+
+    public TrainingQ_P latestPost() {
+        def latestPost
+        posts.each {p ->
+            if(p.isLatest) {
+                latestPost = p
+                return
+            }
+        }
+        return latestPost
+    }
 }

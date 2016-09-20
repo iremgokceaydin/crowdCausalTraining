@@ -38,7 +38,7 @@
                 <div class="alertMsg" id="addChunkAlert" style="display:none;">Add causal item first from the panel on the right.</div>
                 <g:if test="${qType == 'Type1' || ((qType == 'Type2' || qType == 'Type3') && !worker?.trainingAs?.findAll{it.question.id==q.id}.empty)}">
                     <div id="posts-${q.id}" class="posts">
-                        <g:each var="p" in="${q.posts}"> <!-- in fact there is just one but I used each to access it-->
+                        <g:each var="p" in="${q.posts}">
                             <g:javascript>
                             var $div = createPost('${q.id}','${q.type.shortName}', '${p.postText}', '${p.id}', ${p.isLatest}, false, false, false);
                             $div.trigger('click');
@@ -48,13 +48,11 @@
                 </g:if>
                 <g:elseif test="${(qType == 'Type2' || qType == 'Type3') && worker?.trainingAs?.findAll{it.question.id==q.id}.empty}">
                     <button id="showPosts-${q.id}" type="button" class="btn btn-primary showPosts" questionId="${q.id}" attempt="0">Show Previous Posts</button>
-                    <div id="posts-${q.id}" class="posts">
-                        <g:each var="p" in="${q.posts.find{it.isLatest == true}}"> <!-- in fact there is just one but I used each to access it-->
+                    <div id="posts-${q.id}" class="posts"
                             <g:javascript>
-                            var $div = createPost('${q.id}','${q.type.shortName}', '${p.postText}', '${p.id}', ${p.isLatest}, false, false, false);
+                            var $div = createPost('${q.id}','${q.type.shortName}', '${q.latestPost().postText}', '${q.latestPost().id}', true, false, false, false);
                             $div.trigger('click');
                             </g:javascript>
-                        </g:each>
                     </div>
                 </g:elseif>
             </div>
