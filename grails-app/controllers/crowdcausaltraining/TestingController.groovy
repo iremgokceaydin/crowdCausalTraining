@@ -51,8 +51,8 @@ class TestingController {
         session["lastTestingPageVisited"] = page
         def qs = TestingQ.findAll([max: pageFactor, offset: pageFactor * (page-1)])
         def pageFactorTesting = Settings.first().pageFactorTesting
-
-        [qs:qs, page:page,totalPage:totalPage, pageFactor: pageFactor, admin : admin, worker : worker, pageFactorTesting: pageFactorTesting]
+        def isTestingSuccessful = params.isTestingSuccessful
+        [qs:qs, page:page,totalPage:totalPage, pageFactor: pageFactor, admin : admin, worker : worker, pageFactorTesting: pageFactorTesting,isTestingSuccessful:isTestingSuccessful]
     }
 
 
