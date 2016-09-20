@@ -70,7 +70,7 @@
                     if ($(this).prop('checked'))
                         $(this).val(index);
                 });
-                return confirm("If you change the type of the question, you will loose all the workers' answers for this question. Please back up the workers' data before proceeding. Are you sure you want to submit the question?");
+                return confirm("If you changed the type of the question, you will loose all the workers' answers for this question. Please back up the workers' data before proceeding. Are you sure you want to submit the question?");
             }
         }
 

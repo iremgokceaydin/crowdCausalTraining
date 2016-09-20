@@ -81,7 +81,7 @@
                     if ($(this).prop('checked'))
                         $(this).val(index);
                 });
-                return confirm('Are you sure you want to submit the question?');
+                return confirm("If you changed anything, all the workers' answers for this question will be deleted. Are you sure you want to submit the question?");
             }
         }
 

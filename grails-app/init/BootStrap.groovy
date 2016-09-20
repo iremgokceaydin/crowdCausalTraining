@@ -25,9 +25,15 @@ class BootStrap {
         def trainingType2 = new QType(type: 'Training', shortName: 'Type2', longName: 'No text and no highlight').save()
         def trainingType3 = new QType(type: 'Training', shortName: 'Type3', longName: 'No answer').save()
 
-        def adminOwner = new Owner(type: 'Admin').save()
+        def adminOwner = Owner.findByType("Admin")
 
-        def settings = new Settings(pageFactorTesting: 5, pageFactorTraining: 1, numberOfCorrectTestingToFinish:5, showPreviousTrainingPostsFactor:3).save()
+        if (adminOwner == null) {
+            adminOwner = new Owner(type: 'Admin').save()
+        }
+
+        if (!Settings.count) {
+            def settings = new Settings(pageFactorTesting: 5, pageFactorTraining: 1, numberOfCorrectTestingToFinish:5, showPreviousTrainingPostsFactor:3).save()
+        }
 
         QType.withSession {
             it.flush()

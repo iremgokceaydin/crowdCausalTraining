@@ -81,6 +81,7 @@ class AdminController {
     }
 
     def updateTestingQ(){
+        print params
         def q = TestingQ.get(params.id)
         def admin = Owner.findByType("Admin")
         def isError = false
