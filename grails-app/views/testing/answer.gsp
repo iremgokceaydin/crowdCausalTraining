@@ -74,7 +74,7 @@
             var totalPage = ${totalPage};
 
 
-            if(numberOfCorrect == ${crowdcausaltraining.Settings.numberOfCorrectTestingToFinish} || ${isTestingSuccessful} == 'true') {
+            if(numberOfCorrect == ${crowdcausaltraining.Settings.first().numberOfCorrectTestingToFinish} || ${isTestingSuccessful} == 'true') {
                 $("#step2next").text("Start Training");
                 $("#step2next").click(function (e) {
                     window.location.href = "/introduction/tutorial?worker_id=${worker.workerId}";
