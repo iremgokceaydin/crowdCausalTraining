@@ -1,3 +1,4 @@
+<%@ page import="crowdcausaltraining.Settings" %>
 <!doctype html>
 <html>
 <head>
@@ -73,14 +74,14 @@
             var totalPage = ${totalPage};
 
 
-            if(numberOfCorrect == ${qs.size()}) {
+            if(numberOfCorrect == ${crowdcausaltraining.Settings.numberOfCorrectTestingToFinish} || ${isTestingSuccessful} == 'true') {
                 $("#step2next").text("Start Training");
                 $("#step2next").click(function (e) {
-                    window.location.href = "/introduction/tutorial?worker_id=${worker.workerId}";
+                    window.location.href = "/introduction/tutorial?worker_id=${worker.workerId}&isTestingSuccessful=true";
                 });
                 $("#step2nextA").click(function (e) {
                     if (totalPage > page) {
-                        window.location.href = "/testing?page=" + (page + 1) + "&worker_id=${worker.workerId}";
+                        window.location.href = "/testing?page=" + (page + 1) + "&worker_id=${worker.workerId}&isTestingSuccessful=true";
                     }
                     else
                         alert("In fact, this was the last page for testing questions. Please start training now.");

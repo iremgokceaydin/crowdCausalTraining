@@ -27,6 +27,8 @@
 
             <g:hiddenField name="worker_id" value="${worker.workerId}"/>
             <g:hiddenField name="page" value="${page}"/>
+            <g:hiddenField name="isTestingSuccessful" value="${isTestingSuccessful}"/>
+
             <g:each var="q" in="${qs}" status="i">
                 <g:hiddenField name="question" value="${q.id}"/>
                 <div>
@@ -81,7 +83,7 @@
                 //$("#footer").hide();
                 var page = ${page};
                 if(page > 1){
-                    window.location.href = "/testing/answer?page=" + (page-1) + "&worker_id=${worker.workerId}";
+                    window.location.href = "/testing/answer?page=" + (page-1) + "&worker_id=${worker.workerId}&isTestingSuccessful=${isTestingSuccessful}";
                 }
                 else {
                     window.location.href = "/introduction?worker_id=${worker.workerId}";
