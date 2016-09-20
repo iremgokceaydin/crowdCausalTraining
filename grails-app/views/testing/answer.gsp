@@ -103,7 +103,7 @@
             $(".prev-step").click(function (e) {
                 $("#footer").hide();
                 var page = ${page};
-                window.location.href = "/testing?page=" + (page) + "&worker_id=${worker.workerId}";
+                window.location.href = "/testing?page=" + (page) + "&worker_id=${worker.workerId}&isTestingSuccessful=${isTestingSuccessful}";
 
             });
 
