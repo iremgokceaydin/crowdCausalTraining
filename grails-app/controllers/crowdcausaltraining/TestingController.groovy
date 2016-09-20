@@ -20,6 +20,7 @@ class TestingController {
         def pageFactor = Settings.first().pageFactorTesting
         def qs = TestingQ.findAll([max: pageFactor, offset: pageFactor * (page-1)])
         def pageFactorTesting = Settings.first().pageFactorTesting
+        def isTestingSuccessful = params.isTestingSuccessful
 
         params.list('question').each  { q ->
             print q
@@ -33,11 +34,11 @@ class TestingController {
 
 
         if(worker.save()) {
-            redirect(action: "answer", params: [page:  page, worker_id: worker.workerId, pageFactorTesting: pageFactorTesting])
+            redirect(action: "answer", params: [page:  page, worker_id: worker.workerId, pageFactorTesting: pageFactorTesting,isTestingSuccessful:isTestingSuccessful])
 
         }
         else {
-            render(view: "index", model: [qs:qs, page:page, worker : worker, pageFactorTesting: pageFactorTesting])
+            render(view: "index", model: [qs:qs, page:page, worker : worker, pageFactorTesting: pageFactorTesting,isTestingSuccessful:isTestingSuccessful])
         }
     }
 
