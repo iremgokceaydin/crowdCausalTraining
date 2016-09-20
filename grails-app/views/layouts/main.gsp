@@ -17,6 +17,12 @@
 
     <div class="container">
         <div class="jumbotron" style="padding-bottom:10px;margin-bottom:10px">
+            <sec:ifLoggedIn>
+                <sec:ifAllGranted roles='ROLE_ADMIN'>
+                    <g:link controller="admin" action="index"><input type="button" value="Admin Page"/></g:link>
+                </sec:ifAllGranted>
+            </sec:ifLoggedIn>
+
             <g:layoutBody/>
         </div>
 

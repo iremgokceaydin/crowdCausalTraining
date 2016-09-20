@@ -7,7 +7,7 @@
 
 <h1>Causal Crowd Coding - Failure</h1>
 <h2>Dismissed!</h2>
-<p>Unfortunately, you failed to pass the testing stage! You will no longer be able to access the actual Amazon MTurk Task!</p>
+<p>Unfortunately, you failed to pass the testing stage! You couldn't satisfy the requirement of minimum number of correct answers. You will no longer be able to access the actual Amazon MTurk Task!</p>
 
 
 <content tag="script">
