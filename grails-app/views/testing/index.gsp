@@ -31,7 +31,7 @@
 
             <g:each var="q" in="${qs}" status="i">
                 <g:hiddenField name="question" value="${q.id}"/>
-                <div>
+                <div><hr>
                     <g:if test="${q.type.id == QType.findByTypeAndShortName('Testing', 'Type1').id}">
                         <p class="question">Q-${i+1+(page-1)*pageFactorTesting}: Which of the following statements reflect the knowledge in the passage?</p>
                     </g:if>

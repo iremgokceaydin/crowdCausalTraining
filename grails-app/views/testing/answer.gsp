@@ -11,7 +11,7 @@
     var numberOfCorrect = 0;
 </g:javascript>
 <g:each var="q" in="${qs}" status="i">
-    <div class="row">
+    <div class="row"><hr>
         <p class="passage" id="${q.id}">Q-${i+1+(page-1)*pageFactorTesting}: ${q.questionText}</p>
         <g:if test="${q.type.shortName} == 'Type2'">
             <g:each var="highlight" in="${q.highlights}">
