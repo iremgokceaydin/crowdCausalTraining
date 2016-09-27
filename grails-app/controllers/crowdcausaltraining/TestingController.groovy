@@ -8,9 +8,17 @@ class TestingController {
         def page = params.page.toInteger()
         def pageFactor = Settings.first().pageFactorTesting
         def qs = TestingQ.findAll([max: pageFactor, offset: pageFactor * (page-1)])
+        def firstType1 = null
+        def firstType2 = null
+        qs.each {q->
+            if(firstType1 == null && q.type.id == QType.findByTypeAndShortName('Testing', 'Type1').id)
+                firstType1 = q
+            else if(firstType2 == null && q.type.id == QType.findByTypeAndShortName('Testing', 'Type2').id)
+                firstType2 = q
+        }
         def pageFactorTesting = Settings.first().pageFactorTesting
         def isTestingSuccessful = params.isTestingSuccessful
-        [qs:qs, page:page, worker : worker, pageFactorTesting: pageFactorTesting, isTestingSuccessful:isTestingSuccessful]
+        [qs:qs, page:page, worker : worker, pageFactorTesting: pageFactorTesting, firstType1:firstType1, firstType2:firstType2,isTestingSuccessful:isTestingSuccessful]
     }
 
     def save(){

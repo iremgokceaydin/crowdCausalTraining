@@ -5,7 +5,7 @@
 </head>
 <body>
 
-<h1>Training Examples - Answers</h1>
+<h1>Training Stage - Answers</h1>
 
 
     <g:hasErrors bean="${worker}">

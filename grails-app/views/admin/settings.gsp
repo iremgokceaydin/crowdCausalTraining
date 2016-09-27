@@ -22,7 +22,7 @@
             <tr style="font-weight:bold">
                 <td>Testing Page Factor</td>
                 <td>Training Page Factor</td>
-                <td>Correct Number of Answer for Testing </td>
+                <td>Correct Number of Answer for Testing to Jump Training </td>
                 <td>Show Previous Training Posts Factor</td>
             </tr>
             <tr>

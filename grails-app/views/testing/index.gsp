@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<h1>Testing Examples</h1>
+<h1>Testing Stage</h1>
 <div class="row">
 
     <g:hasErrors bean="${worker}">
@@ -22,7 +22,20 @@
 
     </g:if>
     <g:else>
-        <p>Answer all the question correctly within a page to be able to jump to training section!</p>
+        <div style="color: #4294d3;">
+            <p>
+                <span style="text-decoration:underline;font-weight:bold;">STEP ONE: </span><br>
+                <span>Identifying causal knowledge contained in people’s statements.</span>
+            </p>
+        </div>
+        <p>After you have read through posts and identified statements that express causal knowledge, you will need to identify variables that express a cause or effect.</p>
+        <p>
+            <span style="text-decoration: underline;font-weight: bold; font-size: 20px;">Example</span><br>
+            “Using my inhaler before I exercise helps me breathe easier.”<br>
+            <span style="font-weight: bold; font-size: 20px;">Cause and effect relationship:</span> using an inhaler before exercising reduces asthma symptoms.<br>
+            <span style="font-weight: bold; font-size: 20px;">Variables:</span> inhaler, asthma symptoms.
+        </p>
+        <p>Answer all the question correctly within a page to be able to jump to training stage!</p>
         <g:form action="save" name="formToSubmit">
 
             <g:hiddenField name="worker_id" value="${worker.workerId}"/>
@@ -31,13 +44,16 @@
 
             <g:each var="q" in="${qs}" status="i">
                 <g:hiddenField name="question" value="${q.id}"/>
+                <g:if test="${q.id == firstType1?.id}">
+                    <br><br>
+                    <p style="font-size: 22px; font-weight: bold;">For the posts below, which of the following statements reflect best the knowledge in the passage?</p>
+                </g:if>
+                <g:elseif test="${q.id == firstType2?.id}">
+                    <br><br>
+                    <p style="font-size: 22px;font-weight: bold;">For the posts below, to which causal statement do the highlighted statements correspond?</p>
+                </g:elseif>
                 <div><hr>
-                    <g:if test="${q.type.id == QType.findByTypeAndShortName('Testing', 'Type1').id}">
-                        <p class="question">Q-${i+1+(page-1)*pageFactorTesting}: Which of the following statements reflect the knowledge in the passage?</p>
-                    </g:if>
-                    <g:else>
-                        <p class="question">Q-${i+1+(page-1)*pageFactorTesting}: To which causal statement does the highlighted statement correspond?</p>
-                    </g:else>
+                    <p class="question">Q-${i+1+(page-1)*pageFactorTesting}:
                     <p class="passage" id="${q.id}">${q.questionText}</p>
                     <g:if test="${q.type.id == QType.findByTypeAndShortName('Testing', 'Type2').id}">
                         <g:each var="highlight" in="${q.highlights}">

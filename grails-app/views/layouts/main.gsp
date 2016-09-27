@@ -34,7 +34,7 @@
                         <ul class="nav nav-tabs" role="tablist">
 
                             <li id='step1_icon' role="presentation" class="disabled">
-                                <a href="#step1_progress" data-toggle="tab" aria-controls="step1_progress" role="tab" title="Step 1">
+                                <a href="#step1_progress" data-toggle="tab" aria-controls="step1_progress" role="tab" title="Introduction">
                                     <span class="round-tab">
                                         <i class="glyphicon glyphicon-book"></i>
                                     </span>
@@ -42,21 +42,21 @@
                             </li>
 
                             <li id='step2_icon' role="presentation" class="disabled">
-                                <a href="#step2_progress" data-toggle="tab" aria-controls="step2_progress" role="tab" title="Step 2">
+                                <a href="#step2_progress" data-toggle="tab" aria-controls="step2_progress" role="tab" title="Testing">
                                     <span class="round-tab">
                                         <i class="glyphicon glyphicon-check"></i>
                                     </span>
                                 </a>
                             </li>
                             <li id='step3_icon' role="presentation" class="disabled">
-                                <a href="#step3_progress" data-toggle="tab" aria-controls="step3_progress" role="tab" title="Step 3">
+                                <a href="#step3_progress" data-toggle="tab" aria-controls="step3_progress" role="tab" title="Tutorial">
                                     <span class="round-tab">
                                         <i class="glyphicon glyphicon-list-alt"></i>
                                     </span>
                                 </a>
                             </li>
                             <li id='step4_icon' role="presentation" class="disabled">
-                                <a href="#step4_progress" data-toggle="tab" aria-controls="step4_progress" role="tab" title="Step 4">
+                                <a href="#step4_progress" data-toggle="tab" aria-controls="step4_progress" role="tab" title="Training">
                                     <span class="round-tab">
                                         <i class="glyphicon glyphicon-pencil"></i>
                                     </span>
@@ -75,15 +75,15 @@
 
                     <div class="tab-content">
                         <div class="tab-pane" role="tabpanel" id="step1_progress">
-                            <h3>Step 1</h3>
-                            <p>Introduction</p>
+                            <h3>Introduction</h3>
+                            %{--<p>Introduction</p>--}%
                             <ul class="list-inline pull-right">
                                 <li><button id="step1next" name="step1next" type="button" class="btn btn-primary next-step">Continue</button></li>
                             </ul>
                         </div>
                         <div class="tab-pane" role="tabpanel" id="step2_progress">
-                            <h3>Step 2</h3>
-                            <p>Testing</p>
+                            <h3>Testing</h3>
+                            %{--<p>Testing</p>--}%
                             <ul class="list-inline pull-right">
                                 <li><button id="step2prev" name="step2prev" type="button" class="btn btn-default prev-step">Previous</button></li>
                                 <li><button id="step2nextA" name="step2next" type="button" class="btn btn-primary next-step">See More Questions</button></li>
@@ -91,24 +91,24 @@
                             </ul>
                         </div>
                         <div class="tab-pane" role="tabpanel" id="step3_progress">
-                            <h3>Step 3</h3>
-                            <p>Tutorial</p>
+                            <h3>Tutorial</h3>
+                            %{--<p>Tutorial</p>--}%
                             <ul class="list-inline pull-right">
                                 <li><button id="step3prev" name="step3prev" type="button" class="btn btn-default prev-step">Previous</button></li>
                                 <li><button id="step3next" name="step3next" type="button" class="btn btn-primary next-step">Continue</button></li>
                             </ul>
                         </div>
                         <div class="tab-pane" role="tabpanel" id="step4_progress">
-                            <h3>Step 4</h3>
-                            <p>Training</p>
+                            <h3>Training</h3>
+                            %{--<p>Training</p>--}%
                             <ul class="list-inline pull-right">
                                 <li><button id="step4prev" name="step4prev" type="button" class="btn btn-default prev-step">Previous</button></li>
                                 <li><button id="step4next" name="step4next" type="button" class="btn btn-primary btn-info-full next-step">Save and Continue</button></li>
                             </ul>
                         </div>
                         <div class="tab-pane" role="tabpanel" id="step5_progress_complete">
-                            <h3>Complete</h3>
-                            <p>Completed all steps.</p>
+                            <h3>Completed</h3>
+                            %{--<p>Completed all steps.</p>--}%
                         </div>
                         <div class="clearfix"></div>
                     </div>

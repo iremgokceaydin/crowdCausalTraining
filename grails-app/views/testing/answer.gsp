@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<h1>Testing Examples - Answers </h1>
+<h1>Testing Stage - Answers </h1>
 <g:javascript>
     var numberOfCorrect = 0;
 </g:javascript>
@@ -22,7 +22,7 @@
         </g:if>
 
         <div class="col-md-6">
-            <u>Your Answer:</u> <img style="display: none" id="worker_answer_${q.id}_isCorrect" width="30px" height="30px" src="${assetPath(src: 'ok.png')}"/><img style="display: none" id="worker_answer_${q.id}_isWrong" width="30px" height="30px" src="${assetPath(src: 'cross.png')}"/>
+            <u style="font-weight: bolder">Your Answer:</u> <img style="display: none" id="worker_answer_${q.id}_isCorrect" width="30px" height="30px" src="${assetPath(src: 'ok.png')}"/><img style="display: none" id="worker_answer_${q.id}_isWrong" width="30px" height="30px" src="${assetPath(src: 'cross.png')}"/>
             <p>
                 <g:each var="a" in="${q.answers}">
                     <g:if test="${worker.testingAs != null && worker.testingAs.find {it.id == a.id} != null}">
@@ -48,7 +48,7 @@
             </p>
         </div>
         <div class="col-md-6">
-            <u>Suggested Answer:</u>
+            <u style="font-weight: bolder">Suggested Answer:</u>
             <p>
                 <g:each var="a" in="${q.answers}">
                     <g:if test="${admin.testingAs != null && admin.testingAs.find {it.id == a.id} != null}">
@@ -74,7 +74,7 @@
             var totalPage = ${totalPage};
 
 
-            if(numberOfCorrect == ${crowdcausaltraining.Settings.first().numberOfCorrectTestingToFinish} || '${isTestingSuccessful}' == 'true') {
+            if(numberOfCorrect >= ${crowdcausaltraining.Settings.first().numberOfCorrectTestingToFinish} || '${isTestingSuccessful}' == 'true') {
                 $("#step2next").text("Start Training");
                 $("#step2next").click(function (e) {
                     window.location.href = "/introduction/tutorial?worker_id=${worker.workerId}";
