@@ -19,7 +19,7 @@
     <div class="jumbotron" style="padding-bottom:10px;margin-bottom:10px">
         <g:link mapping="introduction" params='[worker_id:"1"]'><input type="button" value="Worker Pages"/></g:link>
         <g:link controller="admin" action="index"><input type="button" value="Admin Page"/></g:link>
-        <h1>Crowd Causal Project - Admin Panel</h1>
+        <h1>Causal Crowd Coding - Admin Panel</h1>
         <g:layoutBody/>
     </div>
 
