@@ -46,7 +46,7 @@
                 <g:hiddenField name="question" value="${q.id}"/>
                 <g:if test="${q.id == firstType1?.id}">
                     <br><br>
-                    <p style="font-size: 22px; font-weight: bold;">For the posts below, which of the following statements reflect best the knowledge in the passage?</p>
+                    <p style="font-size: 22px; font-weight: bold;">For the posts below, which of the following statements reflect best the causal knowledge in the passage?</p>
                 </g:if>
                 <g:elseif test="${q.id == firstType2?.id}">
                     <br><br>
