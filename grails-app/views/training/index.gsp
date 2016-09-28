@@ -41,16 +41,17 @@
 
         <g:if test="${qType == 'Type1'}">
             <p>Task 1 : Enter an expression for the causal knowledge in each chunk. Use the text fields in chunks to express the causal knowledge represented by highlighted variables.</p>
+            <h3> You can compare your answers with suggested ones in the answer pages.</h3>
         </g:if>
         <g:elseif test="${qType == 'Type2'}">
-            <p>After you have identified statements that express causal knowledge and the variables (by highlighting them) that allow a statement to express causal knowledge you will express cause and effect relationships with your own words in the given text field of each chunk.</p>
+            <p>Task 2: After you have identified statements that express causal knowledge and the variables which allow a statement to express causal knowledge by highlighting, you will express cause and effect relationships with your own words in the given text field of each chunk.</p>
             <p>A causal statement expresses a single cause and a single effect. If there are multiple causal statements in a post or across the posts you will express each one individually by creating new chunks.</p>
-            <p>Task 2: Create chunks for posts!</p>
+            <h3> You can compare your answers with suggested ones in the answer pages.</h3>
         </g:elseif>
         <g:else >
-            <p>After you have identified statements that express causal knowledge and the variables (by highlighting them) that allow a statement to express causal knowledge you will express cause and effect relationships with your own words in the given text field of each chunk.</p>
+            <p>Task 3: After you have identified statements that express causal knowledge and the variables that allow a statement to express causal knowledge by highlighting, you will express cause and effect relationships with your own words in the given text field of each chunk.</p>
             <p>A causal statement expresses a single cause and a single effect. If there are multiple causal statements in a post or across the posts you will express each one individually by creating new chunks.</p>
-            <h3>Task 3: Create chunks for posts and it will be evaluated later!</h3>
+            <h3> Your answers(chunks) will be evaluated later!</h3>
         </g:else>
         <g:each var="q" in="${qs}" status="j">
             <div class="col-md-6">
