@@ -86,7 +86,7 @@
                             %{--<p>Testing</p>--}%
                             <ul class="list-inline pull-right">
                                 <li><button id="step2prev" name="step2prev" type="button" class="btn btn-default prev-step">Previous</button></li>
-                                <li><button id="step2nextA" name="step2next" type="button" class="btn btn-primary next-step">See More Questions</button></li>
+                                <li><button id="step2nextM" name="step2next" type="button" class="btn btn-primary next-step">See More Questions</button></li>
                                 <li><button id="step2next" name="step2next" type="button" class="btn btn-primary next-step">Save and continue</button></li>
                             </ul>
                         </div>

@@ -5,6 +5,7 @@ class Owner {
     static constraints = {
         workerId nullable:true
         isWorkerEligible nullable:true
+        isPassedTesting nullable:true
         lastTestingPageVisitedByWorker nullable:true
     }
 
@@ -19,6 +20,7 @@ class Owner {
     //followings are worker specific
     int workerId
     boolean isWorkerEligible
+    boolean isPassedTesting
     int lastTestingPageVisitedByWorker
 
 

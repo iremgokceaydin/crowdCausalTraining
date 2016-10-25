@@ -23,37 +23,43 @@
 
     </g:if>
     <g:else>
-        <div style="color: #4294d3;">
-            <p>
-                <span style="text-decoration:underline;font-weight:bold;">STEP ONE: </span><br>
-                <span>Identifying causal knowledge contained in people’s statements.</span>
-            </p>
-            <p>
-                <span style="text-decoration:underline;font-weight:bold;">STEP TWO: </span><br>
-                <span>Identifying the variables within this causal knowledge.</span>
-            </p>
-            <p>
-                <span style="text-decoration:underline;font-weight:bold;">STEP THREE: </span><br>
-                <span>Rewrite them so that cause and effect are clear.</span>
-            </p>
-        </div>
-
 
         <g:if test="${qType == 'Type1'}">
-            <p>Task 1 : Enter an expression for the causal knowledge in each chunk. Use the text fields in chunks to express the causal knowledge represented by highlighted variables.</p>
-            <h3> You can compare your answers with suggested ones in the answer pages.</h3>
+            <h2>Goal (Task 1): Describe the causal knowledge in the highlighted texts.</h2>
+            <p>
+                Congratulations on passing testing stage! Now it’s time to get a little bit more complex again.
+
+
+                In this set of posts, there will be highlighted portions of text that you will provide a simple sentence to describe the causal knowledge, for example: <br><br>
+
+                “I was having an asthma attack, and so I went to the E.R.”<br>
+                would translate into causally:<br>
+                “going to the E.R. decreases asthma attack symptoms” or something similar.<br><br>
+
+
+                Keep in mind that there can be more than one piece of causal knowledge being exhibited in the post, or there can be multiple instances of causal knowledge in just one section of the post.
+            </p>
+
+            <p>You can use the text fields in chunks to express the causal knowledge represented by highlighted variables.</p>
         </g:if>
         <g:elseif test="${qType == 'Type2'}">
-            <p>Task 2: After you have identified statements that express causal knowledge and the variables which allow a statement to express causal knowledge by highlighting, you will express cause and effect relationships with your own words in the given text field of each chunk.</p>
-            <p>A causal statement expresses a single cause and a single effect. If there are multiple causal statements in a post or across the posts you will express each one individually by creating new chunks.</p>
-            <h3> You can compare your answers with suggested ones in the answer pages.</h3>
+            <h2>Goal (Task 2): Highlight the texts expressing causal knowledge and provide a simple sentence to describe that causal knowledge.</h2>
+            <p>
+                In this set of posts, after identifying statements that express causal knowledge, you will create chunks using the button "Add". Then, you will highlight portions of text from the posts which express causal knowledge by selecting them. Selection will automatically add the selected texts to the created and currently selected chunk. Then, you will express cause and effect relationships in your own words using the text field of each chunk.<br><br>
+
+                A causal statement expresses a single cause and a single effect. If there are multiple causal statements in a post or across the posts you will express each one individually by creating new chunks.
+            </p>
         </g:elseif>
         <g:else >
-            <p>Task 3: After you have identified statements that express causal knowledge and the variables that allow a statement to express causal knowledge by highlighting, you will express cause and effect relationships with your own words in the given text field of each chunk.</p>
-            <p>A causal statement expresses a single cause and a single effect. If there are multiple causal statements in a post or across the posts you will express each one individually by creating new chunks.</p>
-            <h3> Your answers(chunks) will be evaluated later!</h3>
+            <h2>Goal (Task 3): Same with the goal of Task 2, but this time there is no predefined answers.</h2>
+            <p>
+                In this final set of posts, you will be highlighting and then giving the causal knowledge explanations for each highlighted chunk. Exactly like the format in test three, just this time, on your own.<br><br>
+
+                You will be graded by the researchers to determine if the training materials were effective, and if you will be asked to participate in the final task to formally code posts to help with our research.
+            </p>
         </g:else>
         <g:each var="q" in="${qs}" status="j">
+            <br>
             <div class="col-md-6">
                 <u>Q-${j+1+(page-1)*pageFactorTraining} Posts:</u><br>
                 <div class="alertMsg" id="addChunkAlert" style="display:none;">Add causal item first from the panel on the right.</div>

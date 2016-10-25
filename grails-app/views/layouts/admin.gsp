@@ -13,7 +13,7 @@
 
     <g:layoutHead/>
 </head>
-<body style="font-family: 'Oswald'">
+<body>
 
 <div class="container">
     <div class="jumbotron" style="padding-bottom:10px;margin-bottom:10px">

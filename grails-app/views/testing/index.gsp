@@ -22,36 +22,23 @@
 
     </g:if>
     <g:else>
-        <div style="color: #4294d3;">
-            <p>
-                <span style="text-decoration:underline;font-weight:bold;">STEP ONE: </span><br>
-                <span>Identifying causal knowledge contained in people’s statements.</span>
-            </p>
-        </div>
-        <p>After you have read through posts and identified statements that express causal knowledge, you will need to identify variables that express a cause or effect.</p>
-        <p>
-            <span style="text-decoration: underline;font-weight: bold; font-size: 20px;">Example</span><br>
-            “Using my inhaler before I exercise helps me breathe easier.”<br>
-            <span style="font-weight: bold; font-size: 20px;">Cause and effect relationship:</span> using an inhaler before exercising reduces asthma symptoms.<br>
-            <span style="font-weight: bold; font-size: 20px;">Variables:</span> inhaler, asthma symptoms.
-        </p>
-        <p>Answer all the question correctly within a page to be able to jump to training stage!</p>
+        <p>To get you started, this set of posts will be used as the first training. You will be given a small chunk of text or a little bit longer and tiny bit more complex post that you will then select the best possible answer that you think exhibits the causal knowledge being expressed in this text/post in the multiple choice options. In some of the posts, there will be some highlights. For these, try to select an answer with the causal statement which corresponds to the highlighted statements.</p>
+        <p>There is one correct answer, or it could be none of the above.</p>
         <g:form action="save" name="formToSubmit">
 
             <g:hiddenField name="worker_id" value="${worker.workerId}"/>
             <g:hiddenField name="page" value="${page}"/>
-            <g:hiddenField name="isTestingSuccessful" value="${isTestingSuccessful}"/>
 
             <g:each var="q" in="${qs}" status="i">
                 <g:hiddenField name="question" value="${q.id}"/>
-                <g:if test="${q.id == firstType1?.id}">
-                    <br><br>
-                    <p style="font-size: 22px; font-weight: bold;">For the posts below, which of the following statements reflects the causal knowledge that the speaker has?</p>
-                </g:if>
-                <g:elseif test="${q.id == firstType2?.id}">
-                    <br><br>
-                    <p style="font-size: 22px;font-weight: bold;">For the posts below, to which causal statement do the highlighted statements correspond?</p>
-                </g:elseif>
+                %{--<g:if test="${q.id == firstType1?.id}">--}%
+                    %{--<br><br>--}%
+                    %{--<p style="font-size: 22px; font-weight: bold;">For the posts below, which of the following statements reflects the causal knowledge that the speaker has?</p>--}%
+                %{--</g:if>--}%
+                %{--<g:elseif test="${q.id == firstType2?.id}">--}%
+                    %{--<br><br>--}%
+                    %{--<p style="font-size: 22px;font-weight: bold;">For the posts below, to which causal statement do the highlighted statements correspond?</p>--}%
+                %{--</g:elseif>--}%
                 <div><hr>
                     <p class="question">Q-${i+1+(page-1)*pageFactorTesting}:
                     <p class="passage" id="${q.id}">${q.questionText}</p>
@@ -85,7 +72,7 @@
         var $target = $('#step2_icon');
         activateStep($target);
         $( document ).ready(function() {
-            $("#step2nextA").hide();
+            $("#step2nextM").hide();
             if('${qs.empty}' == 'true') {
                 $("#step2next").hide();
             }
@@ -99,12 +86,19 @@
                 //$("#footer").hide();
                 var page = ${page};
                 if(page > 1){
-                    window.location.href = "/testing/answer?page=" + (page-1) + "&worker_id=${worker.workerId}&isTestingSuccessful=${isTestingSuccessful}";
+                    window.location.href = "/testing/answer?page=" + (page-1) + "&worker_id=${worker.workerId}";
                 }
                 else {
                     window.location.href = "/introduction?worker_id=${worker.workerId}";
                 }
             });
+            if('${worker.isPassedTesting}' == 'true'){
+                $("#step2nextM").text("Start Training");
+                $("#step2nextM").show();
+                $("#step2nextM").click(function (e) {
+                    window.location.href = "/introduction/tutorial?worker_id=${worker.workerId}";
+                });
+            }
         });
 
         function validateTestingForm(e) {

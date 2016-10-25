@@ -18,19 +18,20 @@
 
 
     <g:if test="${qs.empty}">
-        <p>There are no exa yet!</p>
+        <p>There are no questions yet!</p>
 
     </g:if>
     <g:else>
         <g:if test="${qType == 'Type1'}">
-            <h2>Example 1 : Answers</h2>
+            <h2>Task 1 : Answers</h2>
         </g:if>
         <g:else test="${qType == 'Type2'}">
-            <h2>Example 2: Answers</h2>
+            <h2>Task 2: Answers</h2>
         </g:else>
+        <p>You can compare your answers with the suggested ones in the following section.</p>
         <g:each var="q" in="${qs}" status="i">
             <div class="row answerPost">
-                <u>Q-${i+1+(page-1)*pageFactorTraining} Posts:</u>
+                <u>Q-${i+1+(page-1)*pageFactorTraining} Post(s):</u>
                 <div class="alertMsg" id="addChunkAlert" style="display:none;">Add causal item first from the panel on the right.</div>
                 <div id="posts-${q.id}" class="posts">
                     <g:each var="p" in="${q.posts}">

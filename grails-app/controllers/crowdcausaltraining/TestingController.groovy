@@ -17,36 +17,43 @@ class TestingController {
                 firstType2 = q
         }
         def pageFactorTesting = Settings.first().pageFactorTesting
-        def isTestingSuccessful = params.isTestingSuccessful
-        [qs:qs, page:page, worker : worker, pageFactorTesting: pageFactorTesting, firstType1:firstType1, firstType2:firstType2,isTestingSuccessful:isTestingSuccessful]
+        [qs:qs, page:page, worker : worker, pageFactorTesting: pageFactorTesting, firstType1:firstType1, firstType2:firstType2]
     }
 
     def save(){
         print params
+        def admin = Owner.findByType("Admin")
         def worker = Owner.findOrCreateByTypeAndWorkerId("Worker",params.worker_id)
         def page = params.page.toInteger()
         def pageFactor = Settings.first().pageFactorTesting
         def qs = TestingQ.findAll([max: pageFactor, offset: pageFactor * (page-1)])
         def pageFactorTesting = Settings.first().pageFactorTesting
-        def isTestingSuccessful = params.isTestingSuccessful
 
+        def numberOfCorrect = 0
         params.list('question').each  { q ->
-            print q
+            def workersAnswer = TestingA.get(params.get("answer_" + q))
+            if(admin.testingAs.find {it.id == workersAnswer.id} != null){
+                numberOfCorrect++
+            }
             def workersPrevAnswer = worker.testingAs?.find {it.question.id == q.toInteger()}
-            print workersPrevAnswer
             if(workersPrevAnswer != null) {
                 worker.removeFromTestingAs(workersPrevAnswer)
             }
-            worker.addToTestingAs(TestingA.get(params.get("answer_" + q)))
+            worker.addToTestingAs(workersAnswer)
         }
+
+        if(numberOfCorrect >= Settings.first().numberOfCorrectTestingToFinish)
+            worker.isPassedTesting = true
+        else if(worker.isPassedTesting == null)
+            worker.isPassedTesting = false
 
 
         if(worker.save()) {
-            redirect(action: "answer", params: [page:  page, worker_id: worker.workerId, pageFactorTesting: pageFactorTesting,isTestingSuccessful:isTestingSuccessful])
+            redirect(action: "answer", params: [page:  page, worker_id: worker.workerId])
 
         }
         else {
-            render(view: "index", model: [qs:qs, page:page, worker : worker, pageFactorTesting: pageFactorTesting,isTestingSuccessful:isTestingSuccessful])
+            render(view: "index", model: [qs:qs, page:page, worker : worker, pageFactorTesting: pageFactorTesting])
         }
     }
 
@@ -59,8 +66,7 @@ class TestingController {
         session["lastTestingPageVisited"] = page
         def qs = TestingQ.findAll([max: pageFactor, offset: pageFactor * (page-1)])
         def pageFactorTesting = Settings.first().pageFactorTesting
-        def isTestingSuccessful = params.isTestingSuccessful
-        [qs:qs, page:page,totalPage:totalPage, pageFactor: pageFactor, admin : admin, worker : worker, pageFactorTesting: pageFactorTesting,isTestingSuccessful:isTestingSuccessful]
+        [qs:qs, page:page,totalPage:totalPage, pageFactor: pageFactor, admin : admin, worker : worker, pageFactorTesting: pageFactorTesting]
     }
 
 

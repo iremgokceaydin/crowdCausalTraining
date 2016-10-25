@@ -31,7 +31,7 @@
                       optionKey="id" optionValue="shortAndLongName"></g:select><br><br>
 
             Question:<br>
-            <g:textArea name="questionText" value="${q.questionText}" rows="5" cols="60"/><br/><br>
+            <g:textArea name="questionText" value="${q.questionText}" rows="5" cols="60"/><br><br>
             <button type="button" onclick="addAnswer()">Add Answer</button><br><br>
             Answers:<br>
             <div id="answersContainer">
