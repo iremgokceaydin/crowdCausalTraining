@@ -1,7 +1,7 @@
 environments {
 	production {
 		dataSource {
-			dbCreate = "create-drop"
+			dbCreate = "update"
 			driverClassName = "org.postgresql.Driver"
 			dialect = org.hibernate.dialect.PostgreSQL82Dialect
 
