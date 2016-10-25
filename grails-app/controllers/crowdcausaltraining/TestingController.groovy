@@ -28,6 +28,7 @@ class TestingController {
         def pageFactor = Settings.first().pageFactorTesting
         def qs = TestingQ.findAll([max: pageFactor, offset: pageFactor * (page-1)])
         def pageFactorTesting = Settings.first().pageFactorTesting
+        def isPassedTestingBefore = false
 
         def numberOfCorrect = 0
         params.list('question').each  { q ->
@@ -42,14 +43,18 @@ class TestingController {
             worker.addToTestingAs(workersAnswer)
         }
 
+        if(worker.isPassedTesting)
+            isPassedTestingBefore = true
+
         if(numberOfCorrect >= Settings.first().numberOfCorrectTestingToFinish)
             worker.isPassedTesting = true
         else if(worker.isPassedTesting == null)
             worker.isPassedTesting = false
 
 
+
         if(worker.save()) {
-            redirect(action: "answer", params: [page:  page, worker_id: worker.workerId])
+            redirect(action: "answer", params: [page:  page, worker_id: worker.workerId, isPassedTestingBefore: isPassedTestingBefore])
 
         }
         else {
@@ -66,8 +71,7 @@ class TestingController {
         session["lastTestingPageVisited"] = page
         def qs = TestingQ.findAll([max: pageFactor, offset: pageFactor * (page-1)])
         def pageFactorTesting = Settings.first().pageFactorTesting
-        [qs:qs, page:page,totalPage:totalPage, pageFactor: pageFactor, admin : admin, worker : worker, pageFactorTesting: pageFactorTesting]
+        def isPassedTestingBefore = params.isPassedTestingBefore
+        [qs:qs, page:page,totalPage:totalPage, pageFactor: pageFactor, admin : admin, worker : worker, pageFactorTesting: pageFactorTesting, isPassedTestingBefore: isPassedTestingBefore]
     }
-
-
 }

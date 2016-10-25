@@ -118,7 +118,8 @@
 
 
             if('${worker.isPassedTesting}' == 'true') {
-                $('#jumpToTraining').modal('show');
+                if('${isPassedTestingBefore}' == 'false')
+                    $('#jumpToTraining').modal('show');
                 $("#step2next").text("Start Training");
                 $("#step2next").click(function (e) {
                     window.location.href = "/introduction/tutorial?worker_id=${worker.workerId}";

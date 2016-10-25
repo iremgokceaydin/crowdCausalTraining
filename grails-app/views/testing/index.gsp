@@ -24,6 +24,7 @@
     <g:else>
         <p>To get you started, this set of posts will be used as the first training. You will be given a small chunk of text or a little bit longer and tiny bit more complex post that you will then select the best possible answer that you think exhibits the causal knowledge being expressed in this text/post in the multiple choice options. In some of the posts, there will be some highlights. For these, try to select an answer with the causal statement which corresponds to the highlighted statements.</p>
         <p>There is one correct answer, or it could be none of the above.</p>
+        <p style="color: #3c90c1">If you answer all the questions within one page correctly, you will be able to jump to the training stage.</p>
         <g:form action="save" name="formToSubmit">
 
             <g:hiddenField name="worker_id" value="${worker.workerId}"/>
