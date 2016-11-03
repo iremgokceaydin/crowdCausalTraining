@@ -74,6 +74,11 @@ function highlightForOnlyOneChunk($chunk){
 function highlightForOneItem(elem){
     var itemText = $(elem).attr("data-value");
     $('#'+$(elem).attr("referencedPost")).highlight(itemText);//, {wordsOnly: true }
+    $('#'+$(elem).attr("referencedPost")).find("span:contains('" + itemText + "')").each(
+        function (index, elem2) {
+            $(elem2).attr("referencedChunk", $(elem).attr("id"));
+            $(elem2).css("background-color", $(elem).attr("bgColor"));
+    });
 }
 
 function clearReferencedWordsFromPosts(questionId){ //fix it
@@ -120,7 +125,7 @@ function removeSelection(){
 }
 
 function createPost(questionId,questionType, postText, postId, isLatest, isAnswerPage, isAdmin, isPrepend){ //merged with posts onclick
-    var $div = $("<div>", {id: "post-"+postId, class: "post"});
+    var $div = $("<div>", {id: "post-"+postId, class: "post", postColor: getRandomColor()});
     var $p = $("<p>");
     $p.html(postText);
     $div.append($p);
@@ -139,11 +144,15 @@ function createPost(questionId,questionType, postText, postId, isLatest, isAnswe
                         $('#posts-' + questionId + ' .currentPost p').highlight(selectedText);
                         $('#chunks-' + questionId + ' .currentChunk input')[0].selectize.createItem(selectedText);
                         var createdItem = $('#chunks-' + questionId + ' .currentChunk .selectize-input div').last();
+                        createdItem.attr("bgColor",getRandomToneofColor($('.currentPost').attr('postColor')));
+                        createdItem.css('background-image',"none");
+                        createdItem.css('background-color', createdItem.attr("bgColor") );
                         createdItem.attr("id", $('#chunks-' + questionId + ' .currentChunk').attr("id") + "-chunk-" + ($('#chunks-' + questionId + ' .currentChunk .selectize-input div').length - 1));
                         createdItem.attr("referencedPost", $('#posts-' + questionId + ' .currentPost').attr("id"));
                         $("span:contains('" + selectedText + "')").each(
                             function (index, elem) {
                                 $(this).attr("referencedChunk", createdItem.attr("id"));
+                                $(this).css("background-color", createdItem.attr("bgColor"));
                             }); //oneTime, can be reassign after highlightForOnlyOneResult
                         //$('.currentResult textarea').val($('.currentResult input')[0].selectize.items.join(" "));
                         $("#addChunkAlert").hide();
@@ -292,14 +301,19 @@ function highlightAndAddToChunk(questionId,referencedPost, selectedText, questio
         var $createdItem = $("#chunks-" +questionId + ' .currentChunk .selectize-input .item').last();
         $createdItem.attr("id", $("#chunks-" +questionId + ' .currentChunk').attr("id") + "-casual-"+($("#chunks-" +questionId + ' .currentChunk .selectize-input .item').length-1));
         $createdItem.attr("referencedPost", $('#'+referencedPost).attr("id"));
+
+        $createdItem.attr("bgColor",getRandomToneofColor($('.currentPost').attr('postColor')));
+        $createdItem.css('background-image',"none");
+        $createdItem.css('background-color', $createdItem.attr("bgColor") );
         if(!isAdmin){
             if(questionType == "Type1" || (questionType == "Type2" && isAnswerPage))
                 $createdItem.find("a").remove();
         };
 
-        $("span:contains('" + selectedText + "')").each(
+        $('#'+referencedPost).find("span:contains('" + selectedText + "')").each(
             function(index, elem){
-                $(this).attr("referencedChunk",$createdItem.attr("id"));
+                $(elem).attr("referencedChunk",$createdItem.attr("id"));
+                $(elem).css("background-color", $createdItem.attr("bgColor"));
             }); //oneTime, can be reassign after highlightForOnlyOneResult
         //$('.currentResult textarea').val($('.currentResult input')[0].selectize.items.join(" "));
         $("#addChunkAlert").hide();
@@ -458,4 +472,26 @@ function isThereEmptyWords(){
         });
 
     return emptyWords;
+}
+
+function getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+function getRandomToneofColor(color) {
+    var mainColorR = color.substr(1,2); //manipulating R
+    var mainColorG = color.substr(3,4);
+    var mainColorB = color.substr(5,6);
+
+    var letters = '0123456789ABCDEF'.split('');
+    var sub_color = '#';
+    for (var i = 0; i < 2; i++ ) {
+        sub_color += letters[Math.floor(Math.random() * 16)];
+    }
+    return sub_color + mainColorG + mainColorB;
 }
