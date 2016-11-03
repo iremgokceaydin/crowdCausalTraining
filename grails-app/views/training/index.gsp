@@ -40,12 +40,12 @@
                 Keep in mind that there can be more than one piece of causal knowledge being exhibited in the post, or there can be multiple instances of causal knowledge in just one section of the post.
             </p>
 
-            <p>You can use the text fields in chunks to express the causal knowledge represented by highlighted variables.</p>
+            <p>You can use the text fields in chunks to express the causal knowledge represented by highlighted sentences.</p>
         </g:if>
         <g:elseif test="${qType == 'Type2'}">
-            <h2>Goal (Task 2): Highlight the texts expressing causal knowledge and provide a simple sentence to describe that causal knowledge.</h2>
+            <h2>Goal (Task 2): Highlight the sentence(s) expressing a causal knowledge and provide a simple sentence to describe that causal knowledge.</h2>
             <p>
-                In this set of posts, after identifying statements that express causal knowledge, you will create chunks using the button "Add". Then, you will highlight portions of text from the posts which express causal knowledge by selecting them. Selection will automatically add the selected texts to the created and currently selected chunk. Then, you will express cause and effect relationships in your own words using the text field of each chunk.<br><br>
+                For this set of posts, after identifying statements that express the causal knowledge, you will create chunks using the button "Add". Then, you will highlight sentence(s) from the posts which express causal knowledge by selecting them. Selection will automatically add the selected texts to the created and currently selected chunk. Then, you will express the cause and effect relationships in these highlighted sentence(s) in your own words using the text field of each chunk.<br><br>
 
                 A causal statement expresses a single cause and a single effect. If there are multiple causal statements in a post or across the posts you will express each one individually by creating new chunks.
             </p>
@@ -53,7 +53,7 @@
         <g:else >
             <h2>Goal (Task 3): Same with the goal of Task 2, but this time there is no predefined answers.</h2>
             <p>
-                In this final set of posts, you will be highlighting and then giving the causal knowledge explanations for each highlighted chunk. Exactly like the format in test three, just this time, on your own.<br><br>
+                In this final step, you are asked to do the same thing that you did in the previous step. You will create chunks for each causal knowledge within the post. Then, highlight the sentences with causal knowledge and express the causal knowledge in your own words for each highlighted sentence(s). Exactly like the format in the previous step, just this time, on your own.<br><br>
 
                 You will be graded by the researchers to determine if the training materials were effective, and if you will be asked to participate in the final task to formally code posts to help with our research.
             </p>

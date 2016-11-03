@@ -6,18 +6,18 @@ class TestingController {
     def index() {
         def worker = Owner.findOrCreateByTypeAndWorkerId("Worker",params.worker_id)
         def page = params.page.toInteger()
+        def type = params.type //type1 or type2
         def pageFactor = Settings.first().pageFactorTesting
-        def qs = TestingQ.findAll([max: pageFactor, offset: pageFactor * (page-1)])
-        def firstType1 = null
-        def firstType2 = null
-        qs.each {q->
-            if(firstType1 == null && q.type.id == QType.findByTypeAndShortName('Testing', 'Type1').id)
-                firstType1 = q
-            else if(firstType2 == null && q.type.id == QType.findByTypeAndShortName('Testing', 'Type2').id)
-                firstType2 = q
+        def qs = []
+        if(type == "type1") {
+            session["lastTestingType1PageVisited"] = page
+            qs = TestingQ.findAll("from TestingQ as a where a.type=:type", [type: QType.findByTypeAndShortName('Testing', 'Type1')], [max: pageFactor, offset: pageFactor * (page - 1)])
         }
-        def pageFactorTesting = Settings.first().pageFactorTesting
-        [qs:qs, page:page, worker : worker, pageFactorTesting: pageFactorTesting, firstType1:firstType1, firstType2:firstType2]
+        else {
+            session["lastTestingType2PageVisited"] = page
+            qs = TestingQ.findAll("from TestingQ as a where a.type=:type", [type: QType.findByTypeAndShortName('Testing', 'Type2')], [max: pageFactor, offset: pageFactor * (page - 1)])
+        }
+        [qs:qs, page:page, worker : worker, pageFactor: pageFactor, type:type]
     }
 
     def save(){
@@ -26,9 +26,13 @@ class TestingController {
         def worker = Owner.findOrCreateByTypeAndWorkerId("Worker",params.worker_id)
         def page = params.page.toInteger()
         def pageFactor = Settings.first().pageFactorTesting
-        def qs = TestingQ.findAll([max: pageFactor, offset: pageFactor * (page-1)])
-        def pageFactorTesting = Settings.first().pageFactorTesting
-        def isPassedTestingBefore = false
+        def type = params.type //type1 or type2
+        def qs = []
+        if(type == "type1")
+            qs = TestingQ.findAll("from TestingQ as a where a.type=:type",[type: QType.findByTypeAndShortName('Testing', 'Type1')], [max: pageFactor, offset: pageFactor * (page-1)])
+        else
+            qs = TestingQ.findAll("from TestingQ as a where a.type=:type",[type: QType.findByTypeAndShortName('Testing', 'Type2')], [max: pageFactor, offset: pageFactor * (page-1)])
+        def isAlreadyPassed = false
 
         def numberOfCorrect = 0
         params.list('question').each  { q ->
@@ -43,35 +47,49 @@ class TestingController {
             worker.addToTestingAs(workersAnswer)
         }
 
-        if(worker.isPassedTesting)
-            isPassedTestingBefore = true
+        if((type == 'type1' && worker.isPassedTesting1) || (type == 'type2' && worker.isPassedTesting2))
+            isAlreadyPassed = true
 
-        if(numberOfCorrect >= Settings.first().numberOfCorrectTestingToFinish)
-            worker.isPassedTesting = true
-        else if(worker.isPassedTesting == null)
-            worker.isPassedTesting = false
+        if(numberOfCorrect >= Settings.first().numberOfCorrectTestingToFinish){
+            if(type == 'type2')
+                worker.isPassedTesting2 = true
+            else
+                worker.isPassedTesting1 = true
+        }
+
+        else if(worker.isPassedTesting1 == null)
+            worker.isPassedTesting1 = false
+        else if(worker.isPassedTesting2 == null)
+            worker.isPassedTesting2 = false
 
 
 
         if(worker.save()) {
-            redirect(action: "answer", params: [page:  page, worker_id: worker.workerId, isPassedTestingBefore: isPassedTestingBefore])
+            redirect(action: "answer", params: [page:  page, worker_id: worker.workerId, type: type,isAlreadyPassed:isAlreadyPassed])
 
         }
         else {
-            render(view: "index", model: [qs:qs, page:page, worker : worker, pageFactorTesting: pageFactorTesting])
+            render(view: "index", model: [qs:qs, page:page, worker : worker, pageFactor: pageFactor, type: type])
         }
     }
 
     def answer(){
         def admin = Owner.findByType("Admin")
         def worker = Owner.findByWorkerId(params.worker_id)
-        def pageFactor = Settings.first().pageFactorTesting
-        def totalPage = Math.ceil(TestingQ.all.size() / pageFactor).toInteger();
+        def type = params.type //type1 or type2
         def page = params.page.toInteger()
-        session["lastTestingPageVisited"] = page
-        def qs = TestingQ.findAll([max: pageFactor, offset: pageFactor * (page-1)])
-        def pageFactorTesting = Settings.first().pageFactorTesting
-        def isPassedTestingBefore = params.isPassedTestingBefore
-        [qs:qs, page:page,totalPage:totalPage, pageFactor: pageFactor, admin : admin, worker : worker, pageFactorTesting: pageFactorTesting, isPassedTestingBefore: isPassedTestingBefore]
+        def pageFactor = Settings.first().pageFactorTesting
+        def totalPage = 0
+        def qs = []
+        if(type == 'type1') {
+            totalPage = Math.ceil(TestingQ.findAll { type: QType.findByTypeAndShortName('Testing', 'Type1')}.size() / pageFactor).toInteger();
+            qs = TestingQ.findAll("from TestingQ as a where a.type=:type",[type: QType.findByTypeAndShortName('Testing', 'Type1')], [max: pageFactor, offset: pageFactor * (page-1)])
+        }
+        else if(type == 'type2') {
+            totalPage = Math.ceil(TestingQ.findAll {type: QType.findByTypeAndShortName('Testing', 'Type2')}.size() / pageFactor).toInteger();
+            qs = TestingQ.findAll("from TestingQ as a where a.type=:type",[type: QType.findByTypeAndShortName('Testing', 'Type2')], [max: pageFactor, offset: pageFactor * (page-1)])
+        }
+
+        [qs:qs, page:page,totalPage:totalPage, pageFactor: pageFactor, admin : admin, worker : worker, type: type, isAlreadyPassed:params.isAlreadyPassed]
     }
 }

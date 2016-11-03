@@ -52,9 +52,10 @@ var selectedWordtoShowHighlights = false;
 var lastItemToHighlightPost;
 var selectedText;
 var highlightListForTrainingQ = [];
-var alertEditingLength = 20;
+var alertEditingLength = 10;
+var alertHighlightLength = 1;
 var alertEditing = "Please add some text of at least " + alertEditingLength + " characters";
-var alertWords = "Please add at least two words of cause-and-effect by highlighting some words from the posts";
+var alertWords = "Please add at least " + alertHighlightLength+" highlights from the posts which includes a causal knowledge.";
 var chunkIndex = 0;
 
 function highlightForAllChunks(questionId){
@@ -72,7 +73,7 @@ function highlightForOnlyOneChunk($chunk){
 
 function highlightForOneItem(elem){
     var itemText = $(elem).attr("data-value");
-    $('#'+$(elem).attr("referencedPost")).highlight(itemText);
+    $('#'+$(elem).attr("referencedPost")).highlight(itemText);//, {wordsOnly: true }
 }
 
 function clearReferencedWordsFromPosts(questionId){ //fix it
@@ -135,7 +136,7 @@ function createPost(questionId,questionType, postText, postId, isLatest, isAnswe
             if (selectedText) {
                 if ($('#chunks-' + questionId + ' .currentChunk').length != 0) {
                     if ($("#chunks-" + questionId + " div").length > 0) {
-                        $('#posts-' + questionId + ' .currentPost p').highlight(selectedText);//{ wordsOnly: true }
+                        $('#posts-' + questionId + ' .currentPost p').highlight(selectedText);
                         $('#chunks-' + questionId + ' .currentChunk input')[0].selectize.createItem(selectedText);
                         var createdItem = $('#chunks-' + questionId + ' .currentChunk .selectize-input div').last();
                         createdItem.attr("id", $('#chunks-' + questionId + ' .currentChunk').attr("id") + "-chunk-" + ($('#chunks-' + questionId + ' .currentChunk .selectize-input div').length - 1));
@@ -286,7 +287,7 @@ function createChunk(questionId,questionType, isAnswerPage, isAdmin, chunkText){
 
 function highlightAndAddToChunk(questionId,referencedPost, selectedText, questionType, isAnswerPage, isAdmin){ //added modified
     if($("#chunks-" +questionId + " div").length > 0){
-        $('#'+referencedPost).find("p").highlight(selectedText);//{ wordsOnly: true }
+        $('#'+referencedPost).find("p").highlight(selectedText);
         $("#chunks-" +questionId + ' .currentChunk input')[0].selectize.createItem(selectedText);
         var $createdItem = $("#chunks-" +questionId + ' .currentChunk .selectize-input .item').last();
         $createdItem.attr("id", $("#chunks-" +questionId + ' .currentChunk').attr("id") + "-casual-"+($("#chunks-" +questionId + ' .currentChunk .selectize-input .item').length-1));
@@ -450,7 +451,7 @@ function isThereEmptyWords(){
     var emptyWords = false;
     $(".chunk").each(
         function(index, elem){
-            if($(elem).find(".selectize-input .item").length < 2){
+            if($(elem).find(".selectize-input .item").length < alertHighlightLength){
                 $(elem).find("#alertWords").show();
                 emptyWords = true;
             }
