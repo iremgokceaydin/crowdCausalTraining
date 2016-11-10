@@ -57,6 +57,8 @@ var alertHighlightLength = 1;
 var alertEditing = "Please add some text of at least " + alertEditingLength + " characters";
 var alertWords = "Please add at least " + alertHighlightLength+" highlights from the posts which includes a causal knowledge.";
 var chunkIndex = 0;
+var randomColorList = [];
+var randomColorToneList = [];
 
 function highlightForAllChunks(questionId){
     $("#chunks-"+questionId + " .chunk").each(
@@ -476,9 +478,16 @@ function isThereEmptyWords(){
 
 function getRandomColor() {
     var letters = '0123456789ABCDEF'.split('');
-    var color = '#';
-    for (var i = 0; i < 6; i++ ) {
-        color += letters[Math.floor(Math.random() * 16)];
+    var color;
+    while(true) {
+        color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        if(randomColorList.indexOf(color) == -1) {
+            randomColorList.push(color);
+            break;
+        }
     }
     return color;
 }
@@ -489,9 +498,17 @@ function getRandomToneofColor(color) {
     var mainColorB = color.substr(5,6);
 
     var letters = '0123456789ABCDEF'.split('');
-    var sub_color = '#';
-    for (var i = 0; i < 2; i++ ) {
-        sub_color += letters[Math.floor(Math.random() * 16)];
+    var color_tone;
+    while (true) {
+        color_tone = '#';
+        for (var i = 0; i < 2; i++) {
+            color_tone += letters[Math.floor(Math.random() * 16)];
+        }
+        color_tone += mainColorG + mainColorB;
+        if(randomColorToneList.indexOf(color_tone) == -1) {
+            randomColorToneList.push(color_tone);
+            break;
+        }
     }
-    return sub_color + mainColorG + mainColorB;
+    return color_tone;
 }
