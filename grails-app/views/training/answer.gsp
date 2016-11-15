@@ -30,6 +30,9 @@
         </g:else>
         <p>You can compare your answers with the suggested ones in the following section.</p>
         <g:each var="q" in="${qs}" status="i">
+            <g:javascript>
+                totalNumberofPosts = ${q.posts.size()};
+            </g:javascript>
             <div class="row answerPost">
                 <u>Q-${i+1+(page-1)*pageFactorTraining} Post(s):</u>
                 <div class="alertMsg" id="addChunkAlert" style="display:none;">Add causal item first from the panel on the right.</div>
@@ -169,12 +172,12 @@
 
         $('.toggleAll').click(function() {
             if ($(this).attr("show") == "true"){
-                if(("#" + "chunks-"+$(this).attr("questionId") + " .chunk").length >= 1){
+                if($("#" + "chunks-"+$(this).attr("questionId") + " .chunk").length >= 1){
                     collapseAll($(this).attr("questionId"));
                 }
             }
             else{
-                if(("#" + "chunks-"+$(this).attr("questionId") + " .chunk").length >= 1){
+                if($("#" + "chunks-"+$(this).attr("questionId") + " .chunk").length >= 1){
                     expandAll(true,$(this).attr("questionId"));
                 }
             }

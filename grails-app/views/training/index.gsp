@@ -59,6 +59,9 @@
             </p>
         </g:else>
         <g:each var="q" in="${qs}" status="j">
+            <g:javascript>
+                totalNumberofPosts = ${q.posts.size()};
+            </g:javascript>
             <br>
             <div class="col-md-6">
                 <u>Q-${j+1+(page-1)*pageFactorTraining} Posts:</u><br>
@@ -67,8 +70,8 @@
                     <div id="posts-${q.id}" class="posts">
                         <g:each var="p" in="${q.posts}">
                             <g:javascript>
-                            var $div = createPost('${q.id}','${q.type.shortName}', '${p.postText}', '${p.id}', ${p.isLatest}, false, false, false);
-                            $div.trigger('click');
+                                var $div = createPost('${q.id}','${q.type.shortName}', '${p.postText}', '${p.id}', ${p.isLatest}, false, false, false);
+                                $div.trigger('click');
                             </g:javascript>
                         </g:each>
                     </div>
@@ -163,6 +166,7 @@
         var $target = $('#step4_icon');
         activateStep($target);
         $( document ).ready(function() {
+
             if('${qs.empty}' == 'true' || ('${qType}' == 'Type1' && $('.chunk').length == 0))
                 $(".next-step").hide();
             else {

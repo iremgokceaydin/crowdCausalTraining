@@ -57,6 +57,8 @@ var alertHighlightLength = 1;
 var alertEditing = "Please add some text of at least " + alertEditingLength + " characters";
 var alertWords = "Please add at least " + alertHighlightLength+" highlights from the posts which includes a causal knowledge.";
 var chunkIndex = 0;
+
+var totalNumberofPosts = 0;
 var randomColorList = [];
 var randomColorToneList = [];
 
@@ -127,7 +129,7 @@ function removeSelection(){
 }
 
 function createPost(questionId,questionType, postText, postId, isLatest, isAnswerPage, isAdmin, isPrepend){ //merged with posts onclick
-    var $div = $("<div>", {id: "post-"+postId, class: "post", postColor: getRandomColor()});
+    var $div = $("<div>", {id: "post-"+postId, class: "post", "postColor": getRandomColor()});
     var $p = $("<p>");
     $p.html(postText);
     $div.append($p);
@@ -146,11 +148,12 @@ function createPost(questionId,questionType, postText, postId, isLatest, isAnswe
                         $('#posts-' + questionId + ' .currentPost p').highlight(selectedText);
                         $('#chunks-' + questionId + ' .currentChunk input')[0].selectize.createItem(selectedText);
                         var createdItem = $('#chunks-' + questionId + ' .currentChunk .selectize-input div').last();
-                        createdItem.attr("bgColor",getRandomToneofColor($('.currentPost').attr('postColor')));
+
                         createdItem.css('background-image',"none");
+                        createdItem.attr("id", $(this).attr("id") + "-chunk-" + ($('#chunks-' + questionId + ' .currentChunk .selectize-input div').length - 1));
+                        createdItem.attr("referencedPost", $(this).attr("id"));
+                        createdItem.attr("bgColor",getRandomToneofColor($(this).attr('postColor')));
                         createdItem.css('background-color', createdItem.attr("bgColor") );
-                        createdItem.attr("id", $('#chunks-' + questionId + ' .currentChunk').attr("id") + "-chunk-" + ($('#chunks-' + questionId + ' .currentChunk .selectize-input div').length - 1));
-                        createdItem.attr("referencedPost", $('#posts-' + questionId + ' .currentPost').attr("id"));
                         $("span:contains('" + selectedText + "')").each(
                             function (index, elem) {
                                 $(this).attr("referencedChunk", createdItem.attr("id"));
@@ -302,9 +305,9 @@ function highlightAndAddToChunk(questionId,referencedPost, selectedText, questio
         $("#chunks-" +questionId + ' .currentChunk input')[0].selectize.createItem(selectedText);
         var $createdItem = $("#chunks-" +questionId + ' .currentChunk .selectize-input .item').last();
         $createdItem.attr("id", $("#chunks-" +questionId + ' .currentChunk').attr("id") + "-casual-"+($("#chunks-" +questionId + ' .currentChunk .selectize-input .item').length-1));
-        $createdItem.attr("referencedPost", $('#'+referencedPost).attr("id"));
+        $createdItem.attr("referencedPost", referencedPost);
 
-        $createdItem.attr("bgColor",getRandomToneofColor($('.currentPost').attr('postColor')));
+        $createdItem.attr("bgColor",getRandomToneofColor($('#'+referencedPost).attr('postColor')));
         $createdItem.css('background-image',"none");
         $createdItem.css('background-color', $createdItem.attr("bgColor") );
         if(!isAdmin){
@@ -416,10 +419,13 @@ function prepareInputsforAdminTestingHighlightsSubmit(){
 }
 
 function collapseAll(questionId){
+    var questionIdforPost = questionId;
+    if(questionId.indexOf("-") > -1)
+        questionIdforPost = questionId.split("-")[0];
     $("#chunks-"+questionId+" button").addClass("collapsed");
     $("#chunks-"+questionId+" .in").collapse("hide");
     //$("#chunks textarea").attr("readonly","");//added
-    $("#posts-"+questionId).unhighlight({ element: 'span', className: 'highlight' });
+    $("#posts-"+questionIdforPost).unhighlight({ element: 'span', className: 'highlight' });
     $('#toggleAll-'+questionId).html("Show All");
     $('#toggleAll-'+questionId).attr("show", "false");
     selectedWordtoShowHighlights = false;
@@ -477,38 +483,54 @@ function isThereEmptyWords(){
 }
 
 function getRandomColor() {
-    var letters = '0123456789ABCDEF'.split('');
-    var color;
-    while(true) {
-        color = '#';
-        for (var i = 0; i < 6; i++) {
-            color += letters[Math.floor(Math.random() * 16)];
-        }
-        if(randomColorList.indexOf(color) == -1) {
-            randomColorList.push(color);
-            break;
-        }
-    }
-    return color;
+    // var letters = '123456789ABCDEF'.split('');
+    // var color;
+    // while(true) {
+    //     color = '#';
+    //     for (var i = 0; i < 6; i++) {
+    //         color += letters[Math.floor(Math.random() * 11)+4];
+    //     }
+    //     if(randomColorList.indexOf(color) == -1) {
+    //         randomColorList.push(color);
+    //         break;
+    //     }
+    // }
+
+    // assumes hue [0, 360), saturation [0, 100), lightness [0, 100)
+    var c = {};
+    c.hue = randomColorList.length * (360 / totalNumberofPosts);
+
+    randomColorList.push(c);
+    return "hsl("+c.hue+",0%,0%)";
+
+
 }
 
 function getRandomToneofColor(color) {
-    var mainColorR = color.substr(1,2); //manipulating R
-    var mainColorG = color.substr(3,4);
-    var mainColorB = color.substr(5,6);
+    var c = {};
+    c.hue = (color.split(",")[0]).split("(")[1];
+    c.saturation = 50 + Math.floor(Math.random() * 10) + Math.floor(Math.random() * 40);
+    c.lightness = 40 + Math.floor(Math.random() * 20) + Math.floor(Math.random() * 40);
 
-    var letters = '0123456789ABCDEF'.split('');
-    var color_tone;
-    while (true) {
-        color_tone = '#';
-        for (var i = 0; i < 2; i++) {
-            color_tone += letters[Math.floor(Math.random() * 16)];
-        }
-        color_tone += mainColorG + mainColorB;
-        if(randomColorToneList.indexOf(color_tone) == -1) {
-            randomColorToneList.push(color_tone);
-            break;
-        }
-    }
-    return color_tone;
+    return "hsl("+c.hue+","+c.saturation+"%,"+c.lightness+"%)";
+    // var mainColorR = color.substr(1,2); //manipulating R
+    // var mainColorG = color.substr(3,2);
+    // var mainColorB = color.substr(5,2);
+    //
+    // var letters = '0123456789'.split('');
+    // var color_tone;
+    // while (true) {
+    //
+    //     color_tone = '#';
+    //     color_tone += mainColorR + mainColorG;
+    //     for (var i = 0; i < 2; i++) {
+    //         color_tone += letters[Math.floor(Math.random() * 10)];
+    //     }
+    //     if(randomColorToneList.indexOf(color_tone) == -1) {
+    //         randomColorToneList.push(color_tone);
+    //         break;
+    //     }
+    // }
+    // return color_tone;
+
 }
